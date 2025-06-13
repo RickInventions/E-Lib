@@ -28,7 +28,7 @@ const Login = () => {
         value={username} 
         onChange={(e) => setusername(e.target.value)} 
         className="w-full p-2 mb-4 border rounded"
-        placeholder="Enter Username"
+        placeholder="Enter Username..."
       />
       <input 
         type="password" 
