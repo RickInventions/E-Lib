@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     ROLES = (('user', 'Member'), ('admin', 'Admin'))
     role = models.CharField(max_length=10, choices=ROLES, default='user')
+    email = models.EmailField(unique=True)
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)

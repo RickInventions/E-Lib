@@ -10,24 +10,26 @@ class SignupView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            user = serializer.save()
+            return Response({"id": user.id, "email": user.email}, status=201)
+        return Response(serializer.errors, status=400)
 
 class LoginView(APIView):
     def post(self, request):
-        # email = request.data.get('email')
-        username = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(request, username=username, password=password)  # Key fix: use `username=email`
+        
+        user = authenticate(request, username=email, password=password)
+        
         if user:
-            login(request, user)
-            refresh = RefreshToken.for_user(user)
-            return Response({"token": str(refresh.access_token), "role": user.role})
-        return Response({"error": "Invalid credentials"}, status=401)
-    
+            refresh = RefreshToken.for_user(user)  # Generate proper JWT token
+            return Response({
+                "token": str(refresh.access_token),  # Return real token
+                "user_id": user.id,
+                "email": user.email
+            })
+        return Response(
+            {"detail": "Invalid email or password"}, 
+            status=401
+        )
 
-# {
-#   "username": "admin",
-#   "password": "admin123"
-# }
