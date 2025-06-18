@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (
     AdminBorrowView, AdminFeaturedBookView, AdminReturnView, AdminVideoView, BookDetailView, BookListView,
     AdminBookView, BookRecommendations, BookSearchView, BorrowBookView, CategoryReportView, 
-    CategoryView, ExternalSourcesReport, PDFViewerView, ReadingSessionView, ReturnBookView, 
+    CategoryView, ExternalSourcesReport, LibraryStatsView, PDFViewerView, ReadingSessionView, ReturnBookView, 
     SearchSuggestionsView, UserBorrowHistory, UserBorrowedBooks, DownloadBookView, EBookListView, 
     LibraryReports, OverdueBooksView, VideoDetailView, VideoListView, VideoRecommendations, FeaturedBookView
 )
@@ -21,6 +21,7 @@ urlpatterns = [
     path('books/<str:book_uuid>/download/', DownloadBookView.as_view(), name='download-book'),
     path('books/category/<str:category>/', BookListView.as_view(), name='book-category'),
     path('videos/category/<str:category>/', VideoListView.as_view(), name='video-category'),
+    path('stats/', LibraryStatsView.as_view(), name='library-stats'),
 
     
     # User endpoints

@@ -349,6 +349,17 @@ class LibraryReports(APIView):
         }
         return Response(data)
 
+class LibraryStatsView(APIView):
+    def get(self, request):
+        stats = {
+            'total_books': Book.objects.count(),
+            'available_books': Book.objects.filter(is_available=True).count(),
+            'total_videos': Video.objects.count(),
+            'total_categories': Category.objects.count(),
+            'total_users': User.objects.count()
+        }
+        return Response(stats)
+
 class PublicBookListView(APIView):
     def get(self, request):
         books = Book.objects.filter(is_available=True)

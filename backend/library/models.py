@@ -170,15 +170,14 @@ class FeaturedBook(models.Model):
         
     @classmethod
     def create_featured_set(cls):
-        """Creates a new set of 7 random featured books"""
         available_books = Book.objects.filter(is_available=True)
         count = available_books.count()
         
-        if count < 5:
+        if count < 4:
             # If not enough books, feature all available or none
             featured_books = list(available_books) if count > 0 else []
         else:
-            featured_books = random.sample(list(available_books), 5)
+            featured_books = random.sample(list(available_books), 4)
         
         featured_set = cls.objects.create(
             expires_at=timezone.now() + timezone.timedelta(hours=12)
