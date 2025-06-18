@@ -91,11 +91,14 @@ class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = [
-            'id', 'title', 'description', 'category', 'is_featured',
-            'video_file', 'thumbnail', 'upload_date', 'duration', 'category_display'     
+            'id', 'instructor', 'title', 'description', 'category', 'is_featured',
+            'video_file', 'thumbnail', 'upload_date', 'duration', 'category_display'
         ]
         read_only_fields = ['upload_date']
         extra_kwargs = {
+            'instructor': {'required': True},
+            'title': {'required': True},
+            'description': {'required': True},
             'video_file': {'required': True},
             'category': {'required': True},
             'thumbnail': {'required': False}

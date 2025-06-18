@@ -52,13 +52,13 @@ admin.site.register(Category)
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'upload_date', 'is_featured')
+    list_display = ('title', 'instructor', 'category', 'upload_date', 'is_featured')
     list_filter = ('category', 'is_featured')
-    search_fields = ('title', 'description')
+    search_fields = ('title', 'description', 'instructor')
     readonly_fields = ('upload_date',)
     fieldsets = (
         (None, {
-            'fields': ('title', 'description', 'category')
+            'fields': ('title', 'instructor','description', 'category')
         }),
         ('Media', {
             'fields': ('video_file', 'thumbnail', 'duration')

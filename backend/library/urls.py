@@ -20,7 +20,6 @@ urlpatterns = [
     path('books/<str:book_uuid>/', BookDetailView.as_view(), name='book-detail'),
     path('books/<str:book_uuid>/download/', DownloadBookView.as_view(), name='download-book'),
     path('books/category/<str:category>/', BookListView.as_view(), name='book-category'),
-    path('videos/category/<str:category>/', VideoListView.as_view(), name='video-category'),
     path('stats/', LibraryStatsView.as_view(), name='library-stats'),
 
     
@@ -39,6 +38,7 @@ urlpatterns = [
     path('videos/<int:video_id>/', VideoDetailView.as_view(), name='video-detail'),
     path('admin/videos/', AdminVideoView.as_view(), name='admin-video-add'),
     path('admin/videos/<int:video_id>/', AdminVideoView.as_view(), name='admin-video-edit'),# 
+    path('videos/category/<str:category>/', VideoListView.as_view(), name='video-category'),
         
     # Admin endpoints
     path('admin/books/', AdminBookView.as_view(), name='admin-book-add'),

@@ -216,6 +216,7 @@ class Video(models.Model):
     )
     
     title = models.CharField(max_length=200)
+    instructor = models.CharField(max_length=200)
     description = models.TextField()
     category = models.CharField(max_length=20, choices=VIDEO_CATEGORIES, default='DOCUMENTARY')
     video_file = models.FileField(
