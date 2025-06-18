@@ -479,10 +479,13 @@ class VideoCategoryView(APIView):
         return Response(serializer.data)
 
 class VideoDetailView(APIView):
-    def get(self, request, video_id):
-        video = get_object_or_404(Video, pk=video_id)
-        serializer = VideoSerializer(video)
-        return Response(serializer.data)
+    def get(self, request, video_uuid):
+        try:
+            video = Video.objects.get(video_uuid=video_uuid)
+            serializer = VideoSerializer(video)
+            return Response(serializer.data)
+        except Video.DoesNotExist:
+            return Response({"error": "Video not found"}, status=404)
 
 class AdminVideoView(APIView):
     permission_classes = [IsAdminUser]
@@ -560,3 +563,10 @@ class ExternalSourcesReport(APIView):
             'count': external_books.count(),
             'books': serializer.data
         })
+    
+def stream_video(request, video_id):
+    video = Video.objects.get(id=video_id)
+    response = FileResponse(open(video.video_file.path, 'rb'))
+    response['Content-Type'] = 'video/mp4'
+    response['Content-Disposition'] = f'inline; filename="{video.title}.mp4"'
+    return response

@@ -31,13 +31,13 @@ urlpatterns = [
     path('books/<str:book_uuid>/read/', PDFViewerView.as_view(), name='read-book'),
     path('books/<str:book_uuid>/reading-progress/', ReadingSessionView.as_view(), name='reading-progress'),
     path('books/<str:book_uuid>/recommendations/', BookRecommendations.as_view(), name='book-recommendations'),
-    path('videos/<int:video_id>/recommendations/', VideoRecommendations.as_view(), name='video-recommendations'),
-    
+    path('videos/<str:video_uuid>/recommendations/', VideoRecommendations.as_view(), name='video-recommendations'),
+
     # Video endpoints
     path('videos/', VideoListView.as_view(), name='video-list'),
-    path('videos/<int:video_id>/', VideoDetailView.as_view(), name='video-detail'),
+    path('videos/<str:video_uuid>/', VideoDetailView.as_view(), name='video-detail'),
     path('admin/videos/', AdminVideoView.as_view(), name='admin-video-add'),
-    path('admin/videos/<int:video_id>/', AdminVideoView.as_view(), name='admin-video-edit'),# 
+    path('admin/videos/<str:video_uuid>/', AdminVideoView.as_view(), name='admin-video-edit'),# 
     path('videos/category/<str:category>/', VideoListView.as_view(), name='video-category'),
         
     # Admin endpoints

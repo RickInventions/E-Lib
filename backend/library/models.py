@@ -206,6 +206,8 @@ class ReadingSession(models.Model):
     class Meta:
         unique_together = ['user', 'book']
 
+def generate_video_uuid():
+    return f"VIDEO-{uuid.uuid4().hex[:6].upper()}"
 
 class Video(models.Model):
     VIDEO_CATEGORIES = (
@@ -222,6 +224,12 @@ class Video(models.Model):
     video_file = models.FileField(
         upload_to='videos/',
         validators=[FileExtensionValidator(allowed_extensions=['mp4', 'webm', 'ogg'])]
+    )
+    video_uuid = models.CharField(
+        max_length=12,
+        unique=True,
+        default=generate_video_uuid,
+        editable=False,
     )
     thumbnail = models.ImageField(upload_to='video_thumbnails/')
     upload_date = models.DateTimeField(auto_now_add=True)
