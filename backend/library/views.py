@@ -2,6 +2,7 @@
 import os
 from django.utils import timezone
 from datetime import timedelta
+from django.utils.text import slugify
 from wsgiref.util import FileWrapper
 from django.http import StreamingHttpResponse
 from rest_framework.views import APIView
@@ -18,6 +19,8 @@ from .models import BorrowRecord, Category, Book, FeaturedBook
 from rest_framework.pagination import PageNumberPagination
 from .serializers import BookSearchSerializer, BorrowRecordSerializer, CategorySerializer, BookSerializer, FeaturedBookSerializer, PublicBookSerializer, RelatedBookSerializer, RelatedVideoSerializer, VideoSerializer
 from django.http import FileResponse
+from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.views.decorators.cache import cache_control
 
 class CategoryView(APIView):
@@ -309,19 +312,30 @@ class AdminStatsView(APIView):
         return Response(stats)
     
 class DownloadBookView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request, book_uuid):
         book = get_object_or_404(Book, book_uuid=book_uuid)
         
+        # Check download permissions
         if book.download_permission == 'NONE':
-            return Response({"error": "Downloads not allowed"}, status=403)
+            return Response({"error": "Downloads not allowed for this book"}, status=403)
         
         if book.download_permission == 'AUTH' and not request.user.is_authenticated:
             return Response({"error": "Authentication required"}, status=401)
         
         if not book.pdf_file:
-            return Response({"error": "File not available for download"}, status=404)
+            return Response({"error": "File not available"}, status=404)
         
-        return FileResponse(book.pdf_file, as_attachment=True, filename=book.pdf_file.name)
+        filename = f"{slugify(book.title)}.pdf"
+        response = FileResponse(
+            book.pdf_file.open(),
+            content_type='application/pdf',
+            as_attachment=True,
+            filename=filename
+        )
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
     
 class LibraryReports(APIView):
     permission_classes = [IsAdminUser]
@@ -427,7 +441,12 @@ class PDFViewerView(APIView):
             defaults={'last_page': 1}
         )
         
-        return FileResponse(book.pdf_file.open(), content_type='application/pdf')
+        response = FileResponse(
+            book.pdf_file.open(),
+            content_type='application/pdf'
+        )
+        response['Content-Disposition'] = f'inline; filename="{slugify(book.title)}.pdf"'
+        return response
 
 class ReadingSessionView(APIView):
     permission_classes = [IsAuthenticated]
