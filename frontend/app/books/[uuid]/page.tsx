@@ -1,291 +1,380 @@
 "use client"
-
-import { useState } from "react"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { BookCard } from "@/components/book-card"
-import { AuthModal } from "@/components/auth-modal"
+import { useToast } from "@/components/ui/use-toast"
 import { useAuth } from "@/lib/auth-context"
-import { books } from "@/lib/dummy-data"
-import { ArrowLeft, Download, BookOpen, Calendar, User, Building, Tag, Star, Heart, Share2 } from "lucide-react"
+import { fetchBookDetails, fetchBookRecommendations } from "@/lib/api"
+import type { Book } from "@/lib/types"
+import { Download, BookOpen, ArrowLeft, Info, ExternalLink } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Card, CardContent } from "@/components/ui/card"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api"
 
-export default function BookDetailsPage() {
-  const params = useParams()
+
+export default function BookDetailPage() {
+  const [book, setBook] = useState<Book | null>(null)
+  const [loading, setLoading] = useState(true)
   const { isAuthenticated } = useAuth()
-  const [showAuthModal, setShowAuthModal] = useState(false)
-  const [isFavorited, setIsFavorited] = useState(false)
+  const [recommendations, setRecommendations] = useState<Book[]>([])
+  const { toast } = useToast()
+  const router = useRouter()
+  const params = useParams()
 
-  const book = books.find((b) => b.book_uuid === params.uuid)
+  useEffect(() => {
+    async function loadBook() {
+      try {
+        const bookData = await fetchBookDetails(params.uuid as string)
+        setBook(bookData)
+      } catch (error) {
+        toast({
+          title: "Error loading book",
+          description: "Could not fetch book details",
+          variant: "destructive"
+        })
+        router.push("/books")
+      } finally {
+        setLoading(false)
+      }
+    }
+      async function loadRecommendations() {
+    try {
+      const recs = await fetchBookRecommendations(params.uuid as string)
+      setRecommendations(recs)
+    } catch (error) {
+      console.error("Failed to load recommendations:", error)
+    }
+  }
+  loadRecommendations()
+    loadBook()
+  }, [params.uuid, router, toast])
 
-  if (!book) {
+const handleDownload = async () => {
+  if (!book) return;
+
+  const token = localStorage.getItem('access_token');
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/books/${book.book_uuid}/download/`,
+      { headers }
+    );
+
+    if (!response.ok) {
+      throw new Error(response.status === 401 ? 'Unauthorized' : 'Download failed');
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${book.title}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+
+    toast({
+      title: "Download started",
+      description: `${book.title} is being downloaded`,
+    });
+  } catch (error) {
+    console.error('Download error:', error);
+    toast({
+      title: "Download failed",
+      description: (error instanceof Error && error.message === 'Unauthorized') 
+        ? 'Please login to download' 
+        : 'Failed to download book',
+      variant: "destructive",
+    });
+  }
+};
+
+
+const handleReadOnline = async () => {
+  if (!book?.pdf_file) {
+    toast({
+      title: "Not available",
+      description: "This book cannot be read online",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  try {
+    // Open in new tab with PDF viewer
+    const response = await fetch(
+      `${API_BASE_URL}/books/${book.book_uuid}/read/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const pdfUrl = URL.createObjectURL(blob);
+      window.open(pdfUrl, '_blank');
+    } else {
+      throw new Error('Failed to open PDF');
+    }
+  } catch (error) {
+    toast({
+      title: "Failed to open",
+      description: "Could not open the book for reading",
+      variant: "destructive",
+    });
+  }
+};
+
+  if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Book Not Found</h1>
-          <p className="text-gray-600 mb-4">The book you're looking for doesn't exist.</p>
-          <Button asChild>
-            <Link href="/books">Back to Books</Link>
-          </Button>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     )
   }
 
-  // Get recommendations (books from same categories, excluding current book)
-  const recommendations = books
-    .filter((b) => b.book_uuid !== book.book_uuid && b.categories.some((cat) => book.categories.includes(cat)))
-    .slice(0, 4)
-
-  const handleAction = (action: () => void) => {
-    if (!isAuthenticated) {
-      setShowAuthModal(true)
-      return
-    }
-    action()
+  if (!book) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-bold mb-4">Book not found</h2>
+        <Button asChild>
+          <Link href="/books">Back to Books</Link>
+        </Button>
+      </div>
+    )
   }
-
-  const handleDownload = () => {
-    if (book.download_permission === "NONE") {
-      alert("Download not allowed for this book")
-      return
-    }
-    if (book.download_permission === "AUTH" && !isAuthenticated) {
-      setShowAuthModal(true)
-      return
-    }
-    console.log(`Downloading ${book.title}`)
-  }
-
-  const handleRead = () => {
-    console.log(`Reading ${book.title}`)
-  }
-
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href)
-    alert("Link copied to clipboard!")
-  }
-
-  const canDownload = book.download_permission === "ALL" || (book.download_permission === "AUTH" && isAuthenticated)
 
   return (
-    <>
-      <div className="container mx-auto px-4 py-8">
-        {/* Back Button */}
-        <Button variant="ghost" asChild className="mb-6">
-          <Link href="/books">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Books
-          </Link>
-        </Button>
+    <div className="container mx-auto px-4 py-8">
+      <Button 
+        variant="outline" 
+        onClick={() => router.back()} 
+        className="mb-6"
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Book Cover and Actions */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardContent className="p-6">
-                <div className="relative aspect-[3/4] mb-6">
-                  <Image
-                    src={book.cover_image || "/placeholder.svg"}
-                    alt={book.title}
-                    fill
-                    className="object-cover rounded-lg"
-                  />
-                  {book.is_featured && (
-                    <div className="absolute top-2 right-2">
-                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                        <Star className="mr-1 h-3 w-3" />
-                        Featured
-                      </Badge>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-3">
-                  {book.is_ebook && (
-                    <Button className="w-full" onClick={() => handleAction(handleRead)}>
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      Read Online
-                    </Button>
-                  )}
-
-                  {canDownload && book.pdf_file && (
-                    <Button variant="outline" className="w-full" onClick={handleDownload}>
-                      <Download className="mr-2 h-4 w-4" />
-                      Download PDF
-                    </Button>
-                  )}
-
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                      onClick={() => handleAction(() => setIsFavorited(!isFavorited))}
-                    >
-                      <Heart className={`mr-2 h-4 w-4 ${isFavorited ? "fill-current text-red-500" : ""}`} />
-                      {isFavorited ? "Favorited" : "Favorite"}
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={handleShare}>
-                      <Share2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-
-                <Separator className="my-4" />
-
-                {/* Book Stats */}
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Availability:</span>
-                    <Badge variant={book.is_available ? "default" : "destructive"}>{book.available_status}</Badge>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Copies:</span>
-                    <span>
-                      {book.available_copies}/{book.total_copies}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Type:</span>
-                    <Badge variant={book.book_type === "PHYSICAL" ? "destructive" : "default"}>{book.book_type}</Badge>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Download:</span>
-                    <Badge variant="outline">
-                      {book.download_permission === "ALL"
-                        ? "Everyone"
-                        : book.download_permission === "AUTH"
-                          ? "Members Only"
-                          : "Not Allowed"}
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Book Details */}
-          <div className="lg:col-span-2 space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{book.title}</h1>
-              <div className="flex flex-wrap gap-4 text-gray-600 mb-4">
-                <div className="flex items-center">
-                  <User className="mr-2 h-4 w-4" />
-                  {book.author}
-                </div>
-                {book.publisher && (
-                  <div className="flex items-center">
-                    <Building className="mr-2 h-4 w-4" />
-                    {book.publisher}
-                  </div>
-                )}
-                {book.publication_date && (
-                  <div className="flex items-center">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    {new Date(book.publication_date).toLocaleDateString()}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2 mb-4">
-                {book.categories.map((category) => (
-                  <Badge key={category} variant="outline">
-                    <Tag className="mr-1 h-3 w-3" />
-                    {category}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Description</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 leading-relaxed">{book.description}</p>
-                {book.summary && (
-                  <div className="mt-4">
-                    <h4 className="font-semibold mb-2">Summary</h4>
-                    <p className="text-gray-600">{book.summary}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Book Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Book Information</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="font-semibold mb-2">Details</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Book ID:</span>
-                        <span className="font-mono">{book.book_uuid}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Format:</span>
-                        <span>{book.is_ebook ? "Digital" : "Physical"}</span>
-                      </div>
-                      {book.publication_date && (
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Published:</span>
-                          <span>{new Date(book.publication_date).getFullYear()}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">Availability</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Status:</span>
-                        <span className={book.is_available ? "text-green-600" : "text-red-600"}>
-                          {book.available_status}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Available:</span>
-                        <span>
-                          {book.available_copies} of {book.total_copies}
-                        </span>
-                      </div>
-                      {book.is_external && (
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Source:</span>
-                          <span>External</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Book Cover */}
+        <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-lg">
+<Image
+  src={
+    book.cover_image
+      ? book.cover_image.startsWith("http")
+        ? book.cover_image
+        : `http://localhost:8000${book.cover_image}`
+      : "/placeholder.svg"
+  }
+            alt={book.title}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute top-4 right-4 flex gap-2">
+            <Badge variant={book.book_type === "PHYSICAL" ? "destructive" : "default"}>
+              {book.book_type}
+            </Badge>
+            {book.is_featured && <Badge variant="secondary">Featured</Badge>}
           </div>
         </div>
 
-        {/* Recommendations */}
-        {recommendations.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-6">You Might Also Like</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {recommendations.map((recommendedBook) => (
-                <BookCard key={recommendedBook.book_uuid} book={recommendedBook} />
-              ))}
-            </div>
+        {/* Book Details */}
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold">{book.title}</h1>
+            <p className="text-xl text-muted-foreground">by {book.author}</p>
           </div>
-        )}
-      </div>
 
-      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
-    </>
+          <div className="flex flex-wrap gap-2">
+            {book.categories.map((category) => (
+              <Badge key={category} variant="outline">
+                {category}
+              </Badge>
+            ))}
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h3 className="font-semibold">Description</h3>
+              <p className="text-muted-foreground">{book.description}</p>
+            </div>
+
+
+            {book.publisher && (
+              <div>
+                <h3 className="font-semibold">Publisher</h3>
+                <p className="text-muted-foreground">{book.publisher}</p>
+              </div>
+            )}
+
+          {/* Publication Date */}
+          {book.publication_date && (
+            <div>
+              <h3 className="font-semibold">Publication Date</h3>
+              <p className="text-muted-foreground">
+                {new Date(book.publication_date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </p>
+            </div>
+          )}
+
+  <div>
+    <h3 className="font-semibold">Availability</h3>
+    <p className="text-muted-foreground">
+      {book.is_available ? (
+        <span className="text-green-600">Available</span>
+      ) : (
+        <span className="text-red-600">Unavailable</span>
+      )}
+      {book.book_type === "PHYSICAL" && (
+        <span> ({book.available_copies} of {book.total_copies} copies available)</span>
+      )}
+    </p>
+  </div>
+</div>
+    {/* Show message if no copies available */}
+  {book.book_type === "PHYSICAL" && book.available_copies <= 0 && (
+    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <Info className="h-4 w-4" />
+      <span>All copies are currently checked out</span>
+    </div>
+  )}
+  {/* Action Buttons */}
+<div className="flex flex-wrap gap-4 pt-4">
+  {book.is_ebook && (
+    <Button 
+      size="lg" 
+      onClick={handleReadOnline}
+      disabled={!book.pdf_file}
+    >
+      <BookOpen className="mr-2 h-4 w-4" />
+      Read Online
+    </Button>
+  )}
+
+  {/* Download Button */}
+  {(book.download_permission === "ALL" || 
+    (book.download_permission === "AUTH" && isAuthenticated)) && 
+    book.pdf_file && (
+    <Button 
+      variant="outline" 
+      size="lg" 
+      onClick={handleDownload}
+    >
+      <Download className="mr-2 h-4 w-4" />
+      Download
+    </Button>
+  )}
+
+  {/* Borrow Button - Only show if physical book AND available */}
+  {book.book_type === "PHYSICAL" && book.is_available && book.available_copies > 0 && (
+    <Button 
+      size="lg" 
+      asChild
+      disabled={book.available_copies <= 0}
+    >
+      <Link href={`/borrow/${book.book_uuid}`}>
+        Borrow This Book
+      </Link>
+    </Button>
+  )}
+            {/* External Source */}
+          {book.is_external && book.external_source && (
+            <div>
+              <h3 className="font-semibold">Source</h3>
+              <a 
+                href={book.external_source} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline flex items-center gap-1"
+              >
+                <ExternalLink className="h-4 w-4" />
+                External Resource
+              </a>
+            </div>
+          )}
+
+          </div>
+                  <div className="space-y-4">
+                  {/* Summary Section */}
+                  <div>
+                    <h3 className="font-semibold">Summary</h3>
+                    <p className="text-muted-foreground whitespace-pre-line">
+                      {book.summary}
+                    </p>
+                  </div>
+                    </div>
+
+        </div>
+      </div>
+      {/* Recommendations Section */}
+{recommendations.length > 0 && (
+  <div className="mt-16">
+    <h2 className="text-2xl font-bold mb-6">You Might Also Like</h2>
+    <Carousel
+      opts={{
+        align: "start",
+        slidesToScroll: "auto",
+      }}
+      className="w-full"
+    >
+      <CarouselContent>
+        {recommendations.map((book) => (
+          <CarouselItem key={book.book_uuid} className="basis-1/2 md:basis-1/3 lg:basis-1/4">
+            <Link href={`/books/${book.book_uuid}`}>
+              <Card className="h-full hover:shadow-lg transition-shadow">
+                <CardContent className="flex flex-col aspect-[3/4] p-0">
+                  <div className="relative flex-1">
+                    <Image
+                      src={
+                        book.cover_image
+                          ? book.cover_image.startsWith("http")
+                            ? book.cover_image
+                            : `http://localhost:8000${book.cover_image}`
+                          : "/placeholder.svg"
+                      }
+                      alt={book.title}
+                      fill
+                      className="object-cover rounded-t-lg"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-medium line-clamp-1">{book.title}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-1">{book.author}</p>
+                    <div className="flex gap-1 mt-2 flex-wrap">
+                      {(book.categories || []).slice(0, 2).map((category) => (
+                        <Badge key={category} variant="outline" className="text-xs">
+                          {category}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="left-2" />
+      <CarouselNext className="right-2" />
+    </Carousel>
+  </div>
+)}
+    </div>
   )
 }

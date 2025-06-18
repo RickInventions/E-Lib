@@ -1,5 +1,6 @@
+// lib/types.ts
 export interface Book {
-  id: string
+  id: number
   book_uuid: string
   title: string
   author: string
@@ -10,46 +11,39 @@ export interface Book {
   cover_image: string
   total_copies: number
   available_copies: number
+  is_external: boolean
+  summary: string
+  external_source: string | null
   is_featured: boolean
   book_type: "EBOOK" | "PHYSICAL"
   download_permission: "AUTH" | "ALL" | "NONE"
   is_ebook: boolean
-  available_status: string
-  external_source: string | null
-  is_external: boolean
   description: string
   publication_date: string | null
-  summary: string
 }
 
 export interface Video {
+  id: number
   video_uuid: string
-  title: string
   instructor: string
-  duration: string // in format "1h 30m"
-  categories: string[]
-  is_available: boolean
-  video_file: string | null
-  thumbnail: string
-  is_featured: boolean
-  access_permission: "AUTH" | "ALL" | "NONE"
-  external_source: string | null
-  is_external: boolean
+  title: string
   description: string
+  category: string
+  is_featured: boolean
+  video_file: string
+  thumbnail: string
   upload_date: string
-  summary: string
-  views: number
-  difficulty_level: "Beginner" | "Intermediate" | "Advanced"
-  language: string
+  duration: number
+  category_display: string
 }
 
 export interface Category {
-  id: string
+  id: number
   name: string
   description: string
-  bookCount: number
-  videoCount: number
 }
+
+// ... rest of your types remain the same ...
 
 export interface User {
   id: string

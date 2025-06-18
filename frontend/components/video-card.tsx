@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import type { Video } from "@/lib/types"
 import { useAuth } from "@/lib/auth-context"
 import { AuthModal } from "./auth-modal"
-import { Play, Eye, Clock, User, Globe } from "lucide-react"
+import { Play, Eye, Clock, User } from "lucide-react"
 
 interface VideoCardProps {
   video: Video
@@ -29,20 +29,10 @@ export function VideoCard({ video, onWatch }: VideoCardProps) {
   }
 
   const handleWatch = () => {
-    if (video.access_permission === "NONE") {
-      alert("This video is not available for viewing")
-      return
-    }
-    if (video.access_permission === "AUTH" && !isAuthenticated) {
-      setShowAuthModal(true)
-      return
-    }
     if (onWatch) {
       onWatch(video)
     }
   }
-
-  const canWatch = video.access_permission === "ALL" || (video.access_permission === "AUTH" && isAuthenticated)
 
   const getDifficultyColor = (level: string) => {
     switch (level) {
@@ -61,7 +51,18 @@ export function VideoCard({ video, onWatch }: VideoCardProps) {
     <>
       <Card className="h-full flex flex-col hover:shadow-lg transition-shadow group">
         <div className="relative aspect-video overflow-hidden rounded-t-lg">
-          <Image src={video.thumbnail || "/placeholder.svg"} alt={video.title} fill className="object-cover" />
+          <Image 
+  src={
+    video.thumbnail
+      ? video.thumbnail.startsWith("http")
+        ? video.thumbnail
+        : `http://localhost:8000${video.thumbnail}`
+      : "/placeholder.svg"
+  }
+            alt={video.title} 
+            fill 
+            className="object-fill" 
+          />
 
           {/* Play button overlay */}
           <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -70,14 +71,8 @@ export function VideoCard({ video, onWatch }: VideoCardProps) {
             </div>
           </div>
 
-          <div className="absolute top-2 right-2 flex gap-1">
+          <div className="absolute top-2 right-2">
             {video.is_featured && <Badge variant="secondary">Featured</Badge>}
-            {video.is_external && (
-              <Badge variant="outline" className="bg-white/90">
-                <Globe className="mr-1 h-3 w-3" />
-                External
-              </Badge>
-            )}
           </div>
 
           <div className="absolute bottom-2 right-2">
@@ -96,16 +91,9 @@ export function VideoCard({ video, onWatch }: VideoCardProps) {
           </p>
 
           <div className="flex flex-wrap gap-1 mb-2">
-            {video.categories.map((category) => (
-              <Badge key={category} variant="outline" className="text-xs">
-                {category}
-              </Badge>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2 mb-2">
-            <Badge className={`text-xs ${getDifficultyColor(video.difficulty_level)}`}>{video.difficulty_level}</Badge>
-            <span className="text-xs text-gray-500">{video.views.toLocaleString()} views</span>
+            <Badge variant="outline" className="text-xs">
+              {video.category}
+            </Badge>
           </div>
 
           <p className="text-sm line-clamp-3">{video.description}</p>
@@ -119,18 +107,10 @@ export function VideoCard({ video, onWatch }: VideoCardProps) {
             </Link>
           </Button>
 
-          {canWatch && video.video_file && (
-            <Button size="sm" onClick={() => handleAction(handleWatch)} variant="outline">
-              <Play className="mr-2 h-4 w-4" />
-              Watch
-            </Button>
-          )}
-
-          {!video.is_available && (
-            <Badge variant="destructive" className="ml-auto">
-              Unavailable
-            </Badge>
-          )}
+          <Button size="sm" onClick={() => handleAction(handleWatch)} variant="outline">
+            <Play className="mr-2 h-4 w-4" />
+            Watch
+          </Button>
         </CardFooter>
       </Card>
 

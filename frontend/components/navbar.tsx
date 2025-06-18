@@ -32,7 +32,7 @@ export function Navbar() {
     return true
   }
 
-  const NavLinks = ({ mobile = false }: { mobile?: boolean }) => (
+  const NavLinks = ({ mobile = false, setShowAuthModal }: { mobile?: boolean, setShowAuthModal: (open: boolean) => void }) => (
     <>
       <Link href="/" className={`${mobile ? "block py-2" : ""} hover:text-primary transition-colors`}>
         Home
@@ -40,9 +40,19 @@ export function Navbar() {
       <Link href="/books" className={`${mobile ? "block py-2" : ""} hover:text-primary transition-colors`}>
         Books
       </Link>
-      <Link href="/videos" className={`${mobile ? "block py-2" : ""} hover:text-primary transition-colors`}>
+      <button
+        className={`${mobile ? "block py-2 w-full text-left" : ""} hover:text-primary transition-colors`}
+        onClick={(e) => {
+          e.preventDefault();
+          if (!isAuthenticated) {
+            setShowAuthModal(true);
+          } else {
+            window.location.href = "/videos";
+          }
+        }}
+      >
         Videos
-      </Link>
+      </button>
 
       {/* Show different navigation based on user role */}
       {isAuthenticated && user?.role === "admin" ? (
@@ -93,7 +103,7 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6">
-              <NavLinks />
+<NavLinks setShowAuthModal={setShowAuthModal} />
             </div>
 
             {/* Desktop Auth */}
@@ -173,7 +183,7 @@ export function Navbar() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex flex-col space-y-4 mt-4">
-                  <NavLinks mobile />
+                  <NavLinks mobile setShowAuthModal={setShowAuthModal} />
                   {isAuthenticated ? (
                     <div className="pt-4 border-t">
                       <div className="flex items-center space-x-2 mb-4">

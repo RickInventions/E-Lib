@@ -1,32 +1,148 @@
 "use client"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { BookCard } from "@/components/book-card"
-import { books, categories } from "@/lib/dummy-data"
 import { Search, Filter } from "lucide-react"
+import { fetchPublicBooks, fetchCategories, searchBooks, getSearchSuggestions } from "@/lib/api"
+import type { Book, Category } from "@/lib/types"
+import { useToast } from "@/components/ui/use-toast"
+import { useDebounce } from "@/hooks/use-debounce"
+import { useSearchParams } from "next/navigation"
+
+type Suggestion = {
+  type: string;
+  value: string;
+};
 
 export default function BooksPage() {
+  const searchParams = useSearchParams()
+  const initialCategory = searchParams.get('category') || "all"
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory)
   const [selectedType, setSelectedType] = useState("all")
+  const [books, setBooks] = useState<Book[]>([])
+  const [allBooks, setAllBooks] = useState<Book[]>([]) // Store all books separately
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchSuggestions, setSearchSuggestions] = useState<Suggestion[]>([])
+  const debouncedSearch = useDebounce(searchQuery, 300)
+  const { toast } = useToast()
+
+  // Fetch initial data
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [booksData, categoriesData] = await Promise.all([
+          fetchPublicBooks(),
+          fetchCategories()
+        ])
+
+        const filteredBooks = initialCategory === "all" 
+        ? booksData 
+        : booksData.filter(book => book.categories.includes(initialCategory))
+
+        setBooks(filteredBooks)
+        setAllBooks(booksData) // Store the complete collection
+        setCategories(categoriesData)
+
+        if (initialCategory !== "all") {
+        setSelectedCategory(initialCategory)
+      }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to load books and categories",
+          variant: "destructive",
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadData()
+  }, [toast, initialCategory])
+
+  // Handle search and suggestions
+  useEffect(() => {
+    if (debouncedSearch.trim() === "") {
+      // When search is cleared, restore all books
+      setBooks(allBooks)
+      setSearchSuggestions([])
+      return
+    }
+
+    if (debouncedSearch.length > 2) {
+      // Get search suggestions
+      getSearchSuggestions(debouncedSearch)
+        .then(suggestions => {
+          const formatted = suggestions.map(s => 
+            typeof s === 'string' ? { type: 'query', value: s } : s
+          )
+          setSearchSuggestions(formatted)
+        })
+        .catch(() => setSearchSuggestions([]))
+
+      // Perform real-time search
+      searchBooks(debouncedSearch)
+        .then(results => setBooks(results))
+        .catch(() => toast({
+          title: "Search error",
+          description: "Failed to perform search",
+          variant: "destructive"
+        }))
+    } else {
+      // For short queries, just show all books
+      setBooks(allBooks)
+      setSearchSuggestions([])
+    }
+  }, [debouncedSearch, allBooks, toast])
 
   const filteredBooks = books.filter((book) => {
-    const matchesSearch =
-      book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.publisher.toLowerCase().includes(searchQuery.toLowerCase())
-
     const matchesCategory = selectedCategory === "all" || book.categories.includes(selectedCategory)
     const matchesType =
       selectedType === "all" ||
-      (selectedType === "ebook" && book.is_ebook) ||
+      (selectedType === "ebook" && book.book_type === "EBOOK") ||
       (selectedType === "physical" && book.book_type === "PHYSICAL")
 
-    return matchesSearch && matchesCategory && matchesType
+    return matchesCategory && matchesType
   })
+
+const handleClearFilters = async () => {
+  setSearchQuery("")
+  setSelectedCategory("all")
+  setSelectedType("all")
+  setLoading(true)
+  
+  // Clear category from URL
+  const params = new URLSearchParams(searchParams)
+  params.delete('category')
+  window.history.pushState({}, '', `${window.location.pathname}?${params}`)
+  
+  try {
+    const booksData = await fetchPublicBooks()
+    setBooks(booksData)
+    setAllBooks(booksData)
+  } catch (error) {
+    toast({
+      title: "Error",
+      description: "Failed to reset filters",
+      variant: "destructive",
+    })
+  } finally {
+    setLoading(false)
+  }
+}
+
+  if (loading && books.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -37,28 +153,62 @@ export default function BooksPage() {
         {/* Search and Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="relative flex-1">
-            <Input
-              placeholder="Search by title, author, or publisher..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <div className="relative">
+              <Input
+                placeholder="Search by title, author, or publisher..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            </div>
+            {searchSuggestions.length > 0 && (
+              <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-auto">
+                {searchSuggestions.map((suggestion, index) => (
+                  <div
+                    key={`${suggestion.type}-${index}`}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-start"
+                    onClick={() => {
+                      setSearchQuery(suggestion.value)
+                      setSearchSuggestions([])
+                    }}
+                  >
+                    <span className="text-xs text-gray-500 mr-2 capitalize">
+                      {suggestion.type}:
+                    </span>
+                    <span>{suggestion.value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full md:w-48">
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              {categories.map((category) => (
-                <SelectItem key={category.id} value={category.name}>
-                  {category.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+<Select 
+  value={selectedCategory} 
+  onValueChange={(value) => {
+    setSelectedCategory(value)
+    // Optional: Update URL without page reload
+    const params = new URLSearchParams(searchParams)
+    if (value === "all") {
+      params.delete('category')
+    } else {
+      params.set('category', value)
+    }
+    window.history.pushState({}, '', `${window.location.pathname}?${params}`)
+  }}
+>
+  <SelectTrigger className="w-full md:w-48">
+    <SelectValue placeholder="Category" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="all">All Categories</SelectItem>
+    {categories.map((category) => (
+      <SelectItem key={category.id} value={category.name}>
+        {category.name}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
 
           <Select value={selectedType} onValueChange={setSelectedType}>
             <SelectTrigger className="w-full md:w-32">
@@ -73,27 +223,24 @@ export default function BooksPage() {
 
           <Button
             variant="outline"
-            onClick={() => {
-              setSearchQuery("")
-              setSelectedCategory("all")
-              setSelectedType("all")
-            }}
+            onClick={handleClearFilters}
           >
             <Filter className="mr-2 h-4 w-4" />
             Clear
           </Button>
         </div>
 
+       
         {/* Results Count */}
         <p className="text-sm text-gray-600 mb-6">
-          Showing {filteredBooks.length} of {books.length} items
+          Showing {filteredBooks.length} of {allBooks.length} items
         </p>
       </div>
 
       {/* Books Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredBooks.map((book) => (
-          <BookCard key={book.id} book={book} />
+          <BookCard key={book.book_uuid} book={book} />
         ))}
       </div>
 
@@ -103,11 +250,7 @@ export default function BooksPage() {
           <Button
             variant="outline"
             className="mt-4"
-            onClick={() => {
-              setSearchQuery("")
-              setSelectedCategory("all")
-              setSelectedType("all")
-            }}
+            onClick={handleClearFilters}
           >
             Clear Filters
           </Button>

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/lib/auth-context"
 import { Navbar } from "@/components/navbar"
+import { Toaster } from "@/components/ui/toaster"
 import { Footer } from "@/components/footer"
 import { ScrollToTop } from "@/components/scroll-to-top"
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <ScrollToTop />
           <Navbar />
           <main className="min-h-screen">{children}</main>
+          <Toaster /> 
           <Footer />
         </AuthProvider>
       </body>

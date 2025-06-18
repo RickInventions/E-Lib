@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useParams } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,16 +11,100 @@ import { Separator } from "@/components/ui/separator"
 import { VideoCard } from "@/components/video-card"
 import { AuthModal } from "@/components/auth-modal"
 import { useAuth } from "@/lib/auth-context"
-import { videos } from "@/lib/dummy-data"
-import { ArrowLeft, Play, Clock, User, Calendar, Eye, Globe, Share2, Heart } from "lucide-react"
+import { ArrowLeft, Play, Clock, User, Calendar, Eye, Globe, Share2, Heart, X } from "lucide-react"
+import { fetchVideoByUuid, fetchPublicVideos } from "@/lib/api"
+import type { Video } from "@/lib/types"
+import { formatDate, formatDuration } from "@/lib/utils"
 
 export default function VideoDetailsPage() {
-  const params = useParams()
-  const { isAuthenticated } = useAuth()
+  const { uuid } = useParams()
+  const { user, isAuthenticated } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
-  const [isFavorited, setIsFavorited] = useState(false)
+  const [video, setVideo] = useState<Video | null>(null)
+  const [recommendations, setRecommendations] = useState<Video[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [showPlayer, setShowPlayer] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  const video = videos.find((v) => v.video_uuid === params.uuid)
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true)
+        
+        // Fetch video details
+        const videoData = await fetchVideoByUuid(uuid as string)
+        setVideo(videoData)
+        
+        // Fetch recommendations (videos in same category)
+        const videosData = await fetchPublicVideos()
+        const sameCategoryVideos = videosData.filter(
+          v => v.id !== videoData.id && v.category === videoData.category
+        )
+        setRecommendations(sameCategoryVideos.slice(0, 4))
+        
+      } catch (err) {
+        setError("Failed to load video details")
+        console.error("Video fetch error:", err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchData()
+  }, [uuid])
+
+  useEffect(() => {
+    // Clean up video player when component unmounts
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause()
+        videoRef.current = null
+      }
+    }
+  }, [])
+
+  const handleAction = (action: () => void) => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true)
+      return
+    }
+    action()
+  }
+
+
+  const handleWatch = () => {
+    setShowPlayer(true)
+  }
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href)
+    alert("Link copied to clipboard!")
+  }
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Error Loading Video</h1>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <Button asChild>
+            <Link href="/videos">Back to Videos</Link>
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   if (!video) {
     return (
@@ -34,52 +118,6 @@ export default function VideoDetailsPage() {
         </div>
       </div>
     )
-  }
-
-  // Get recommendations (videos from same categories, excluding current video)
-  const recommendations = videos
-    .filter((v) => v.video_uuid !== video.video_uuid && v.categories.some((cat) => video.categories.includes(cat)))
-    .slice(0, 4)
-
-  const handleAction = (action: () => void) => {
-    if (!isAuthenticated) {
-      setShowAuthModal(true)
-      return
-    }
-    action()
-  }
-
-  const handleWatch = () => {
-    if (video.access_permission === "NONE") {
-      alert("This video is not available for viewing")
-      return
-    }
-    if (video.access_permission === "AUTH" && !isAuthenticated) {
-      setShowAuthModal(true)
-      return
-    }
-    console.log(`Watching ${video.title}`)
-    // Future: Open video player
-  }
-
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href)
-    alert("Link copied to clipboard!")
-  }
-
-  const canWatch = video.access_permission === "ALL" || (video.access_permission === "AUTH" && isAuthenticated)
-
-  const getDifficultyColor = (level: string) => {
-    switch (level) {
-      case "Beginner":
-        return "bg-green-100 text-green-800"
-      case "Intermediate":
-        return "bg-yellow-100 text-yellow-800"
-      case "Advanced":
-        return "bg-red-100 text-red-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
   }
 
   return (
@@ -99,17 +137,69 @@ export default function VideoDetailsPage() {
             <Card>
               <CardContent className="p-0">
                 <div className="relative aspect-video bg-black rounded-t-lg overflow-hidden">
-                  <Image src={video.thumbnail || "/placeholder.svg"} alt={video.title} fill className="object-cover" />
-                  {/* Video Player Placeholder */}
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <Play className="h-10 w-10 text-white ml-1" />
+                  {showPlayer && video.video_file ? (
+                    <>
+                      <div className="absolute top-0 right-0 z-10 p-2">
+                        <Button 
+                          variant="secondary" 
+                          size="icon"
+                          onClick={() => setShowPlayer(false)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
                       </div>
-                      <p className="text-white text-lg font-medium">Video Player</p>
-                      <p className="text-white/80 text-sm">Will be integrated later</p>
-                    </div>
-                  </div>
+                      <video
+                        ref={videoRef}
+  src={
+    video.video_file.startsWith("http")
+      ? video.video_file
+      : `http://localhost:8000${video.video_file}`
+  }
+                        controls
+                        autoPlay
+                        className="w-full h-full object-fill bg-black"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      {video.thumbnail ? (
+                        <Image 
+  src={
+    video.thumbnail
+      ? video.thumbnail.startsWith("http")
+        ? video.thumbnail
+        : `http://localhost:8000${video.thumbnail}`
+      : "/placeholder.svg"
+  }
+                          alt={video.title} 
+                          fill 
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+                        />
+                      ) : (
+                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full flex items-center justify-center">
+                          <span className="text-gray-500">No thumbnail</span>
+                        </div>
+                      )}
+                      
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <div className="text-center">
+                          <Button
+                            size="icon"
+                            className="w-20 h-20 rounded-full"
+                            onClick={handleWatch}
+                            disabled={!video.video_file}
+                          >
+                            <Play className="h-10 w-10 ml-1" />
+                          </Button>
+                          <p className="text-white text-lg font-medium mt-4">
+                            {video.video_file ? "Click to play video" : "Video Not Available"}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  
                   {video.is_featured && (
                     <div className="absolute top-4 right-4">
                       <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
@@ -126,45 +216,34 @@ export default function VideoDetailsPage() {
                       <div className="flex flex-wrap gap-4 text-gray-600 mb-4">
                         <div className="flex items-center">
                           <User className="mr-2 h-4 w-4" />
-                          {video.instructor}
+                          {video.instructor || "Unknown Instructor"}
                         </div>
                         <div className="flex items-center">
                           <Clock className="mr-2 h-4 w-4" />
-                          {video.duration}
-                        </div>
-                        <div className="flex items-center">
-                          <Eye className="mr-2 h-4 w-4" />
-                          {video.views.toLocaleString()} views
+                          {formatDuration(video.duration)}
                         </div>
                         <div className="flex items-center">
                           <Calendar className="mr-2 h-4 w-4" />
-                          {new Date(video.upload_date).toLocaleDateString()}
+                          {formatDate(video.upload_date)}
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {video.categories.map((category) => (
-                      <Badge key={category} variant="outline">
-                        {category}
-                      </Badge>
-                    ))}
-                    <Badge className={getDifficultyColor(video.difficulty_level)}>{video.difficulty_level}</Badge>
-                    <Badge variant="outline">{video.language}</Badge>
+                    <Badge variant="outline">
+                      {video.category_display || video.category}
+                    </Badge>
                   </div>
 
                   <div className="flex gap-2 mb-6">
-                    {canWatch && video.video_file && (
-                      <Button onClick={() => handleAction(handleWatch)} className="flex-1">
-                        <Play className="mr-2 h-4 w-4" />
-                        Watch Video
-                      </Button>
-                    )}
-
-                    <Button variant="outline" onClick={() => handleAction(() => setIsFavorited(!isFavorited))}>
-                      <Heart className={`mr-2 h-4 w-4 ${isFavorited ? "fill-current text-red-500" : ""}`} />
-                      {isFavorited ? "Favorited" : "Favorite"}
+                    <Button 
+                      onClick={handleWatch} 
+                      className="flex-1"
+                      disabled={!video.video_file}
+                    >
+                      <Play className="mr-2 h-4 w-4" />
+                      {video.video_file ? "Watch Video" : "Video Not Available"}
                     </Button>
 
                     <Button variant="outline" onClick={handleShare}>
@@ -177,12 +256,6 @@ export default function VideoDetailsPage() {
                   <div>
                     <h3 className="text-lg font-semibold mb-3">About this video</h3>
                     <p className="text-gray-700 leading-relaxed mb-4">{video.description}</p>
-                    {video.summary && (
-                      <div>
-                        <h4 className="font-semibold mb-2">Summary</h4>
-                        <p className="text-gray-600">{video.summary}</p>
-                      </div>
-                    )}
                   </div>
                 </div>
               </CardContent>
@@ -198,46 +271,23 @@ export default function VideoDetailsPage() {
               <CardContent className="space-y-4">
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Video ID:</span>
-                    <span className="font-mono text-xs">{video.video_uuid}</span>
-                  </div>
-                  <div className="flex justify-between">
                     <span className="text-gray-600">Duration:</span>
-                    <span>{video.duration}</span>
+                    <span>{formatDuration(video.duration)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Difficulty:</span>
-                    <Badge className={getDifficultyColor(video.difficulty_level)} variant="outline">
-                      {video.difficulty_level}
+                    <span className="text-gray-600">Upload Date:</span>
+                    <span>{formatDate(video.upload_date)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Category:</span>
+                    <span>{video.category_display || video.category}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Status:</span>
+                    <Badge variant={video.is_featured ? "secondary" : "outline"}>
+                      {video.is_featured ? "Featured" : "Regular"}
                     </Badge>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Language:</span>
-                    <span>{video.language}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Views:</span>
-                    <span>{video.views.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Access:</span>
-                    <Badge variant="outline">
-                      {video.access_permission === "ALL"
-                        ? "Public"
-                        : video.access_permission === "AUTH"
-                          ? "Members Only"
-                          : "Restricted"}
-                    </Badge>
-                  </div>
-                  {video.is_external && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Source:</span>
-                      <Badge variant="outline">
-                        <Globe className="mr-1 h-3 w-3" />
-                        External
-                      </Badge>
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>
@@ -252,7 +302,7 @@ export default function VideoDetailsPage() {
                     <User className="h-6 w-6 text-gray-500" />
                   </div>
                   <div>
-                    <p className="font-medium">{video.instructor}</p>
+                    <p className="font-medium">{video.instructor || "Unknown Instructor"}</p>
                     <p className="text-sm text-gray-600">Video Instructor</p>
                   </div>
                 </div>
@@ -267,7 +317,7 @@ export default function VideoDetailsPage() {
             <h2 className="text-2xl font-bold mb-6">Related Videos</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {recommendations.map((recommendedVideo) => (
-                <VideoCard key={recommendedVideo.video_uuid} video={recommendedVideo} />
+                <VideoCard key={recommendedVideo.id} video={recommendedVideo} />
               ))}
             </div>
           </div>
