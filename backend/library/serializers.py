@@ -8,17 +8,6 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'description']
 
-class BorrowRecordSerializer(serializers.ModelSerializer):
-    book_title = serializers.CharField(source='book.title', read_only=True)
-    user_email = serializers.CharField(source='user.email', read_only=True)
-    
-    class Meta:
-        model = BorrowRecord
-        fields = [
-            'id', 'user', 'user_email', 'book', 'book_title',
-            'borrowed_date', 'return_date', 'is_returned'
-        ]
-        read_only_fields = ['borrowed_date', 'return_date', 'is_returned']
 
 class BookSerializer(serializers.ModelSerializer):
     book_uuid = serializers.CharField(read_only=True)
@@ -45,6 +34,18 @@ class BookSerializer(serializers.ModelSerializer):
         }
     def get_is_ebook(self, obj):
         return obj.book_type == 'EBOOK'
+class BorrowRecordSerializer(serializers.ModelSerializer):
+    book = BookSerializer(read_only=True)
+    book_title = serializers.CharField(source='book.title', read_only=True)
+    user_email = serializers.CharField(source='user.email', read_only=True)
+    
+    class Meta:
+        model = BorrowRecord
+        fields = [
+            'id', 'user', 'user_email', 'book', 'book_title',
+            'borrowed_date', 'return_date', 'is_returned', 'due_date'
+        ]
+        read_only_fields = ['borrowed_date', 'return_date', 'is_returned', 'due_date']
     
 class FeaturedBookSerializer(serializers.ModelSerializer):
     books = serializers.SerializerMethodField()

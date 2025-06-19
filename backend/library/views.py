@@ -141,7 +141,7 @@ class BookSearchView(APIView):
 
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(books, request)
-        serializer = BookSearchSerializer(page, many=True)
+        serializer = BookSerializer(page, many=True)
         return paginator.get_paginated_response(serializer.data)
     
 class SearchSuggestionsView(APIView):
