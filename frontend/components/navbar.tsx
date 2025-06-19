@@ -116,7 +116,11 @@ export function Navbar() {
                       className="relative h-8 w-8 rounded-full hover:scale-105 transition-transform"
                     >
                       <Avatar className="h-8 w-8">
-                        <AvatarFallback>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
+  <AvatarFallback>
+    {user?.first_name && user?.last_name
+      ? `${user.first_name.charAt(0).toUpperCase()}${user.last_name.charAt(0).toUpperCase()}`
+      : user?.first_name?.charAt(0).toUpperCase() || ""}
+  </AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
@@ -188,9 +192,13 @@ export function Navbar() {
                     <div className="pt-4 border-t">
                       <div className="flex items-center space-x-2 mb-4">
                         <Avatar className="h-8 w-8">
-                          <AvatarFallback>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
+  <AvatarFallback>
+    {user?.first_name && user?.last_name
+      ? `${user.first_name.charAt(0).toUpperCase()}${user.last_name.charAt(0).toUpperCase()}`
+      : user?.first_name?.charAt(0).toUpperCase() || ""}
+  </AvatarFallback>
                         </Avatar>
-                        <span className="font-medium">{user?.name}</span>
+                        <span className="font-medium">{user?.first_name}</span>
                         <span className="text-xs bg-gray-100 px-2 py-1 rounded capitalize">{user?.role}</span>
                       </div>
                       <div className="space-y-2">
