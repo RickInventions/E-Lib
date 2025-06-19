@@ -22,6 +22,9 @@ from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.views.decorators.cache import cache_control
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_control
+
 
 class CategoryView(APIView):
     def get(self, request):
@@ -423,11 +426,10 @@ class ReturnBookView(APIView):
         except BorrowRecord.DoesNotExist:
             return Response({"error": "No active borrow record found"}, status=404)
         
-
+@method_decorator(cache_control(private=True, max_age=3600), name='get')
 class PDFViewerView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @cache_control(private=True, max_age=3600)
     def get(self, request, book_uuid):
         book = get_object_or_404(Book, book_uuid=book_uuid, book_type='EBOOK')
         
@@ -447,7 +449,6 @@ class PDFViewerView(APIView):
         )
         response['Content-Disposition'] = f'inline; filename="{slugify(book.title)}.pdf"'
         return response
-
 class ReadingSessionView(APIView):
     permission_classes = [IsAuthenticated]
     

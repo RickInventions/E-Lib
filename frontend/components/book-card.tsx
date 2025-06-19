@@ -36,7 +36,7 @@ export function BookCard({ book, onRead }: BookCardProps) {
 const handleDownload = async () => {
   if (!book) return;
 
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('library-token');
   const headers: Record<string, string> = {};
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
@@ -96,7 +96,7 @@ const handleReadOnline = async () => {
       `${API_BASE_URL}/books/${book.book_uuid}/read/`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          Authorization: `Bearer ${localStorage.getItem('library-token')}`,
         },
       }
     );
@@ -170,7 +170,7 @@ const handleReadOnline = async () => {
             </Link>
           </Button>
 
-  {book.is_ebook && (
+  {book.is_ebook && isAuthenticated && (
     <Button 
       size="sm"
       variant={"outline"} 

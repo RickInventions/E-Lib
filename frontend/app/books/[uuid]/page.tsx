@@ -56,7 +56,7 @@ export default function BookDetailPage() {
 const handleDownload = async () => {
   if (!book) return;
 
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('library-token');
   const headers: Record<string, string> = {};
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
@@ -109,13 +109,13 @@ const handleReadOnline = async () => {
     return;
   }
 
-  try {
+  try { 
     // Open in new tab with PDF viewer
     const response = await fetch(
       `${API_BASE_URL}/books/${book.book_uuid}/read/`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          Authorization: `Bearer ${localStorage.getItem('library-token') || ''}`,
         },
       }
     );
@@ -256,7 +256,7 @@ const handleReadOnline = async () => {
   )}
   {/* Action Buttons */}
 <div className="flex flex-wrap gap-4 pt-4">
-  {book.is_ebook && (
+  {book.is_ebook && isAuthenticated && (
     <Button 
       size="lg" 
       onClick={handleReadOnline}

@@ -8,21 +8,37 @@ import { VideoCard } from "@/components/video-card"
 import { Search, Filter, Play } from "lucide-react"
 import { fetchPublicVideos } from "@/lib/api"
 import type { Video } from "@/lib/types"
+import { useAuth } from "@/lib/auth-context"
+import { useRouter } from "next/navigation"
+import { AuthModal } from "@/components/auth-modal"
 
 export default function VideosPage() {
+  const { isAuthenticated } = useAuth()
+  const router = useRouter()
+  const [showAuthModal, setShowAuthModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [videos, setVideos] = useState<Video[]>([])
   const [categories, setCategories] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
 
+
+    useEffect(() => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true)
+      const timeout = setTimeout(() => {
+        router.push("/")
+      }, 5000)
+      return () => clearTimeout(timeout)
+    }
+  }, [isAuthenticated, router])
+
   useEffect(() => {
+    if (!isAuthenticated) return
     async function fetchVideos() {
       try {
         const videosData = await fetchPublicVideos()
         setVideos(videosData)
-        
-        // Extract unique categories from videos
         const uniqueCategories = Array.from(
           new Set(videosData.flatMap(v => v.category))
         )
@@ -33,9 +49,8 @@ export default function VideosPage() {
         setLoading(false)
       }
     }
-    
     fetchVideos()
-  }, [])
+  }, [isAuthenticated])
 
   const filteredVideos = videos.filter((video) => {
     const matchesSearch =
@@ -46,6 +61,17 @@ export default function VideosPage() {
 
     return matchesSearch && matchesCategory 
   })
+  
+    if (!isAuthenticated) {
+    return (
+      <>
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-lg">You must be signed in to view videos. Redirecting...</p>
+        </div>
+        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+      </>
+    )
+  }
 
   if (loading) {
     return (
