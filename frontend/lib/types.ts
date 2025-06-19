@@ -46,13 +46,12 @@ export interface Category {
 // ... rest of your types remain the same ...
 
 export interface User {
-  id: string
-  name: string
-  email: string
-  role: "admin" | "user" | "guest"
-  registrationDate: string
-  booksRead: number
-  videosWatched: number
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: "admin" | "user";
 }
 
 export interface LibraryStats {

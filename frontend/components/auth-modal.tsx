@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -35,7 +33,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       if (success) {
         onClose()
       } else {
-        setError("Invalid credentials. Try: admin@library.com or john@example.com")
+        setError("Invalid credentials")
       }
     } catch (err) {
       setError("Login failed. Please try again.")
@@ -50,12 +48,13 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     setError("")
 
     const formData = new FormData(e.currentTarget)
-    const name = formData.get("name") as string
+    const firstName = formData.get("firstName") as string
+    const lastName = formData.get("lastName") as string
     const email = formData.get("email") as string
     const password = formData.get("password") as string
 
     try {
-      const success = await register(name, email, password)
+      const success = await register(firstName, lastName, email, password)
       if (success) {
         onClose()
       } else {
@@ -96,17 +95,20 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign In
               </Button>
-              <p className="text-xs text-muted-foreground text-center">
-                Demo: Use admin@library.com or john@example.com with any password
-              </p>
             </form>
           </TabsContent>
 
           <TabsContent value="register">
             <form onSubmit={handleRegister} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="register-name">Full Name</Label>
-                <Input id="register-name" name="name" type="text" placeholder="Enter your full name" required />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="register-first-name">First Name</Label>
+                  <Input id="register-first-name" name="firstName" type="text" placeholder="First name" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="register-last-name">Last Name</Label>
+                  <Input id="register-last-name" name="lastName" type="text" placeholder="Last name" required />
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="register-email">Email</Label>

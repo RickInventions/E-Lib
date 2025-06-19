@@ -13,8 +13,8 @@ from django.dispatch import receiver
 class User(AbstractUser):
     ROLES = (('user', 'Member'), ('admin', 'Admin'))
     role = models.CharField(max_length=10, choices=ROLES, default='user')
-    first_name = models.CharField(max_length=30, blank=False)  # Changed to required
-    last_name = models.CharField(max_length=30, blank=False)  # Changed to required
+    first_name = models.CharField(max_length=30, blank=False) 
+    last_name = models.CharField(max_length=30, blank=False)  
 
 
 class Category(models.Model):
