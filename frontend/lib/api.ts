@@ -1,4 +1,4 @@
-import { Book, Category, Video } from "./types";
+import { Book, BorrowedBook, Category, Video } from "./types";
 
 export const API_BASE_URL = "http://localhost:8000/api";
 
@@ -103,4 +103,72 @@ export async function fetchVideoByUuid(video_uuid: string): Promise<Video> {
   const res = await fetch(`${API_BASE_URL}/videos/${video_uuid}/`);
   if (!res.ok) throw new Error('Failed to fetch video');
   return res.json();
+}
+
+export async function borrowBook(bookUuid: string, days: number): Promise<{ message: string; due_date: string }> {
+  const token = localStorage.getItem('library-token');
+  if (!token) throw new Error('Authentication required');
+  
+  const res = await fetch(`${API_BASE_URL}/books/${bookUuid}/borrow/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ days })
+  });
+  
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Failed to borrow book');
+  }
+  
+  return res.json();
+}
+
+export async function fetchUserBorrowedBooks(): Promise<BorrowedBook[]> {
+  const token = localStorage.getItem('library-token');
+  if (!token) throw new Error('Authentication required');
+  
+  const res = await fetch(`${API_BASE_URL}/user/borrowed/`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  
+  if (!res.ok) throw new Error('Failed to fetch borrowed books');
+  return res.json();
+}
+
+export async function fetchUserBorrowHistory(): Promise<BorrowedBook[]> {
+  const token = localStorage.getItem('library-token');
+  if (!token) throw new Error('Authentication required');
+
+  const res = await fetch(`${API_BASE_URL}/user/borrow-history/`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!res.ok) throw new Error('Failed to fetch borrow history');
+  return res.json();
+}
+
+export async function returnBook(borrowId: number): Promise<void> {
+  const token = localStorage.getItem('library-token');
+  if (!token) throw new Error('Authentication required');
+  
+  const res = await fetch(`${API_BASE_URL}/admin/borrows/return/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ borrow_id: borrowId })
+  });
+  
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Failed to return book');
+  }
 }

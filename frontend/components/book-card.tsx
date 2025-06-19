@@ -11,7 +11,7 @@ import type { Book } from "@/lib/types"
 import { useAuth } from "@/lib/auth-context"
 import { AuthModal } from "./auth-modal"
 import { Download, BookOpen, Eye } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@/hooks/use-toast"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api"
 
@@ -23,7 +23,6 @@ interface BookCardProps {
 export function BookCard({ book, onRead }: BookCardProps) {
   const { isAuthenticated } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
-  const { toast } = useToast()
 
   const handleAction = (action: () => void) => {
     if (!isAuthenticated) {

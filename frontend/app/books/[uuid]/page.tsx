@@ -6,17 +6,20 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useToast } from "@/components/ui/use-toast"
 import { useAuth } from "@/lib/auth-context"
 import { fetchBookDetails, fetchBookRecommendations } from "@/lib/api"
 import type { Book } from "@/lib/types"
 import { Download, BookOpen, ArrowLeft, Info, ExternalLink } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { BorrowModal } from "@/components/borrow-modal"
 import { Card, CardContent } from "@/components/ui/card"
+import { AuthModal } from "@/components/auth-modal"
+import { useToast } from "@/hooks/use-toast"
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api"
 
 
 export default function BookDetailPage() {
+  const [showAuthModal, setShowAuthModal] = useState(false)
   const [book, setBook] = useState<Book | null>(null)
   const [loading, setLoading] = useState(true)
   const { isAuthenticated } = useAuth()
@@ -25,31 +28,33 @@ export default function BookDetailPage() {
   const router = useRouter()
   const params = useParams()
 
-  useEffect(() => {
-    async function loadBook() {
-      try {
-        const bookData = await fetchBookDetails(params.uuid as string)
-        setBook(bookData)
-      } catch (error) {
-        toast({
-          title: "Error loading book",
-          description: "Could not fetch book details",
-          variant: "destructive"
-        })
-        router.push("/books")
-      } finally {
-        setLoading(false)
-      }
-    }
-      async function loadRecommendations() {
+  // Move loadBook to component scope so it can be called elsewhere
+  async function loadBook() {
     try {
-      const recs = await fetchBookRecommendations(params.uuid as string)
-      setRecommendations(recs)
+      const bookData = await fetchBookDetails(params.uuid as string)
+      setBook(bookData)
     } catch (error) {
-      console.error("Failed to load recommendations:", error)
+      toast({
+        title: "Error loading book",
+        description: "Could not fetch book details",
+        variant: "destructive"
+      })
+      router.push("/books")
+    } finally {
+      setLoading(false)
     }
   }
-  loadRecommendations()
+
+  useEffect(() => {
+    async function loadRecommendations() {
+      try {
+        const recs = await fetchBookRecommendations(params.uuid as string)
+        setRecommendations(recs)
+      } catch (error) {
+        console.error("Failed to load recommendations:", error)
+      }
+    }
+    loadRecommendations()
     loadBook()
   }, [params.uuid, router, toast])
 
@@ -72,6 +77,7 @@ const handleDownload = async () => {
       throw new Error(response.status === 401 ? 'Unauthorized' : 'Download failed');
     }
 
+    
     const blob = await response.blob();
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -98,6 +104,11 @@ const handleDownload = async () => {
   }
 };
 
+const handleBorrowClick = () => {
+  if (!isAuthenticated) {
+    setShowAuthModal(true);
+  }
+};
 
 const handleReadOnline = async () => {
   if (!book?.pdf_file) {
@@ -281,18 +292,29 @@ const handleReadOnline = async () => {
     </Button>
   )}
 
-  {/* Borrow Button - Only show if physical book AND available */}
-  {book.book_type === "PHYSICAL" && book.is_available && book.available_copies > 0 && (
+  {/* Borrow Button */}
+{book.book_type === "PHYSICAL" && book.is_available && book.available_copies > 0 && (
+  <BorrowModal 
+    book={book} 
+    onBorrowSuccess={(response) => {
+      toast({
+        title: "Book borrowed!",
+        description: response.message,
+      });
+      // Refresh book data
+      loadBook();
+    }}
+  >
     <Button 
-      size="lg" 
-      asChild
-      disabled={book.available_copies <= 0}
+    size="lg"
+    onClick={handleBorrowClick}
+    disabled={!isAuthenticated}
     >
-      <Link href={`/borrow/${book.book_uuid}`}>
-        Borrow This Book
-      </Link>
+      Borrow This Book
     </Button>
-  )}
+  </BorrowModal>
+)}
+
             {/* External Source */}
           {book.is_external && book.external_source && (
             <div>
@@ -375,6 +397,7 @@ const handleReadOnline = async () => {
     </Carousel>
   </div>
 )}
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </div>
   )
 }

@@ -43,7 +43,6 @@ export interface Category {
   description: string
 }
 
-// ... rest of your types remain the same ...
 
 export interface User {
   id: number;
@@ -73,17 +72,20 @@ export interface Inquiry {
 }
 
 export interface BorrowedBook {
-  id: string
-  book_uuid: string
-  user_id: string
-  borrow_date: string
-  due_date: string
-  return_date: string | null
-  status: "borrowed" | "returned" | "overdue"
-  book: Book
-  user: User
+  id: number;
+  book_uuid: string;
+  borrowed_date: string;
+  due_date: string;
+  return_date: string | null;
+  is_returned: boolean;
+  book: Book;
+  user: User;
 }
 
+export interface BorrowResponse {
+  message: string;
+  due_date: string;
+}
 export interface ReadingProgress {
   id: string
   book_uuid: string
@@ -101,3 +103,4 @@ export interface VideoProgress {
   last_watched: string
   video: Video
 }
+

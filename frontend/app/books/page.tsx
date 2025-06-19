@@ -7,9 +7,9 @@ import { BookCard } from "@/components/book-card"
 import { Search, Filter } from "lucide-react"
 import { fetchPublicBooks, fetchCategories, searchBooks, getSearchSuggestions } from "@/lib/api"
 import type { Book, Category } from "@/lib/types"
-import { useToast } from "@/components/ui/use-toast"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useSearchParams } from "next/navigation"
+import { toast } from "@/hooks/use-toast"
 
 type Suggestion = {
   type: string;
@@ -28,7 +28,6 @@ export default function BooksPage() {
   const [loading, setLoading] = useState(true)
   const [searchSuggestions, setSearchSuggestions] = useState<Suggestion[]>([])
   const debouncedSearch = useDebounce(searchQuery, 300)
-  const { toast } = useToast()
 
   // Fetch initial data
   useEffect(() => {
@@ -66,37 +65,38 @@ export default function BooksPage() {
   // Handle search and suggestions
   useEffect(() => {
     if (debouncedSearch.trim() === "") {
-      // When search is cleared, restore all books
-      setBooks(allBooks)
-      setSearchSuggestions([])
-      return
-    }
+    setBooks(allBooks)
+    setSearchSuggestions([])
+    return
+  }
 
-    if (debouncedSearch.length > 2) {
-      // Get search suggestions
-      getSearchSuggestions(debouncedSearch)
-        .then(suggestions => {
-          const formatted = suggestions.map(s => 
-            typeof s === 'string' ? { type: 'query', value: s } : s
-          )
-          setSearchSuggestions(formatted)
-        })
-        .catch(() => setSearchSuggestions([]))
+  if (debouncedSearch.length > 2) {
+    // Get search suggestions
+    getSearchSuggestions(debouncedSearch)
+      .then(suggestions => {
+        const formatted = suggestions.map(s => 
+          typeof s === 'string' ? { type: 'query', value: s } : s
+        )
+        setSearchSuggestions(formatted)
+      })
+      .catch(() => setSearchSuggestions([]))
 
-      // Perform real-time search
-      searchBooks(debouncedSearch)
-        .then(results => setBooks(results))
-        .catch(() => toast({
-          title: "Search error",
-          description: "Failed to perform search",
-          variant: "destructive"
-        }))
-    } else {
-      // For short queries, just show all books
-      setBooks(allBooks)
-      setSearchSuggestions([])
-    }
-  }, [debouncedSearch, allBooks, toast])
+    // Perform real-time search
+    searchBooks(debouncedSearch)
+      .then(results => {
+        setBooks(results)
+        console.log("Search results:", results) // <--- See search results here
+      })
+      .catch(() => toast({
+        title: "Search error",
+        description: "Failed to perform search",
+        variant: "destructive"
+      }))
+  } else {
+    setBooks(allBooks)
+    setSearchSuggestions([])
+  }
+}, [debouncedSearch, allBooks, toast])
 
   const filteredBooks = books.filter((book) => {
     const matchesCategory = selectedCategory === "all" || book.categories.includes(selectedCategory)
