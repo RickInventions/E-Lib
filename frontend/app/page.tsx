@@ -1,6 +1,6 @@
 // app/page.tsx
 "use client"
-
+import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -21,6 +21,7 @@ export default function HomePage() {
   const [books, setBooks] = useState<Book[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [featuredBooks, setFeaturedBooks] = useState<Book[]>([])
+  const router = useRouter()
   const [stats, setStats] = useState({
     totalBooks: 0,
     totalVideos: 0,
@@ -78,12 +79,23 @@ setFeaturedBooks((data.books || []).slice(0, 4))
   )
 
   const handleSearchAction = () => {
-    if (!isAuthenticated) {
-      setShowAuthModal(true)
-      return
+    // if (!isAuthenticated) {
+    //   setShowAuthModal(true)
+    //   return
+    // }
+    if (searchQuery.trim()) {
+    router.push(`/books?search=${encodeURIComponent(searchQuery.trim())}`) 
+    } else {
+      router.push("/books")
     }
-    // Perform search
   }
+
+    const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearchAction()
+    }
+  }
+
 
   if (loading) {
     return (
@@ -103,9 +115,10 @@ setFeaturedBooks((data.books || []).slice(0, 4))
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
             <div className="relative flex-1 w-full">
               <Input
-                placeholder="Search books, authors, categories..."
+                placeholder="Search books, authors, categories, publishers..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleInputKeyDown}
                 className="pl-10 bg-white text-black"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />

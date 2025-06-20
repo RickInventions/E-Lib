@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -19,6 +20,7 @@ type Suggestion = {
 export default function BooksPage() {
   const searchParams = useSearchParams()
   const initialCategory = searchParams.get('category') || "all"
+  const initialSearch = searchParams.get('search') || ""
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState(initialCategory)
   const [selectedType, setSelectedType] = useState("all")
@@ -70,7 +72,7 @@ export default function BooksPage() {
     return
   }
 
-  if (debouncedSearch.length > 2) {
+  if (debouncedSearch.length > 1) {
     // Get search suggestions
     getSearchSuggestions(debouncedSearch)
       .then(suggestions => {
@@ -97,6 +99,18 @@ export default function BooksPage() {
     setSearchSuggestions([])
   }
 }, [debouncedSearch, allBooks, toast])
+
+useEffect(() => {
+  if (searchQuery.trim()) {
+    searchBooks(searchQuery).then(setBooks);
+  } else {
+    fetchPublicBooks().then(setBooks);
+  }
+}, [searchQuery]);
+
+useEffect(() => {
+  setSearchQuery(initialSearch);
+}, [initialSearch]);
 
   const filteredBooks = books.filter((book) => {
     const matchesCategory = selectedCategory === "all" || book.categories.includes(selectedCategory)
@@ -164,6 +178,16 @@ const handleClearFilters = async () => {
             </div>
             {searchSuggestions.length > 0 && (
               <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-auto">
+                    <div className="flex justify-end p-1">
+      <button
+        className="text-gray-400 hover:text-gray-700 text-xs px-2 py-1 w-1"
+        onClick={() => setSearchSuggestions([])}
+        aria-label="Close suggestions"
+        type="button"
+      >
+        ×
+      </button>
+    </div>
                 {searchSuggestions.map((suggestion, index) => (
                   <div
                     key={`${suggestion.type}-${index}`}

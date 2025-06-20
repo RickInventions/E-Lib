@@ -192,32 +192,6 @@ export default function ProfilePage() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Reading Statistics */}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle>Library Statistics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <BookOpen className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-blue-600">0</div>
-                    <div className="text-sm text-gray-600">Books Read</div>
-                  </div>
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <Download className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-green-600">0</div>
-                    <div className="text-sm text-gray-600">Downloads</div>
-                  </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <Clock className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-purple-600">0h</div>
-                    <div className="text-sm text-gray-600">Reading Time</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Profile Management */}
@@ -267,7 +241,7 @@ export default function ProfilePage() {
                           id="email"
                           type="email"
                           value={profileData.email}
-                          onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                          onChange={(e) => setProfileData({ ...profileData, email: e.target.value, username: e.target.value})}
                           required
                         />
                       </div>

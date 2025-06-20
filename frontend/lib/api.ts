@@ -172,3 +172,23 @@ export async function returnBook(borrowId: number): Promise<void> {
     throw new Error(errorData.error || 'Failed to return book');
   }
 }
+
+export async function submitInquiry(data: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/contact/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Failed to submit inquiry');
+  }
+}

@@ -47,9 +47,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard" className="text-gray-300 hover:text-white transition-colors">
-                  Dashboard
-                </Link>
               </li>
             </ul>
           </div>
@@ -59,7 +56,7 @@ export function Footer() {
             <h3 className="font-semibold text-lg">Categories</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/books?category=fiction" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/books?category=Fiction" className="text-gray-300 hover:text-white transition-colors">
                   Fiction
                 </Link>
               </li>

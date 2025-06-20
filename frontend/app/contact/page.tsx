@@ -1,7 +1,4 @@
 "use client"
-
-import type React from "react"
-
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,20 +7,62 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { libraryInfo } from "@/lib/dummy-data"
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react"
+import { useAuth } from "@/lib/auth-context"
+import { submitInquiry } from "@/lib/api"
+import { toast } from "@/hooks/use-toast"
 
 export default function ContactPage() {
+  const { user, isAuthenticated } = useAuth()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [formData, setFormData] = useState({
+    firstName: user?.first_name || "",
+    lastName: user?.last_name || "",
+    email: user?.email || "",
+    subject: "",
+    message: ""
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      const payload = {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: isAuthenticated && user?.email ? user.email : formData.email,
+        subject: formData.subject,
+        message: formData.message
+      }
 
-    setIsSubmitting(false)
-    setSubmitted(true)
+      await submitInquiry(payload)
+      
+      toast({
+        title: "Message sent!",
+        description: "We've received your inquiry and will respond shortly.",
+      })
+      
+      setSubmitted(true)
+      // Reset form but keep user info
+      setFormData({
+        ...formData,
+        subject: "",
+        message: ""
+      })
+    } catch (error: any) {
+      toast({
+        title: "Submission failed",
+        description: error.message || "Failed to send your message",
+        variant: "destructive"
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -138,22 +177,51 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" name="firstName" required />
+                      <Input 
+                        id="firstName" 
+                        name="firstName" 
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required 
+                        disabled={isAuthenticated}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" name="lastName" required />
+                      <Input 
+                        id="lastName" 
+                        name="lastName" 
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required 
+                        disabled={isAuthenticated}
+                      />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" name="email" type="email" required />
-                  </div>
+                  {!isAuthenticated && (
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input 
+                        id="email" 
+                        name="email" 
+                        type="email" 
+                        value={formData.email}
+                        onChange={handleChange}
+                        required 
+                      />
+                    </div>
+                  )}
 
                   <div className="space-y-2">
                     <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" name="subject" required />
+                    <Input 
+                      id="subject" 
+                      name="subject" 
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required 
+                    />
                   </div>
 
                   <div className="space-y-2">
@@ -161,6 +229,8 @@ export default function ContactPage() {
                     <Textarea
                       id="message"
                       name="message"
+                      value={formData.message}
+                      onChange={handleChange}
                       rows={6}
                       placeholder="Tell us how we can help you..."
                       required

@@ -67,14 +67,9 @@ export function Navbar() {
             Contact
           </Link>
           {isAuthenticated && (
-            <>
-              <Link href="/dashboard" className={`${mobile ? "block py-2" : ""} hover:text-primary transition-colors`}>
-                Dashboard
-              </Link>
               <Link href="/my-books" className={`${mobile ? "block py-2" : ""} hover:text-primary transition-colors`}>
                 My Books
               </Link>
-            </>
           )}
         </>
       )}
@@ -149,20 +144,12 @@ export function Navbar() {
                         </DropdownMenuItem>
                       </>
                     ) : (
-                      <>
-                        <DropdownMenuItem asChild>
-                          <Link href="/dashboard" className="flex items-center">
-                            <BookOpen className="mr-2 h-4 w-4" />
-                            Dashboard
-                          </Link>
-                        </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                           <Link href="/my-books" className="flex items-center">
                             <BookMarked className="mr-2 h-4 w-4" />
                             My Books
                           </Link>
                         </DropdownMenuItem>
-                      </>
                     )}
 
                     <DropdownMenuItem onClick={logout} className="flex items-center">
