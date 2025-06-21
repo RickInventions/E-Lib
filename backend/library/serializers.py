@@ -88,12 +88,13 @@ class RelatedVideoSerializer(serializers.ModelSerializer):
 
 class VideoSerializer(serializers.ModelSerializer):
     category_display = serializers.CharField(source='get_category_display', read_only=True)
+    is_external = serializers.BooleanField(read_only=True)
     
     class Meta:
         model = Video
         fields = [
             'id', 'instructor', 'video_uuid', 'title', 'description', 'category', 'is_featured',
-            'video_file', 'thumbnail', 'upload_date', 'duration', 'category_display'
+            'video_file', 'thumbnail', 'upload_date', 'duration', 'category_display', 'is_external', 'external_source'
         ]
         read_only_fields = ['upload_date']
         extra_kwargs = {

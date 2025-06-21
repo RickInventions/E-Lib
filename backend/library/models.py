@@ -235,6 +235,14 @@ class Video(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     is_featured = models.BooleanField(default=False)
     duration = models.PositiveIntegerField(help_text="Duration in seconds", default=0)
+    external_source = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Link to external source if not hosted locally"
+    )
+    @property
+    def is_external(self):
+        return bool(self.external_source)
 
     def __str__(self):
         return f"{self.title} ({self.get_category_display()})"

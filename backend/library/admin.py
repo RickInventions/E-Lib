@@ -52,7 +52,7 @@ admin.site.register(Category)
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'instructor', 'category', 'upload_date', 'is_featured')
+    list_display = ('title', 'instructor', 'category', 'upload_date', 'is_featured', 'is_external')
     list_filter = ('category', 'is_featured')
     search_fields = ('title', 'description', 'instructor')
     readonly_fields = ('upload_date',)
@@ -61,12 +61,16 @@ class VideoAdmin(admin.ModelAdmin):
             'fields': ('title', 'instructor','description', 'category')
         }),
         ('Media', {
-            'fields': ('video_file', 'thumbnail', 'duration')
+            'fields': ('video_file', 'thumbnail', 'duration', 'external_source')
         }),
         ('Settings', {
             'fields': ('is_featured',)
         })
     )
+
+    def is_external(self, obj):
+        return bool(obj.external_source)
+    is_external.boolean = True
 
 @admin.register(FeaturedBook)
 class FeaturedBookAdmin(admin.ModelAdmin):

@@ -351,6 +351,7 @@ class LibraryReports(APIView):
             'active_borrows': BorrowRecord.objects.filter(is_returned=False).count(),
             'categories': Category.objects.count(),
             'videos': Video.objects.count(),
+            'video_external_sources': Video.objects.exclude(external_source__isnull=True).count(),
             'physical_books': Book.objects.filter(book_type='PHYSICAL').count(),
             'e_books': Book.objects.filter(book_type='EBOOK').count(),
             'external_sources': Book.objects.exclude(external_source__isnull=True).count(),
@@ -559,10 +560,12 @@ class ExternalSourcesReport(APIView):
 
     def get(self, request):
         external_books = Book.objects.exclude(external_source__isnull=True)
-        serializer = BookSerializer(external_books, many=True)
+        bookserializer = BookSerializer(external_books, many=True)
+        videoserializer = VideoSerializer(external_books, many=True)
         return Response({
             'count': external_books.count(),
-            'books': serializer.data
+            'books': bookserializer.data,
+            'videos': videoserializer.data
         })
     
 def stream_video(request, video_id):
