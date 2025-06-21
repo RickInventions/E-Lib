@@ -1,6 +1,7 @@
 # backend/library/serializers.py
 from rest_framework import serializers
-from .models import Book, BorrowRecord, Category, FeaturedBook, Video
+
+from .models import Book, BorrowRecord, Category, FeaturedBook, User, Video
 from rest_framework import serializers
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -34,8 +35,14 @@ class BookSerializer(serializers.ModelSerializer):
         }
     def get_is_ebook(self, obj):
         return obj.book_type == 'EBOOK'
+class UserMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email']
+
 class BorrowRecordSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
+    user = UserMiniSerializer(read_only=True)  # Use nested serializer here
     book_title = serializers.CharField(source='book.title', read_only=True)
     user_email = serializers.CharField(source='user.email', read_only=True)
     

@@ -1,7 +1,7 @@
 # backend/library/urls.py
 from django.urls import path
 from .views import (
-    AdminBorrowView, AdminFeaturedBookView, AdminReturnView, AdminVideoView, BookDetailView, BookListView,
+    AdminBorrowView, AdminFeaturedBookView, AdminReturnView, AdminUserListView, AdminVideoView, BookDetailView, BookListView,
     AdminBookView, BookRecommendations, BookSearchView, BorrowBookView, CategoryReportView, 
     CategoryView, ExternalSourcesReport, LibraryStatsView, PDFViewerView, ReadingSessionView, ReturnBookView, 
     SearchSuggestionsView, UserBorrowHistory, UserBorrowedBooks, DownloadBookView, EBookListView, 
@@ -36,11 +36,12 @@ urlpatterns = [
     # Video endpoints
     path('videos/', VideoListView.as_view(), name='video-list'),
     path('videos/<str:video_uuid>/', VideoDetailView.as_view(), name='video-detail'),
-    path('admin/videos/', AdminVideoView.as_view(), name='admin-video-add'),
-    path('admin/videos/<str:video_uuid>/', AdminVideoView.as_view(), name='admin-video-edit'),# 
     path('videos/category/<str:category>/', VideoListView.as_view(), name='video-category'),
         
     # Admin endpoints
+    path('admin/users/', AdminUserListView.as_view(), name='admin-user-list'),
+    path('admin/videos/', AdminVideoView.as_view(), name='admin-video-add'),
+    path('admin/videos/<str:video_uuid>/', AdminVideoView.as_view(), name='admin-video-edit'),# 
     path('admin/books/', AdminBookView.as_view(), name='admin-book-add'),
     path('admin/categories/', CategoryView.as_view(), name='admin-category-add'),
     path('admin/reports/', LibraryReports.as_view(), name='library-reports'),

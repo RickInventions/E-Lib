@@ -1,5 +1,9 @@
 # backend/library/views.py
 import os
+from rest_framework.generics import ListAPIView
+from library.models import User
+from library.serializers import UserMiniSerializer
+from rest_framework.permissions import IsAdminUser
 from django.utils import timezone
 from datetime import timedelta
 from django.utils.text import slugify
@@ -574,3 +578,8 @@ def stream_video(request, video_id):
     response['Content-Type'] = 'video/mp4'
     response['Content-Disposition'] = f'inline; filename="{video.title}.mp4"'
     return response
+
+class AdminUserListView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserMiniSerializer
+    permission_classes = [IsAdminUser]
