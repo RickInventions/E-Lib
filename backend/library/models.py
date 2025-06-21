@@ -65,6 +65,7 @@ class Book(models.Model):
     book_type = models.CharField(max_length=10, choices=BOOK_TYPES, default='PHYSICAL')
     categories = models.ManyToManyField(Category)
     is_featured = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     external_source = models.URLField(
         blank=True,
         null=True,

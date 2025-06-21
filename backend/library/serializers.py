@@ -15,7 +15,7 @@ class BookSerializer(serializers.ModelSerializer):
     categories = serializers.SlugRelatedField(
         many=True,
         slug_field='name',
-        read_only=True
+        queryset=Category.objects.all()
     )
     is_ebook = serializers.SerializerMethodField()
     is_external = serializers.BooleanField(read_only=True)
@@ -28,17 +28,18 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = ['id', 'book_uuid', 'title', 'author', 'publisher','categories', 'is_available', 
                  'pdf_file', 'cover_image', 'total_copies', 'available_copies','is_featured',
-                 'book_type', 'download_permission', 'is_ebook', 'available_status', 
+                 'book_type', 'download_permission', 'is_ebook', 'available_status', 'created_at',
                  'external_source', 'is_external', 'description', 'publication_date', 'summary']
         extra_kwargs = {
             'pdf_file': {'required': False, 'allow_null': True},
         }
+        read_only_fields = ['is_available', 'created_at']
     def get_is_ebook(self, obj):
         return obj.book_type == 'EBOOK'
 class UserMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email']
+        fields = ['id', 'first_name', 'last_name', 'email', 'role']
 
 class BorrowRecordSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
