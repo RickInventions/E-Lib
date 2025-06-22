@@ -25,7 +25,7 @@ urlpatterns = [
     
     # User endpoints
     path('books/<str:book_uuid>/borrow/', BorrowBookView.as_view(), name='borrow-book'),
-    path('books/return/<str:book_uuid>/', ReturnBookView.as_view(), name='return-book'),
+    # path('books/return/<str:book_uuid>/', ReturnBookView.as_view(), name='return-book'),
     path('user/borrowed/', UserBorrowedBooks.as_view(), name='user-borrowed'),
     path('user/borrow-history/', UserBorrowHistory.as_view(), name='borrow-history'),
     path('books/<str:book_uuid>/read/', PDFViewerView.as_view(), name='read-book'),
@@ -51,6 +51,6 @@ urlpatterns = [
     path('admin/reports/categories/', CategoryReportView.as_view(), name='category-report'),
     path('admin/overdue/', OverdueBooksView.as_view(), name='overdue-books'),
     path('admin/borrows/active/', AdminBorrowView.as_view(), name='admin-active-borrows'),
-    path('admin/borrows/return/', AdminReturnView.as_view(), name='admin-return-book'),
+    path('admin/borrows/return/<str:book_uuid>/<int:pk>/', AdminReturnView.as_view(), name='admin-return-book'),
     path('admin/reports/external-sources/', ExternalSourcesReport.as_view(), name='external-sources-report'),
 ]

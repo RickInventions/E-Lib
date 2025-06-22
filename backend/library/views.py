@@ -307,24 +307,23 @@ class AdminBorrowRecords(APIView):
 class AdminReturnView(APIView):
     permission_classes = [IsAdminUser]
 
-    def post(self, request):
-        book_uuid = request.data.get('book_uuid')
-        user_id = request.data.get('user_id')
+    def post(self, request, book_uuid, pk):
         try:
             record = BorrowRecord.objects.get(
+                pk=pk,
                 book__book_uuid=book_uuid,
-                user__id=user_id,
                 is_returned=False
             )
-            if record.is_returned:
-                return Response({"error": "Book already returned"}, status=400)
-                
+            
             record.book.available_copies += 1
             record.book.save()
+            
             record.is_returned = True
             record.return_date = timezone.now()
             record.save()
+            
             return Response({"message": "Book successfully returned"})
+            
         except BorrowRecord.DoesNotExist:
             return Response(
                 {"error": "Active borrow record not found"},
