@@ -1,4 +1,3 @@
-# backend/library/admin.py
 from django.utils import timezone
 from django.contrib import admin
 from .models import Book, Category, FeaturedBook, User, Video
@@ -79,7 +78,6 @@ class FeaturedBookAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
     
     def save_model(self, request, obj, form, change):
-        # Ensure expires_at is set before saving
         if not obj.expires_at:
             obj.expires_at = timezone.now() + timezone.timedelta(hours=12)
         super().save_model(request, obj, form, change)

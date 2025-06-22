@@ -1,4 +1,3 @@
-# backend/backend/middleware.py
 from django.http import JsonResponse
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
@@ -7,7 +6,6 @@ class JWTAuthenticationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Skip middleware for these paths
         if request.path in ['/api/auth/login/', '/api/auth/signup/']:
             return self.get_response(request)
             

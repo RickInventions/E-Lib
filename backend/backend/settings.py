@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -13,10 +12,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Longer expiry
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  
 }
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,7 +28,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'inquiries',
-    'corsheaders',  # For handling CORS
+    'corsheaders',  
     'drf_spectacular'
 ]
 CORS_ALLOWED_ORIGINS = [
@@ -146,7 +144,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# File upload limits
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 MAX_UPLOAD_SIZE = 52428800

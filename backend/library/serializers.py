@@ -1,4 +1,3 @@
-# backend/library/serializers.py
 from rest_framework import serializers
 
 from .models import Book, BorrowRecord, Category, FeaturedBook, User, Video
@@ -10,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'created_at']
 
     extra_kwargs = {
-        'name': {'required': False},  # For partial updates
+        'name': {'required': False},  
         'description': {'required': False}
         }
 
@@ -48,7 +47,7 @@ class UserMiniSerializer(serializers.ModelSerializer):
 
 class BorrowRecordSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
-    user = UserMiniSerializer(read_only=True)  # Use nested serializer here
+    user = UserMiniSerializer(read_only=True) 
     book_title = serializers.CharField(source='book.title', read_only=True)
     user_email = serializers.CharField(source='user.email', read_only=True)
     
@@ -69,7 +68,7 @@ class FeaturedBookSerializer(serializers.ModelSerializer):
         fields = ['id', 'books', 'created_at', 'expires_at', 'is_current']
     
     def get_books(self, obj):
-        books = obj.books.all()[:4]  # Ensure maximum 4 books
+        books = obj.books.all()[:4]  
         return BookSerializer(books, many=True).data
 
 class BookSearchSerializer(serializers.ModelSerializer):

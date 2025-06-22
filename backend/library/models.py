@@ -1,4 +1,3 @@
-# backend/library/models.py
 import uuid
 from django.utils import timezone
 from datetime import timedelta
@@ -166,7 +165,6 @@ class FeaturedBook(models.Model):
         get_latest_by = 'created_at'
 
     def save(self, *args, **kwargs):
-        # Set expiration 12 hours from now if not specified
         if not self.expires_at:
             self.expires_at = timezone.now() + timezone.timedelta(hours=12)
         super().save(*args, **kwargs)
@@ -177,7 +175,6 @@ class FeaturedBook(models.Model):
         count = available_books.count()
         
         if count < 4:
-            # If not enough books, feature all available or none
             featured_books = list(available_books) if count > 0 else []
         else:
             featured_books = random.sample(list(available_books), 4)
@@ -193,12 +190,11 @@ class FeaturedBook(models.Model):
 
 @receiver(post_save, sender=Book)
 def check_featured_books(sender, instance, **kwargs):
-    """Ensure we always have a current featured set"""
     if not FeaturedBook.objects.filter(expires_at__gt=timezone.now()).exists():
         try:
             FeaturedBook.create_featured_set()
         except:
-            pass  # Silently fail if there's an issue creating featured set
+            pass 
 
 class ReadingSession(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

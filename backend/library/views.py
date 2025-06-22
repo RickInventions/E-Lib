@@ -1,4 +1,3 @@
-# backend/library/views.py
 import os
 from rest_framework.generics import ListAPIView
 from library.models import User
@@ -103,7 +102,6 @@ class BookListView(APIView):
     def get(self, request, *args, **kwargs):
         books = Book.objects.filter(is_available=True)
         
-        # Handle both query parameter and URL path parameter
         category = request.query_params.get('category') or kwargs.get('category')
         if category:
             books = books.filter(categories__name__icontains=category)
@@ -186,31 +184,26 @@ class SearchSuggestionsView(APIView):
         
         suggestions = []
         
-        # Title suggestions (3 most relevant)
         titles = Book.objects.filter(
             title__icontains=query
         ).values_list('title', flat=True).distinct()[:3]
         suggestions.extend([{'type': 'title', 'value': t} for t in titles])
         
-        # Author suggestions (3 unique authors)
         authors = Book.objects.filter(
             author__icontains=query
         ).values_list('author', flat=True).distinct()[:3]
         suggestions.extend([{'type': 'author', 'value': a} for a in authors])
         
-        # Category suggestions
         categories = Category.objects.filter(
             name__icontains=query
         ).values_list('name', flat=True)[:3]
         suggestions.extend([{'type': 'category', 'value': c} for c in categories])
         
-        # Publisher suggestions
         publishers = Book.objects.filter(
             publisher__icontains=query
         ).values_list('publisher', flat=True).distinct()[:3]
         suggestions.extend([{'type': 'publisher', 'value': p} for p in publishers])
         
-        # Exact book UUID match
         if len(query) >= 6 and query.startswith('BOOK-'):
             book_matches = Book.objects.filter(
                 book_uuid__iexact=query
@@ -246,13 +239,11 @@ class UserBorrowHistory(APIView):
     
 class FeaturedBookView(APIView):
     def get(self, request):
-        # Get the most recent active featured set
         featured_set = FeaturedBook.objects.filter(
             expires_at__gt=timezone.now()
         ).order_by('-created_at').first()
 
         if not featured_set:
-            # Create new set if none exists (handles empty DB case)
             try:
                 featured_set = FeaturedBook.create_featured_set()
             except Exception as e:
@@ -363,7 +354,6 @@ class DownloadBookView(APIView):
     def get(self, request, book_uuid):
         book = get_object_or_404(Book, book_uuid=book_uuid)
         
-        # Check download permissions
         if book.download_permission == 'NONE':
             return Response({"error": "Downloads not allowed for this book"}, status=403)
         
@@ -424,7 +414,7 @@ class LibraryStatsView(APIView):
 class PublicBookListView(APIView):
     def get(self, request):
         books = Book.objects.filter(is_available=True)
-        serializer = PublicBookSerializer(books, many=True)  # Limited field serializer
+        serializer = PublicBookSerializer(books, many=True)   
         return Response(serializer.data)
 
 class PublicBookDetailView(APIView):
@@ -480,7 +470,6 @@ class PDFViewerView(APIView):
         if not book.pdf_file:
             return Response({"error": "PDF not available"}, status=404)
         
-        # Track reading session
         ReadingSession.objects.get_or_create(
             user=request.user,
             book=book,
