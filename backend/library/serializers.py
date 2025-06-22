@@ -7,7 +7,7 @@ from rest_framework import serializers
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description', 'created_at']
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -39,7 +39,7 @@ class BookSerializer(serializers.ModelSerializer):
 class UserMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'role']
+        fields = ['id', 'first_name', 'last_name', 'email', 'role', 'created_at']
 
 class BorrowRecordSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
@@ -102,7 +102,7 @@ class VideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = [
             'id', 'instructor', 'video_uuid', 'title', 'description', 'category', 'is_featured',
-            'video_file', 'thumbnail', 'upload_date', 'duration', 'category_display', 'is_external', 'external_source'
+            'video_file', 'thumbnail', 'upload_date', 'duration','created_at', 'category_display', 'is_external', 'external_source'
         ]
         read_only_fields = ['upload_date']
         extra_kwargs = {

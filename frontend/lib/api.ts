@@ -1,6 +1,16 @@
-import { Book, BorrowedBook, Category, Video } from "./types";
+import { Book, BorrowedBook, Category, Inquiry, LibraryStats, User, Video } from "./types";
 
 export const API_BASE_URL = "http://localhost:8000/api";
+
+// Helper function for auth headers
+function getAuthHeaders() {
+  const token = localStorage.getItem('library-token');
+  if (!token) throw new Error('Authentication required');
+  return {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+}
 
 export async function fetchPublicBooks(category?: string): Promise<Book[]> {
   const url = category 
@@ -191,4 +201,179 @@ export async function submitInquiry(data: {
     const errorData = await res.json();
     throw new Error(errorData.error || 'Failed to submit inquiry');
   }
+}
+
+// Admin Book Endpoints
+export async function createBook(bookData: FormData): Promise<Book> {
+  const token = localStorage.getItem('library-token');
+  const res = await fetch(`${API_BASE_URL}/admin/books/`, {
+    method: 'POST',
+    body: bookData,
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to create book');
+  }
+  return res.json();
+}
+
+
+// Admin Video Endpoints
+export async function createVideo(videoData: FormData): Promise<Video> {
+  const token = localStorage.getItem('library-token');
+  const res = await fetch(`${API_BASE_URL}/admin/videos/`, {
+    method: 'POST',
+    body: videoData,
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to create video');
+  }
+  return res.json();
+}
+
+export async function updateVideo(video_uuid: string, videoData: FormData): Promise<Video> {
+  const token = localStorage.getItem('library-token');
+  const res = await fetch(`${API_BASE_URL}/admin/videos/${video_uuid}/`, {
+    method: 'PATCH',
+    body: videoData,
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to update video');
+  }
+  return res.json();
+}
+
+// Admin Reports
+export async function fetchAdminLibraryStats(): Promise<LibraryStats> {
+const token = localStorage.getItem("library-token");
+const res = await fetch(`${API_BASE_URL}/admin/reports/`, {
+  headers: {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  }
+});
+  if (!res.ok) throw new Error('Failed to fetch library stats');
+  return res.json();
+}
+
+export async function fetchCategoryReport(): Promise<{name: string, book_count: number}[]> {
+  const res = await fetch(`${API_BASE_URL}/admin/reports/categories/`, {
+    headers: getAuthHeaders()
+  });
+  if (!res.ok) throw new Error('Failed to fetch category report');
+  return res.json();
+}
+
+export async function fetchExternalSourcesReport(): Promise<{
+  external_books: number,
+  external_videos: number
+}> {
+  const res = await fetch(`${API_BASE_URL}/admin/reports/external-sources/`, {
+    headers: getAuthHeaders()
+  });
+  if (!res.ok) throw new Error('Failed to fetch external sources report');
+  return res.json();
+}
+
+// Borrow Management
+export async function fetchBorrowedBooks(status?: 'overdue' | 'active'): Promise<BorrowedBook[]> {
+  const url = status 
+    ? `${API_BASE_URL}/admin/borrows/active/?status=${status}`
+    : `${API_BASE_URL}/admin/borrows/active/`;
+  
+  const token = localStorage.getItem("library-token");
+  const res = await fetch(url, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
+  if (!res.ok) throw new Error('Failed to fetch borrowed books');
+  return res.json();
+}
+
+export async function fetchOverdueBooks(): Promise<BorrowedBook[]> {
+  const res = await fetch(`${API_BASE_URL}/admin/overdue/`, {
+    headers: getAuthHeaders()
+  });
+  if (!res.ok) throw new Error('Failed to fetch overdue books');
+  return res.json();
+}
+
+export async function markBookReturned(borrowId: number): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/admin/borrows/return/`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ borrow_id: borrowId })
+  });
+  if (!res.ok) throw new Error('Failed to mark book as returned');
+}
+
+// Category Management
+export async function createCategory(name: string, description: string): Promise<Category> {
+  const res = await fetch(`${API_BASE_URL}/admin/categories/`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ name, description })
+  });
+  if (!res.ok) throw new Error('Failed to create category');
+  return res.json();
+}
+
+// Inquiry Management
+export async function fetchInquiries(): Promise<Inquiry[]> {
+  const token = localStorage.getItem("library-token");
+  const res = await fetch(`${API_BASE_URL}/admin/inquiries/`, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
+  if (!res.ok) throw new Error('Failed to fetch inquiries');
+  return res.json();
+}
+
+export async function markInquiryResolved(inquiryId: number): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/admin/inquiries/${inquiryId}/resolve/`, {
+    method: 'POST',
+    headers: getAuthHeaders()
+  });
+  if (!res.ok) throw new Error('Failed to mark inquiry as resolved');
+}
+
+export async function fetchAdminUsers(): Promise<User[]> {
+  const res = await fetch(`${API_BASE_URL}/admin/users/`, {
+    headers: getAuthHeaders(),
+  });
+  if (!res.ok) throw new Error('Failed to fetch users');
+  const data = await res.json();
+  return Array.isArray(data) ? data : data.results; // <-- fix for paginated response
+}
+
+// Add UUID search
+export async function searchByUUID(uuid: string): Promise<Book | Video | null> {
+  const res = await fetch(`${API_BASE_URL}/search/uuid/?q=${uuid}`);
+  if (!res.ok) return null;
+  return res.json();
+}
+
+// Add inquiry deletion
+export async function deleteInquiry(inquiryId: number): Promise<void> {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API_BASE_URL}/admin/inquiries/${inquiryId}/`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!res.ok) throw new Error('Failed to delete inquiry');
 }

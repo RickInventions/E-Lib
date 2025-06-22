@@ -1,27 +1,30 @@
 "use client"
 
-import type React from "react"
-
 import { useEffect, useState } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { createBook, fetchCategories } from "@/lib/api"
+import { toast } from "@/hooks/use-toast"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { categories } from "@/lib/dummy-data"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Save, Trash, Upload } from "lucide-react"
+import { Category } from "@/lib/types"
 
 export default function AddBookPage() {
   const { user, isAuthenticated } = useAuth()
   const router = useRouter()
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null)
+  const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [bookData, setBookData] = useState({
     title: "",
@@ -29,12 +32,12 @@ export default function AddBookPage() {
     publisher: "",
     description: "",
     summary: "",
-    book_type: "EBOOK",
-    is_ebook: true,
+    book_type: "PHYSICAL",
+    is_ebook: false,
     total_copies: 1,
     available_copies: 1,
     is_featured: false,
-    download_permission: "AUTH",
+    download_permission: "NONE",
     publication_date: "",
     is_external: false,
     external_source: "",
@@ -45,27 +48,78 @@ export default function AddBookPage() {
       router.push("/")
     }
   }, [isAuthenticated, user, router])
+  
 
   if (!isAuthenticated || user?.role !== "admin") {
     return null
   }
 
+    // Fetch categories on mount
+  useEffect(() => {
+    fetchCategories()
+      .then(setCategories)
+      .catch(() => setCategories([]))
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    try {
+      const formData = new FormData()
+      formData.append('title', bookData.title)
+      formData.append('author', bookData.author)
+      formData.append('publisher', bookData.publisher)
+      formData.append('description', bookData.description)
+      formData.append('summary', bookData.summary)
+      formData.append('book_type', bookData.book_type)
+      formData.append('is_ebook', bookData.is_ebook ? "true" : "false")
+      formData.append('total_copies', bookData.total_copies.toString())
+      formData.append('available_copies', bookData.available_copies.toString())
+      formData.append('is_featured', bookData.is_featured ? "true" : "false")
+      formData.append('download_permission', bookData.download_permission)
+      formData.append('publication_date', bookData.publication_date)
+      formData.append('is_external', bookData.is_external ? "true" : "false")
+      formData.append('external_source', bookData.external_source)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    alert("Book added successfully!")
-    setIsSubmitting(false)
-    // Optionally redirect to books list
-    // router.push('/admin')
+      // Append categories
+      selectedCategories.forEach(cat => formData.append('categories', cat))
+      // Append files if they exist
+      if (coverImageFile) formData.append('cover_image', coverImageFile)
+      if (pdfFile) formData.append('pdf_file', pdfFile)
+      const newBook = await createBook(formData)
+      toast({
+        title: "Success",
+        description: "Book added successfully!",
+        variant: "default",
+      })
+      router.push(`/books/${newBook.book_uuid}`)
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "An unexpected error occurred.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
+
+  const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCoverImageFile(e.target.files[0])
+    }
+  }
+
+  const handlePdfFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setPdfFile(e.target.files[0])
+    }
+  }
+  
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     )
   }
 
@@ -126,7 +180,7 @@ export default function AddBookPage() {
                   <Label htmlFor="description">Description *</Label>
                   <Textarea
                     id="description"
-                    rows={4}
+                    rows={2}
                     value={bookData.description}
                     onChange={(e) => setBookData({ ...bookData, description: e.target.value })}
                     required
@@ -137,7 +191,7 @@ export default function AddBookPage() {
                   <Label htmlFor="summary">Summary</Label>
                   <Textarea
                     id="summary"
-                    rows={2}
+                    rows={4}
                     value={bookData.summary}
                     onChange={(e) => setBookData({ ...bookData, summary: e.target.value })}
                   />
@@ -183,28 +237,30 @@ export default function AddBookPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Cover Image *</Label>
-                  <div className="border-2 border-dashed rounded-lg p-6 text-center">
-                    <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600 mb-2">Drag and drop or click to upload</p>
-                    <p className="text-xs text-gray-500">Recommended size: 600 x 900 pixels</p>
-                    <Button type="button" variant="outline" size="sm" className="mt-4">
-                      Choose File
-                    </Button>
-                  </div>
+                  <Label htmlFor="cover-image">Cover Image *</Label>
+                  <input
+                    type="file"
+                    id="cover-image"
+                    accept="image/*"
+                    onChange={handleCoverImageChange}
+                    className="block"
+                    required
+                  />
                 </div>
 
-                <div className="space-y-2">
-                  <Label>PDF File</Label>
-                  <div className="border-2 border-dashed rounded-lg p-6 text-center">
-                    <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600 mb-2">Upload PDF file (for e-books)</p>
-                    <p className="text-xs text-gray-500">Maximum file size: 50MB</p>
-                    <Button type="button" variant="outline" size="sm" className="mt-4">
-                      Choose File
-                    </Button>
+                {/* Only show PDF upload for ebooks */}
+                {bookData.book_type === "EBOOK" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="pdf-file">PDF File</Label>
+                    <input
+                      type="file"
+                      id="pdf-file"
+                      accept="application/pdf"
+                      onChange={handlePdfFileChange}
+                      className="block"
+                    />
                   </div>
-                </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -240,24 +296,27 @@ export default function AddBookPage() {
                   </RadioGroup>
                 </div>
 
-                <div className="space-y-2">
-                  <Label>Download Permission *</Label>
-                  <Select
-                    value={bookData.download_permission}
-                    onValueChange={(value) =>
-                      setBookData({ ...bookData, download_permission: value as "AUTH" | "ALL" | "NONE" })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select permission" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="AUTH">Authenticated Users Only</SelectItem>
-                      <SelectItem value="ALL">All Users</SelectItem>
-                      <SelectItem value="NONE">No Downloads Allowed</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Only show download permission for ebooks */}
+                {bookData.book_type === "EBOOK" && (
+                  <div className="space-y-2">
+                    <Label>Download Permission *</Label>
+                    <Select
+                      value={bookData.download_permission}
+                      onValueChange={(value) =>
+                        setBookData({ ...bookData, download_permission: value as "AUTH" | "ALL" | "NONE" })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select permission" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="AUTH">Authenticated Users Only</SelectItem>
+                        <SelectItem value="ALL">All Users</SelectItem>
+                        <SelectItem value="NONE">No Downloads Allowed</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -323,7 +382,7 @@ export default function AddBookPage() {
                 <Save className="mr-2 h-4 w-4" />
                 {isSubmitting ? "Saving..." : "Save Book"}
               </Button>
-              <Button type="button" variant="outline" className="flex-1">
+              <Button type="button" variant="outline" className="flex-1" onClick={() => router.push("/admin")}>
                 <Trash className="mr-2 h-4 w-4" />
                 Cancel
               </Button>

@@ -1,5 +1,7 @@
+// books-to-return/page.tsx
 "use client"
-
+import { toast } from "@/hooks/use-toast"
+import { fetchBorrowedBooks, markBookReturned } from "@/lib/api"
 import { useEffect, useState } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,17 +9,19 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { borrowedBooks } from "@/lib/dummy-data"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { Search, Filter, Calendar, AlertTriangle, CheckCircle, ArrowLeft } from "lucide-react"
+import { BorrowedBook } from "@/lib/types"
 
 export default function BooksToReturnPage() {
   const { user, isAuthenticated } = useAuth()
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
+  const [borrowedBooks, setBorrowedBooks] = useState<BorrowedBook[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!isAuthenticated || user?.role !== "admin") {
@@ -25,22 +29,74 @@ export default function BooksToReturnPage() {
     }
   }, [isAuthenticated, user, router])
 
-  if (!isAuthenticated || user?.role !== "admin") {
-    return null
+    useEffect(() => {
+    const loadBorrowedBooks = async () => {
+      try {
+        const data = await fetchBorrowedBooks()
+        setBorrowedBooks(data)
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: error instanceof Error ? error.message : "An error occurred",
+          variant: "destructive",
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadBorrowedBooks()
+  }, [])
+
+  const handleReturnBook = async (borrowId: number) => {
+    
+    try {
+      await markBookReturned(borrowId)
+      setBorrowedBooks(prev => prev.map(b => 
+        b.id === borrowId ? { ...b, status: "returned", return_date: new Date().toISOString() } : b
+      ))
+      toast({
+        title: "Success",
+        description: "Book marked as returned",
+        variant: "default",
+      })
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "An error occurred",
+        variant: "destructive",
+      })
+    }
   }
+  const getDaysRemaining = (dueDate: string) => {
+    const today = new Date()
+    const due = new Date(dueDate)
+    const diffTime = due.getTime() - today.getTime()
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays
+  }
+
+  function getBorrowStatus(borrowed: BorrowedBook) {
+    console.log(borrowed);
+  if (borrowed.is_returned) return "returned";
+  const daysRemaining = getDaysRemaining(borrowed.due_date);
+  if (daysRemaining < 0) return "overdue";
+  return "borrowed";
+}
 
   // Filter borrowed books
   const filteredBooks = borrowedBooks.filter((borrowed) => {
+    const userFullName = `${borrowed.user.first_name} ${borrowed.user.last_name}`.toLowerCase();
     const matchesSearch =
       borrowed.book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       borrowed.book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      borrowed.user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      userFullName.includes(searchQuery.toLowerCase())
 
+    const status = getBorrowStatus(borrowed);
     const matchesStatus =
       statusFilter === "all" ||
-      (statusFilter === "borrowed" && borrowed.status === "borrowed") ||
-      (statusFilter === "overdue" && borrowed.status === "overdue") ||
-      (statusFilter === "returned" && borrowed.status === "returned")
+      (statusFilter === "borrowed" && status === "borrowed") ||
+      (statusFilter === "overdue" && status === "overdue") ||
+      (statusFilter === "returned" && status === "returned")
 
     return matchesSearch && matchesStatus
   })
@@ -53,13 +109,6 @@ export default function BooksToReturnPage() {
     })
   }
 
-  const getDaysRemaining = (dueDate: string) => {
-    const today = new Date()
-    const due = new Date(dueDate)
-    const diffTime = due.getTime() - today.getTime()
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    return diffDays
-  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -78,13 +127,13 @@ export default function BooksToReturnPage() {
 
         <div className="flex gap-2 mt-4 md:mt-0">
           <Badge variant="default" className="text-sm">
-            {borrowedBooks.filter((b) => b.status === "borrowed").length} Borrowed
+            {borrowedBooks.filter((b) => getBorrowStatus(b) === "borrowed").length} Borrowed
           </Badge>
           <Badge variant="destructive" className="text-sm">
-            {borrowedBooks.filter((b) => b.status === "overdue").length} Overdue
+            {borrowedBooks.filter((b) =>  getBorrowStatus(b) === "overdue").length} Overdue
           </Badge>
           <Badge variant="secondary" className="text-sm">
-            {borrowedBooks.filter((b) => b.status === "returned").length} Returned
+            {borrowedBooks.filter((b) =>  getBorrowStatus(b) === "returned").length} Returned
           </Badge>
         </div>
       </div>
@@ -145,17 +194,23 @@ export default function BooksToReturnPage() {
             <div className="space-y-6">
               {filteredBooks.map((borrowed) => {
                 const daysRemaining = getDaysRemaining(borrowed.due_date)
-                const isOverdue = borrowed.status === "overdue" || daysRemaining < 0
+                const isOverdue = getBorrowStatus(borrowed) === "overdue" || daysRemaining < 0
 
                 return (
                   <div key={borrowed.id} className="flex flex-col md:flex-row gap-4 border rounded-lg p-4">
                     <div className="relative w-24 h-32 flex-shrink-0">
-                      <Image
-                        src={borrowed.book.cover_image || "/placeholder.svg"}
-                        alt={borrowed.book.title}
-                        fill
-                        className="object-cover rounded"
-                      />
+<Image
+src={
+    borrowed.book.cover_image
+      ? borrowed.book.cover_image.startsWith("http")
+      ? borrowed.book.cover_image
+      : `http://localhost:8000${borrowed.book.cover_image}`
+        : "/placeholder.svg"
+  }
+  alt={borrowed.book.title}
+  fill
+  className="object-fill rounded"
+/>
                     </div>
                     <div className="flex-1">
                       <div className="flex flex-col md:flex-row justify-between">
@@ -169,27 +224,35 @@ export default function BooksToReturnPage() {
                             </Link>
                           </h3>
                           <p className="text-sm text-gray-600">by {borrowed.book.author}</p>
-                          <p className="text-sm mt-1">
-                            <span className="text-gray-500">Borrowed by:</span>{" "}
-                            <span className="font-medium">{borrowed.user.name}</span>
-                          </p>
+<p className="text-sm mt-1">
+  <span className="text-gray-500">Borrowed by:</span>{" "}
+  <span className="font-medium">
+    {borrowed.user
+      ? `${borrowed.user.first_name ?? ""} ${borrowed.user.last_name ?? ""}`.trim() || borrowed.user.email || "Unknown"
+      : "Unknown"}
+  </span> <br />
+  <span className="text-gray-500">E-mail:</span>{" "}
+    <span className="font-medium">
+      {borrowed.user.email}
+    </span>
+</p>
                         </div>
                         <div className="mt-2 md:mt-0">
-                          <Badge
-                            variant={
-                              borrowed.status === "returned"
-                                ? "secondary"
-                                : borrowed.status === "overdue"
-                                  ? "destructive"
-                                  : "default"
-                            }
-                          >
-                            {borrowed.status === "returned"
-                              ? "Returned"
-                              : borrowed.status === "overdue"
-                                ? "Overdue"
-                                : "Borrowed"}
-                          </Badge>
+<Badge
+  variant={
+    getBorrowStatus(borrowed) === "returned"
+      ? "secondary"
+      : getBorrowStatus(borrowed) === "overdue"
+        ? "destructive"
+        : "default"
+  }
+>
+  {getBorrowStatus(borrowed) === "returned"
+    ? "Returned"
+    : getBorrowStatus(borrowed) === "overdue"
+      ? "Overdue"
+      : "Borrowed"}
+</Badge>
                         </div>
                       </div>
 
@@ -198,7 +261,7 @@ export default function BooksToReturnPage() {
                           <p className="text-xs text-gray-500">Borrowed on</p>
                           <p className="text-sm font-medium flex items-center">
                             <Calendar className="h-3 w-3 mr-1" />
-                            {formatDate(borrowed.borrow_date)}
+                            {formatDate(borrowed.borrowed_date)}
                           </p>
                         </div>
                         <div>
@@ -228,10 +291,15 @@ export default function BooksToReturnPage() {
                       </div>
 
                       <div className="mt-4 flex flex-wrap gap-2">
-                        {borrowed.status !== "returned" && (
-                          <Button size="sm" variant="default">
-                            Mark as Returned
-                          </Button>
+{getBorrowStatus(borrowed) !== "returned" && (
+  <Button 
+    size="sm" 
+    variant="default"
+    onClick={() => handleReturnBook(borrowed.id)}
+    disabled={getBorrowStatus(borrowed) === "returned"}
+  >
+    Mark as Returned
+  </Button>
                         )}
                         <Button size="sm" variant="outline">
                           Send Reminder

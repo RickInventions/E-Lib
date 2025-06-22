@@ -15,11 +15,13 @@ class User(AbstractUser):
     role = models.CharField(max_length=10, choices=ROLES, default='user')
     first_name = models.CharField(max_length=30, blank=False) 
     last_name = models.CharField(max_length=30, blank=False)  
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -236,6 +238,7 @@ class Video(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     is_featured = models.BooleanField(default=False)
     duration = models.PositiveIntegerField(help_text="Duration in seconds", default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
     external_source = models.URLField(
         blank=True,
         null=True,
