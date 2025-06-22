@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { BookOpen, Users, TrendingUp, Plus, Edit, Trash2, BookMarked, AlertTriangle, Search, Video as VideoIcon, PlusSquareIcon } from "lucide-react"
 import type { Book, Video, Category, Inquiry, BorrowedBook, LibraryStats, User } from "@/lib/types"
 import { useRouter } from "next/navigation"
+import { deleteBook, deleteVideo, deleteCategory, deleteUser, deleteInquiry } from "@/lib/api"
 import Link from "next/link"
 import { 
   fetchAdminLibraryStats, 
@@ -21,7 +22,7 @@ import {
   fetchPublicVideos
 } from "@/lib/api"
 import { Input } from "@/components/ui/input"
-import { format } from "date-fns"
+import { useConfirm } from "@/hooks/use-confirm"
 
 type TabName = "books" | "videos" | "categories" | "users" | "inquiries" | "reports";
 
@@ -45,6 +46,7 @@ export default function AdminPage() {
     inquiries: "",
     reports: ""
   });
+  const showConfirm = useConfirm()
 
   useEffect(() => {
     if (isAuthenticated === false || user?.role !== "admin") {
@@ -113,7 +115,8 @@ export default function AdminPage() {
   const filteredBooks = books.filter(book => 
     book.title.toLowerCase().includes(tabSearch.books.toLowerCase()) ||
     book.author.toLowerCase().includes(tabSearch.books.toLowerCase()) ||
-    book.categories.some(cat => cat.toLowerCase().includes(tabSearch.books.toLowerCase()))
+    book.categories.some(cat => cat.toLowerCase().includes(tabSearch.books.toLowerCase())) ||
+    book.book_uuid.toLowerCase().includes(tabSearch.books.toLowerCase()) // Add UUID search
   )
 
 const filteredVideos = videos.filter(video =>
@@ -148,6 +151,106 @@ const sortedInquiries = [...filteredInquiries].sort(
 const sortedCategories = [...filteredCategories].sort(
   (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 );
+
+  const handleEditBook = (bookUuid: string) => {
+    router.push(`/admin/books/edit/${bookUuid}`)
+  }
+
+  const handleEditVideo = (videoUuid: string) => {
+    router.push(`/admin/videos/edit/${videoUuid}`)
+  }
+
+  const handleEditCategory = (categoryId: number) => {
+    router.push(`/admin/categories/edit/${categoryId}`)
+  }
+
+  const handleEditUser = (userId: number) => {
+    router.push(`/admin/users/edit/${userId}`)
+  }
+
+
+
+  
+  const handleDeleteBook = async (bookUuid: string) => {
+    const confirmed = await showConfirm(
+      "Delete Book", 
+      "Are you sure you want to delete this book? This action cannot be undone."
+    )
+    if (confirmed) {
+      try {
+        await deleteBook(bookUuid)
+        setBooks(books.filter(b => b.book_uuid !== bookUuid))
+        toast({ title: "Book deleted successfully", variant: "default" })
+      } catch (error) {
+        toast({ title: "Failed to delete book", variant: "destructive" })
+      }
+    }
+  }
+
+  const handleDeleteVideo = async (videoUuid: string) => {
+    const confirmed = await showConfirm(
+      "Delete Video", 
+      "Are you sure you want to delete this video? This action cannot be undone."
+    )
+    if (confirmed) {
+      try {
+        await deleteVideo(videoUuid)
+        setVideos(videos.filter(v => v.video_uuid !== videoUuid))
+        toast({ title: "Video deleted successfully", variant: "default" })
+      } catch (error) {
+        toast({ title: "Failed to delete video", variant: "destructive" })
+      }
+    }
+  }
+
+  const handleDeleteCategory = async (categoryId: number) => {
+    const confirmed = await showConfirm(
+      "Delete Category", 
+      "Are you sure you want to delete this category? All books in this category will be uncategorized."
+    )
+    if (confirmed) {
+      try {
+        await deleteCategory(categoryId)
+        setCategories(categories.filter(c => c.id !== categoryId))
+        toast({ title: "Category deleted successfully", variant: "default" })
+      } catch (error) {
+        toast({ title: "Failed to delete category", variant: "destructive" })
+      }
+    }
+  }
+
+  const handleDeleteUser = async (userId: number) => {
+    const confirmed = await showConfirm(
+      "Delete User", 
+      "Are you sure you want to delete this user? This action cannot be undone."
+    )
+    if (confirmed) {
+      try {
+        await deleteUser(userId)
+        setUsers(users.filter(u => u.id !== userId))
+        toast({ title: "User deleted successfully", variant: "default" })
+      } catch (error) {
+        toast({ title: "Failed to delete user", variant: "destructive" })
+      }
+    }
+  }
+
+  const handleDeleteInquiry = async (inquiryId: number) => {
+    const confirmed = await showConfirm(
+      "Delete Inquiry", 
+      "Are you sure you want to delete this inquiry? This action cannot be undone."
+    )
+    if (confirmed) {
+      try {
+        await deleteInquiry(inquiryId)
+        setInquiries(inquiries.filter(i => i.id !== inquiryId))
+        toast({ title: "Inquiry deleted successfully", variant: "default" })
+      } catch (error) {
+        toast({ title: "Failed to delete inquiry", variant: "destructive" })
+      }
+    }
+  }
+
   if (loading || !stats) {
     return (
       <div className="flex justify-center items-center h-96">
@@ -300,7 +403,7 @@ const sortedCategories = [...filteredCategories].sort(
                 </Button>
               </div>
   <Input
-    placeholder={`Search ${currentTab}...`}
+    placeholder={`Search ${currentTab} by book uid, title, author, categories...`}
     value={tabSearch[currentTab] ?? ""}
     onChange={e => handleTabSearchChange(currentTab, e.target.value)}
   />
@@ -337,12 +440,20 @@ const sortedCategories = [...filteredCategories].sort(
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                        <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEditBook(book.book_uuid)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="destructive"
+                      onClick={() => handleDeleteBook(book.book_uuid)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                     </div>
                   </div>
                 ))}
@@ -385,12 +496,20 @@ const sortedCategories = [...filteredCategories].sort(
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                        <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEditVideo(video.video_uuid)}
+                      >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="destructive"
+                      onClick={() => handleDeleteVideo(video.video_uuid)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                     </div>
                   </div>
                 ))}
@@ -424,12 +543,20 @@ const sortedCategories = [...filteredCategories].sort(
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold">{category.name}</h3>
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+  <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEditCategory(category.id)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="destructive"
+                      onClick={() => handleDeleteCategory(category.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                       </div>
                     </div>
                     <p className="text-sm text-gray-600 mb-2">{category.description}</p>
@@ -473,12 +600,20 @@ const sortedCategories = [...filteredCategories].sort(
              <p className="text-sm text-gray-600">{new Date(user.created_at).toLocaleString()}</p>
             </div>
             <div className="flex gap-2">
-              <Button size="sm" variant="outline">
-                <Edit className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="destructive">
-                <Trash2 className="h-4 w-4" />
-              </Button>
+  <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEditUser(user.id)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="destructive"
+                      onClick={() => handleDeleteUser(user.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
             </div>
           </div>
         ))}

@@ -7,6 +7,7 @@ import { Navbar } from "@/components/navbar"
 import { Toaster } from "@/components/ui/toaster"
 import { Footer } from "@/components/footer"
 import { ScrollToTop } from "@/components/scroll-to-top"
+import { ConfirmProvider } from "@/hooks/use-confirm"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -24,11 +25,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
+          <ConfirmProvider>
           <ScrollToTop />
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Toaster /> 
           <Footer />
+          </ConfirmProvider>
         </AuthProvider>
       </body>
     </html>

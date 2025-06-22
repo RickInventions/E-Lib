@@ -43,6 +43,7 @@ urlpatterns = [
     path('admin/videos/', AdminVideoView.as_view(), name='admin-video-add'),
     path('admin/videos/<str:video_uuid>/', AdminVideoView.as_view(), name='admin-video-edit'),# 
     path('admin/books/', AdminBookView.as_view(), name='admin-book-add'),
+    path('admin/books/<str:book_uuid>/', AdminBookView.as_view(), name='admin-book-detail'),
     path('admin/categories/', CategoryView.as_view(), name='admin-category-add'),
     path('admin/reports/', LibraryReports.as_view(), name='library-reports'),
     path('admin/reports/categories/', CategoryReportView.as_view(), name='category-report'),

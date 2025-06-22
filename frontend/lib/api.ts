@@ -368,12 +368,77 @@ export async function searchByUUID(uuid: string): Promise<Book | Video | null> {
   return res.json();
 }
 
-// Add inquiry deletion
+// Delete Book
+export async function deleteBook(bookUuid: string): Promise<void> {
+  const token = localStorage.getItem('library-token');
+  const res = await fetch(`${API_BASE_URL}/admin/books/${bookUuid}/`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to delete book');
+  }
+}
+
+// Delete Video
+export async function deleteVideo(videoUuid: string): Promise<void> {
+  const token = localStorage.getItem('library-token');
+  const res = await fetch(`${API_BASE_URL}/admin/videos/${videoUuid}/`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to delete video');
+  }
+}
+
+// Delete Category
+export async function deleteCategory(categoryId: number): Promise<void> {
+  const token = localStorage.getItem('library-token');
+  const res = await fetch(`${API_BASE_URL}/admin/categories/${categoryId}/`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to delete category');
+  }
+}
+
+// Delete User
+export async function deleteUser(userId: number): Promise<void> {
+  const token = localStorage.getItem('library-token');
+  const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to delete user');
+  }
+}
+
+// Delete Inquiry
 export async function deleteInquiry(inquiryId: number): Promise<void> {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('library-token');
   const res = await fetch(`${API_BASE_URL}/admin/inquiries/${inquiryId}/`, {
     method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` }
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   });
-  if (!res.ok) throw new Error('Failed to delete inquiry');
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to delete inquiry');
+  }
 }
