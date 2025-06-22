@@ -9,6 +9,11 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'description', 'created_at']
 
+    extra_kwargs = {
+        'name': {'required': False},  # For partial updates
+        'description': {'required': False}
+        }
+
 
 class BookSerializer(serializers.ModelSerializer):
     book_uuid = serializers.CharField(read_only=True)

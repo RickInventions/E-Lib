@@ -1,8 +1,5 @@
 // books/categories/add/page.tsx
-
 "use client"
-
-import type React from "react"
 
 import { useEffect, useState } from "react"
 import { useAuth } from "@/lib/auth-context"
@@ -12,18 +9,23 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from "next/navigation"
-import { createCategory } from "@/lib/api"
+import { createCategory, updateCategory } from "@/lib/api"
 import { toast } from "@/hooks/use-toast"
 import Link from "next/link"
 import { ArrowLeft, Save, Trash } from "lucide-react"
+import { Category } from "@/lib/types"
 
-export default function AddCategoryPage() {
+interface AddCategoryPageProps {
+  category?: Category
+}
+
+export default function AddCategoryPage({ category }: AddCategoryPageProps) {
   const { user, isAuthenticated } = useAuth()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [categoryData, setCategoryData] = useState({
-    name: "",
-    description: "",
+    name: category?.name || "",
+    description: category?.description || "",
   })
 
   useEffect(() => {
@@ -37,26 +39,37 @@ export default function AddCategoryPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-   try {
-      const newCategory = await createCategory(categoryData.name, categoryData.description)
+  e.preventDefault();
+  setIsSubmitting(true);
+  try {
+    if (category) {
+      // Update existing category
+      await updateCategory(category.id, categoryData.name, categoryData.description);
+      toast({
+        title: "Success",
+        description: "Category updated successfully!",
+        variant: "default",
+      });
+    } else {
+      // Create new category
+      await createCategory(categoryData.name, categoryData.description);
       toast({
         title: "Success",
         description: "Category added successfully!",
         variant: "default",
-      })
-      router.push("/admin")
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to create category",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSubmitting(false)
+      });
     }
+    router.push("/admin");
+  } catch (error: any) {
+    toast({
+      title: "Error",
+      description: error.message || "Failed to save category",
+      variant: "destructive",
+    });
+  } finally {
+    setIsSubmitting(false);
   }
+};
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -68,8 +81,12 @@ export default function AddCategoryPage() {
       </Button>
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Add New Category</h1>
-        <p className="text-gray-600">Create a new category for organizing books</p>
+        <h1 className="text-3xl font-bold mb-2">
+          {category ? "Edit Category" : "Add New Category"}
+        </h1>
+        <p className="text-gray-600">
+          {category ? "Update the category details" : "Create a new category for organizing books"}
+        </p>
       </div>
 
       <div className="max-w-2xl mx-auto">
@@ -105,7 +122,7 @@ export default function AddCategoryPage() {
               <div className="flex gap-4">
                 <Button type="submit" className="flex-1" disabled={isSubmitting}>
                   <Save className="mr-2 h-4 w-4" />
-                  {isSubmitting ? "Saving..." : "Save Category"}
+                  {isSubmitting ? "Saving..." : category ? "Update Category" : "Save Category"}
                 </Button>
                 <Button type="button" variant="outline" className="flex-1" asChild>
                   <Link href="/admin">

@@ -40,11 +40,13 @@ urlpatterns = [
         
     # Admin endpoints
     path('admin/users/', AdminUserListView.as_view(), name='admin-user-list'),
+    path('admin/users/<int:pk>/', AdminUserListView.as_view(), name='user-detail'),
     path('admin/videos/', AdminVideoView.as_view(), name='admin-video-add'),
     path('admin/videos/<str:video_uuid>/', AdminVideoView.as_view(), name='admin-video-edit'),# 
     path('admin/books/', AdminBookView.as_view(), name='admin-book-add'),
     path('admin/books/<str:book_uuid>/', AdminBookView.as_view(), name='admin-book-detail'),
     path('admin/categories/', CategoryView.as_view(), name='admin-category-add'),
+    path('admin/categories/<int:pk>/', CategoryView.as_view(), name='admin-category-detail'),
     path('admin/reports/', LibraryReports.as_view(), name='library-reports'),
     path('admin/reports/categories/', CategoryReportView.as_view(), name='category-report'),
     path('admin/overdue/', OverdueBooksView.as_view(), name='overdue-books'),

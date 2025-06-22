@@ -152,16 +152,24 @@ const sortedCategories = [...filteredCategories].sort(
   (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 );
 
-  const handleEditBook = (bookUuid: string) => {
-    router.push(`/admin/books/edit/${bookUuid}`)
+// Update the handleEditBook function in your admin page
+const handleEditBook = (bookUuid: string) => {
+  const book = books.find(b => b.book_uuid === bookUuid)
+  if (book) {
+    router.push(`/admin/books/edit?book=${encodeURIComponent(JSON.stringify(book))}`)
   }
+}
 
   const handleEditVideo = (videoUuid: string) => {
     router.push(`/admin/videos/edit/${videoUuid}`)
   }
 
-  const handleEditCategory = (categoryId: number) => {
-    router.push(`/admin/categories/edit/${categoryId}`)
+const handleEditCategory = (categoryId: number) => {
+  const category = categories.find(c => c.id === categoryId)
+  if (category) {
+    router.push(`/admin/categories/edit?category=${encodeURIComponent(JSON.stringify(category))}
+    `)
+  }
   }
 
   const handleEditUser = (userId: number) => {
@@ -543,7 +551,7 @@ const sortedCategories = [...filteredCategories].sort(
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold">{category.name}</h3>
                       <div className="flex gap-2">
-  <Button 
+                        <Button 
                       size="sm" 
                       variant="outline"
                       onClick={() => handleEditCategory(category.id)}

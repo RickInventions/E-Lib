@@ -5,6 +5,8 @@ from library.models import User
 from library.serializers import UserMiniSerializer
 from rest_framework.permissions import IsAdminUser
 from django.utils import timezone
+from rest_framework.parsers import JSONParser
+from rest_framework.decorators import parser_classes
 from datetime import timedelta
 from django.utils.text import slugify
 from wsgiref.util import FileWrapper
@@ -45,7 +47,35 @@ class CategoryView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+    @parser_classes([JSONParser])
+    def patch(self, request, pk=None):
+        if not request.user.is_authenticated or request.user.role != 'admin':
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+        
+        try:
+            category = Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            return Response({'error': 'Category not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = CategorySerializer(category, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk=None):
+        if not request.user.is_authenticated or request.user.role != 'admin':
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+        
+        try:
+            category = Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            return Response({'error': 'Category not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class CategoryReportView(APIView):
     permission_classes = [IsAdminUser]
     
@@ -256,11 +286,16 @@ class AdminBookView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, book_uuid):
-        # Your delete logic here
         book = get_object_or_404(Book, book_uuid=book_uuid)
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+    def patch(self, request, book_uuid):
+        book = get_object_or_404(Book, book_uuid=book_uuid)
+        serializer = BookSerializer(book, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class AdminBorrowRecords(APIView):
     permission_classes = [IsAdminUser]
 
@@ -509,9 +544,9 @@ class AdminVideoView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, video_id):
+    def patch(self, request, video_uuid):
         try:
-            video = Video.objects.get(pk=video_id)
+            video = Video.objects.get(video_uuid=video_uuid)
             serializer = VideoSerializer(video, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
@@ -519,9 +554,9 @@ class AdminVideoView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Video.DoesNotExist:
             return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
-    def delete(self, request, video_id):
+    def delete(self, request, video_uuid):
         try:
-            video = Video.objects.get(pk=video_id)
+            video = Video.objects.get(video_uuid=video_uuid)
             video.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Video.DoesNotExist:
@@ -588,3 +623,15 @@ class AdminUserListView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserMiniSerializer
     permission_classes = [IsAdminUser]
+
+    def delete(self, request, pk=None):
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if request.user == user:
+            return Response({'error': 'Cannot delete yourself'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

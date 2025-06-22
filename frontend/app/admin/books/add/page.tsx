@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { createBook, fetchCategories } from "@/lib/api"
+import { createBook, fetchCategories, updateBook } from "@/lib/api"
 import { toast } from "@/hooks/use-toast"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
@@ -16,9 +16,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Save, Trash, Upload } from "lucide-react"
-import { Category } from "@/lib/types"
+import { Book, Category } from "@/lib/types"
 
-export default function AddBookPage() {
+interface AddBookPageProps {
+  book?: Book
+}
+
+export default function AddBookPage({ book }: AddBookPageProps) {
   const { user, isAuthenticated } = useAuth()
   const router = useRouter()
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null)
@@ -26,21 +30,23 @@ export default function AddBookPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [coverImageError, setCoverImageError] = useState(false)
+  const [isLoadingCategories, setIsLoadingCategories] = useState(false)
   const [bookData, setBookData] = useState({
-    title: "",
-    author: "",
-    publisher: "",
-    description: "",
-    summary: "",
-    book_type: "PHYSICAL",
-    is_ebook: false,
-    total_copies: 1,
-    available_copies: 1,
-    is_featured: false,
-    download_permission: "NONE",
-    publication_date: "",
-    is_external: false,
-    external_source: "",
+    title: book?.title || "",
+    author: book?.author || "",
+    publisher: book?.publisher || "",
+    description: book?.description || "",
+    summary: book?.summary || "",
+    book_type: book?.book_type || "PHYSICAL",
+    is_ebook: book?.is_ebook || false,
+    total_copies: book?.total_copies || 1,
+    available_copies: book?.available_copies || 1,
+    is_featured: book?.is_featured || false,
+    download_permission: book?.download_permission || "NONE",
+    publication_date: book?.publication_date || "",
+    is_external: book?.is_external || false,
+    external_source: book?.external_source || "",
   })
 
   useEffect(() => {
@@ -49,17 +55,18 @@ export default function AddBookPage() {
     }
   }, [isAuthenticated, user, router])
   
-
-  if (!isAuthenticated || user?.role !== "admin") {
-    return null
-  }
-
-    // Fetch categories on mount
-  useEffect(() => {
-    fetchCategories()
-      .then(setCategories)
-      .catch(() => setCategories([]))
-  }, [])
+useEffect(() => {
+  setIsLoadingCategories(true)
+  fetchCategories()
+    .then(cats => {
+      setCategories(cats)
+      if (book?.categories) {
+        setSelectedCategories(book.categories)
+      }
+    })
+    .catch(() => setCategories([]))
+    .finally(() => setIsLoadingCategories(false))
+}, [book])// Only re-run if book changes
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -84,8 +91,26 @@ export default function AddBookPage() {
       // Append categories
       selectedCategories.forEach(cat => formData.append('categories', cat))
       // Append files if they exist
-      if (coverImageFile) formData.append('cover_image', coverImageFile)
-      if (pdfFile) formData.append('pdf_file', pdfFile)
+       if (coverImageFile) {
+      formData.append('cover_image', coverImageFile)
+    } else if (!book) {
+      // Only require cover image for new books
+      throw new Error('Cover image is required for new books')
+    }
+
+    if (pdfFile) {
+      formData.append('pdf_file', pdfFile)
+    }
+
+          if (book) {
+      // Update existing book
+      await updateBook(book.book_uuid, formData)
+      toast({
+        title: "Success",
+        description: "Book updated successfully!",
+        variant: "default",
+      })
+    } else {
       const newBook = await createBook(formData)
       toast({
         title: "Success",
@@ -93,6 +118,8 @@ export default function AddBookPage() {
         variant: "default",
       })
       router.push(`/books/${newBook.book_uuid}`)
+    }
+        router.push("/admin")
     } catch (error) {
       toast({
         title: "Error",
@@ -116,7 +143,6 @@ export default function AddBookPage() {
     }
   }
   
-
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
@@ -237,30 +263,54 @@ export default function AddBookPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="cover-image">Cover Image *</Label>
-                  <input
-                    type="file"
-                    id="cover-image"
-                    accept="image/*"
-                    onChange={handleCoverImageChange}
-                    className="block"
-                    required
-                  />
-                </div>
+                  <Label htmlFor="cover-image">Cover Image  {!book && '*'}</Label>
+                   {/* Show current cover image if editing */}
+      {book?.cover_image && (
+        <div className="mb-2">
+          <p className="text-sm text-muted-foreground mb-1">Current cover:</p>
+          <img 
+src={`http://localhost:8000${book.cover_image}`}
+    onError={() => setCoverImageError(true)}
+            alt={book.cover_image} 
+            className="h-40 object-contain border rounded"
+          />
+        </div>
+      )}
+      <input
+        type="file"
+        id="cover-image"
+        accept="image/*"
+        onChange={handleCoverImageChange}
+        className="block"
+        required={!book} // Only required when creating new book
+      />
+      <p className="text-sm text-muted-foreground">
+        {book ? 'Upload new image to replace current' : 'Required for new books'}
+      </p>
+    </div>
 
-                {/* Only show PDF upload for ebooks */}
-                {bookData.book_type === "EBOOK" && (
-                  <div className="space-y-2">
-                    <Label htmlFor="pdf-file">PDF File</Label>
-                    <input
-                      type="file"
-                      id="pdf-file"
-                      accept="application/pdf"
-                      onChange={handlePdfFileChange}
-                      className="block"
-                    />
-                  </div>
-                )}
+ {/* Only show PDF upload for ebooks */}
+    {bookData.book_type === "EBOOK" && (
+      <div className="space-y-2">
+        <Label htmlFor="pdf-file">PDF File</Label>
+        {/* Show current PDF info if editing */}
+        {book?.pdf_file && (
+          <div className="mb-2">
+            <p className="text-sm text-muted-foreground">Current PDF: {book.pdf_file.split('/').pop()}</p>
+          </div>
+        )}
+        <input
+          type="file"
+          id="pdf-file"
+          accept="application/pdf"
+          onChange={handlePdfFileChange}
+          className="block"
+        />
+        <p className="text-sm text-muted-foreground">
+          {book ? 'Upload new PDF to replace current' : 'Optional for new books'}
+        </p>
+      </div>
+    )}
               </CardContent>
             </Card>
           </div>

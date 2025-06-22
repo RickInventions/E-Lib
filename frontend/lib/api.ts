@@ -442,3 +442,42 @@ export async function deleteInquiry(inquiryId: number): Promise<void> {
     throw new Error(error.message || 'Failed to delete inquiry');
   }
 }
+
+export async function updateBook(bookUuid: string, bookData: FormData): Promise<Book> {
+  const token = localStorage.getItem('library-token')
+  const res = await fetch(`${API_BASE_URL}/admin/books/${bookUuid}/`, {
+    method: 'PATCH',
+    body: bookData,
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  if (!res.ok) {
+    const error = await res.json()
+    throw new Error(error.message || 'Failed to update book')
+  }
+  return res.json()
+}
+
+export async function updateCategory(id: number, name: string, description: string): Promise<Category> {
+  const token = localStorage.getItem('library-token');
+  if (!token) throw new Error('Authentication required');
+  
+  const res = await fetch(`${API_BASE_URL}/admin/categories/${id}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      name, 
+      description 
+    })
+  });
+  
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Failed to update category');
+  }
+  return res.json();
+}
