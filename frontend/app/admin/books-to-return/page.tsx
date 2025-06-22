@@ -47,26 +47,25 @@ export default function BooksToReturnPage() {
     loadBorrowedBooks()
   }, [])
 
-  const handleReturnBook = async (borrowId: number) => {
-    
-    try {
-      await markBookReturned(borrowId)
-      setBorrowedBooks(prev => prev.map(b => 
-        b.id === borrowId ? { ...b, status: "returned", return_date: new Date().toISOString() } : b
-      ))
-      toast({
-        title: "Success",
-        description: "Book marked as returned",
-        variant: "default",
-      })
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "An error occurred",
-        variant: "destructive",
-      })
-    }
+const handleReturnBook = async (borrowId: number, bookUuid: string) => {
+  try {
+    await markBookReturned(bookUuid, borrowId);
+    setBorrowedBooks(prev => prev.map(b => 
+      b.id === borrowId ? { ...b, is_returned: true, return_date: new Date().toISOString() } : b
+    ));
+    toast({
+      title: "Success",
+      description: "Book marked as returned",
+      variant: "default",
+    });
+  } catch (error) {
+    toast({
+      title: "Error",
+      description: error instanceof Error ? error.message : "An error occurred",
+      variant: "destructive",
+    });
   }
+}
   const getDaysRemaining = (dueDate: string) => {
     const today = new Date()
     const due = new Date(dueDate)
@@ -131,9 +130,6 @@ export default function BooksToReturnPage() {
           </Badge>
           <Badge variant="destructive" className="text-sm">
             {borrowedBooks.filter((b) =>  getBorrowStatus(b) === "overdue").length} Overdue
-          </Badge>
-          <Badge variant="secondary" className="text-sm">
-            {borrowedBooks.filter((b) =>  getBorrowStatus(b) === "returned").length} Returned
           </Badge>
         </div>
       </div>
@@ -295,19 +291,11 @@ src={
   <Button 
     size="sm" 
     variant="default"
-    onClick={() => handleReturnBook(borrowed.id)}
+    onClick={() => handleReturnBook(borrowed.id, borrowed.book.book_uuid)}
     disabled={getBorrowStatus(borrowed) === "returned"}
   >
     Mark as Returned
   </Button>
-                        )}
-                        <Button size="sm" variant="outline">
-                          Send Reminder
-                        </Button>
-                        {isOverdue && (
-                          <Button size="sm" variant="outline">
-                            Extend Due Date
-                          </Button>
                         )}
                       </div>
                     </div>

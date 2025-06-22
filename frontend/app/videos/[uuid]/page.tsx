@@ -32,11 +32,9 @@ export default function VideoDetailsPage() {
       try {
         setLoading(true)
         
-        // Fetch video details
         const videoData = await fetchVideoByUuid(uuid as string)
         setVideo(videoData)
         
-        // Fetch recommendations (videos in same category)
         const videosData = await fetchPublicVideos()
         const sameCategoryVideos = videosData.filter(
           v => v.id !== videoData.id && v.category === videoData.category
@@ -55,7 +53,6 @@ export default function VideoDetailsPage() {
   }, [uuid])
 
   useEffect(() => {
-    // Clean up video player when component unmounts
     return () => {
       if (videoRef.current) {
         videoRef.current.pause()

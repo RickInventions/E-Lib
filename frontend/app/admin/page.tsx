@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react"
 import { toast } from "@/hooks/use-toast"
 import { useAuth } from "@/lib/auth-context"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { BookOpen, Users, TrendingUp, Plus, Edit, Trash2, BookMarked, AlertTriangle, Search, Video as VideoIcon, PlusSquareIcon } from "lucide-react"
 import type { Book, Video, Category, Inquiry, BorrowedBook, LibraryStats, User } from "@/lib/types"
 import { useRouter } from "next/navigation"
-import { deleteBook, deleteVideo, deleteCategory, deleteUser, deleteInquiry } from "@/lib/api"
+import { deleteBook, deleteVideo, deleteCategory, deleteUser, deleteInquiry, fetchBookCategoryReport } from "@/lib/api"
 import Link from "next/link"
 import { 
   fetchAdminLibraryStats, 
@@ -23,6 +23,7 @@ import {
 } from "@/lib/api"
 import { Input } from "@/components/ui/input"
 import { useConfirm } from "@/hooks/use-confirm"
+import { formatDuration } from "@/lib/utils"
 
 type TabName = "books" | "videos" | "categories" | "users" | "inquiries" | "reports";
 
@@ -38,6 +39,15 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true)
   const [users, setUsers] = useState<User[]>([]);
   const [currentTab, setCurrentTab] = useState<TabName>("books");
+  const [bookCategories, setBookCategories] = useState<{
+  category: string;
+  total_books: number;
+  available_books: number;
+  ebooks: number;
+  physical_books: number;
+}[]>([]);
+const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   const [tabSearch, setTabSearch] = useState<Record<TabName, string>>({
     books: "",
     videos: "",
@@ -57,14 +67,15 @@ export default function AdminPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [statsData, booksData, videosData, categoriesData, borrowedBooksData, inquiriesData, usersData] = await Promise.all([
+        const [statsData, booksData, videosData, categoriesData, borrowedBooksData, inquiriesData, usersData, bookCategoriesData] = await Promise.all([
           fetchAdminLibraryStats(),
           fetchPublicBooks(),
           fetchPublicVideos(),
           fetchCategories(),
           fetchBorrowedBooks(),
           fetchInquiries(),
-          fetchAdminUsers()
+          fetchAdminUsers(),
+          fetchBookCategoryReport()
         ])
         setUsers(usersData);
         setStats(statsData)
@@ -73,6 +84,7 @@ export default function AdminPage() {
         setCategories(categoriesData)
         setBorrowedBooks(borrowedBooksData)
         setInquiries(inquiriesData)
+        setBookCategories(bookCategoriesData);
       } catch (error) {
         toast({
           title: "Error",
@@ -103,6 +115,9 @@ export default function AdminPage() {
   }
 
   const overdueCount = borrowedBooks.filter(b => getBorrowStatus(b) === "overdue").length
+  const getBooksByCategory = (category: string) => {
+  return books.filter(book => book.categories.includes(category));
+};
   
   // Filter data based on search query
   const filteredUsers = users.filter(user =>
@@ -122,7 +137,8 @@ export default function AdminPage() {
 const filteredVideos = videos.filter(video =>
   video.title.toLowerCase().includes(tabSearch.videos.toLowerCase()) ||
   video.instructor.toLowerCase().includes(tabSearch.videos.toLowerCase()) ||
-  (video.category_display?.toLowerCase().includes(tabSearch.videos.toLowerCase()) ?? false)
+  (video.category_display?.toLowerCase().includes(tabSearch.videos.toLowerCase()) ?? false) ||
+  video.video_uuid.toLowerCase().includes(tabSearch.videos.toLowerCase())
 );
 const filteredCategories = categories.filter(category =>
   category.name.toLowerCase().includes(tabSearch.categories.toLowerCase()) ||
@@ -161,7 +177,11 @@ const handleEditBook = (bookUuid: string) => {
 }
 
   const handleEditVideo = (videoUuid: string) => {
-    router.push(`/admin/videos/edit/${videoUuid}`)
+  const video = videos.find(v => v.video_uuid === videoUuid)
+  if (video) {
+    router.push(`/admin/videos/edit?video=${encodeURIComponent(JSON.stringify(video))}
+    `)
+  }
   }
 
 const handleEditCategory = (categoryId: number) => {
@@ -171,13 +191,6 @@ const handleEditCategory = (categoryId: number) => {
     `)
   }
   }
-
-  const handleEditUser = (userId: number) => {
-    router.push(`/admin/users/edit/${userId}`)
-  }
-
-
-
   
   const handleDeleteBook = async (bookUuid: string) => {
     const confirmed = await showConfirm(
@@ -244,18 +257,12 @@ const handleEditCategory = (categoryId: number) => {
   }
 
   const handleDeleteInquiry = async (inquiryId: number) => {
-    const confirmed = await showConfirm(
-      "Delete Inquiry", 
-      "Are you sure you want to delete this inquiry? This action cannot be undone."
-    )
-    if (confirmed) {
       try {
         await deleteInquiry(inquiryId)
         setInquiries(inquiries.filter(i => i.id !== inquiryId))
-        toast({ title: "Inquiry deleted successfully", variant: "default" })
+        toast({ title: "Inquiry marked as resolved", variant: "default" })
       } catch (error) {
-        toast({ title: "Failed to delete inquiry", variant: "destructive" })
-      }
+        toast({ title: "Failed to resolve inquiry", variant: "destructive" })
     }
   }
 
@@ -311,8 +318,7 @@ const handleEditCategory = (categoryId: number) => {
             </div>
           </Link>
         </Button>
-        <Button asChild variant="outline" className="h-auto py-6 flex flex-col items-center justify-center">
-          <Link href="/admin?tab=inquiries">
+        <Card className="h-auto py-6 flex flex-col items-center justify-center">
             <AlertTriangle className="h-6 w-6 mb-2" />
             <div className="flex flex-col items-center">
               <span>Pending Inquiries</span>
@@ -320,8 +326,7 @@ const handleEditCategory = (categoryId: number) => {
                 {inquiries.filter(i => !i.is_resolved).length} New
               </Badge>
             </div>
-          </Link>
-        </Button>
+        </Card>
       </div>
 
       {/* Stats Overview */}
@@ -499,7 +504,7 @@ const handleEditCategory = (categoryId: number) => {
                         <Badge variant="outline">
                           {video.category_display}
                         </Badge>
-                        <Badge variant="outline">{video.duration} mins</Badge>
+                        <Badge variant="outline">{formatDuration(video.duration)}</Badge>
                         {video.is_featured && <Badge variant="outline">Featured</Badge>}
                       </div>
                     </div>
@@ -608,13 +613,6 @@ const handleEditCategory = (categoryId: number) => {
              <p className="text-sm text-gray-600">{new Date(user.created_at).toLocaleString()}</p>
             </div>
             <div className="flex gap-2">
-  <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => handleEditUser(user.id)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
                     <Button 
                       size="sm" 
                       variant="destructive"
@@ -630,91 +628,147 @@ const handleEditCategory = (categoryId: number) => {
   </Card>
 </TabsContent>
 
-        <TabsContent value="inquiries" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Contact Inquiries</CardTitle>
-                <Input
-    placeholder={`Search ${currentTab}...`}
-    value={tabSearch[currentTab] ?? ""}
-    onChange={e => handleTabSearchChange(currentTab, e.target.value)}
-  />
-            </CardHeader>
-            <CardContent>
+        <TabsContent value="reports" className="space-y-8">
+  <div className="grid grid-cols-1 gap-8">
+    {/* Book Categories Report */}
+    <Card className="border-none shadow-lg">
+      <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-t-lg">
+        <CardTitle className="text-white text-2xl">Book Categories Report</CardTitle>
+      </CardHeader>
+      <CardContent className="p-6">
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-4">Categories Overview</h3>
+          <div className="flex flex-wrap gap-4">
+            {bookCategories.map((cat) => (
+<Button
+  key={cat.category}
+  variant={selectedCategory === cat.category ? "default" : "outline"}
+  className={`
+    min-w-[178px] h-30 flex flex-col items-center justify-center
+    px-6 py-4 rounded-xl transition-all duration-300
+    border-2 hover:border-primary
+    ${selectedCategory === cat.category 
+      ? "highlight-pulse" 
+      : ""}
+  `}
+  onClick={() => setSelectedCategory(cat.category === selectedCategory ? null : cat.category)}
+>
+  <div className="flex flex-col items-center gap-1">
+    <div className="font-bold text-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px]">
+      {cat.category}
+    </div>
+    <div className={`
+      text-sm rounded-full px-3 py-1
+      ${selectedCategory === cat.category 
+        ? "highlight-pulse" 
+        : ""}
+    `}>
+      {cat.total_books} {cat.total_books === 1 ? "book" : "books"}
+    </div>
+  </div>
+</Button>
+            ))}
+          </div>
+        </div>
+
+        {selectedCategory && (
+          <div className="space-y-6 animate-fade-in">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Total Books</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {bookCategories.find(c => c.category === selectedCategory)?.total_books || 0}
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Available</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {bookCategories.find(c => c.category === selectedCategory)?.available_books || 0}
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">E-Books</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {bookCategories.find(c => c.category === selectedCategory)?.ebooks || 0}
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Physical</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {bookCategories.find(c => c.category === selectedCategory)?.physical_books || 0}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-4">
+                Books in {selectedCategory}
+              </h3>
               <div className="space-y-4">
-                {sortedInquiries.map(inquiry => (
-                  <div key={inquiry.id} className="p-4 border rounded-lg">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-semibold">{inquiry.subject}</h3>
-                        <p className="text-sm text-gray-600">
-                          From: {inquiry.name} ({inquiry.email})
-                        </p>
-                        <p className="text-xs text-gray-500">{new Date(inquiry.created_at).toLocaleString()}</p>
+                {getBooksByCategory(selectedCategory).map(book => (
+                  <div key={book.book_uuid} className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent transition-colors">
+                    <div className="flex-1">
+                      <h3 className="font-semibold">{book.title}</h3>
+                      <p className="text-sm text-gray-600">by {book.author}</p>
+                      <div className="flex gap-2 mt-2">
+                        <Badge variant={book.book_type === "PHYSICAL" ? "destructive" : "default"}>
+                          {book.book_type}
+                        </Badge>
+                        <Badge variant={book.is_available ? "default" : "destructive"}>
+                          {book.is_available ? "Available" : "Checked Out"}
+                        </Badge>
                       </div>
-                      <Badge variant={!inquiry.is_resolved ? "destructive" : "default"}>
-                        {!inquiry.is_resolved ? "Pending" : "Resolved"}
-                      </Badge>
                     </div>
-                    <p className="text-sm mb-3">{inquiry.message}</p>
-                    <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
-                        Reply
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        {!inquiry.is_resolved ? "Mark as Resolved" : "Reopen"}
-                      </Button>
-                    </div>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEditBook(book.book_uuid)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="reports" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Category Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {Object.entries(stats.video_by_category).map(([category, count]) => (
-                    <div key={category} className="flex justify-between items-center">
-                      <span className="font-medium">{category}</span>
-                      <Badge variant="secondary">{count} videos</Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>External Sources</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">Books from External</span>
-                    <Badge variant="secondary">{stats.external_sources}</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">Videos from External</span>
-                    <Badge variant="secondary">{stats.video_external_sources}</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">Total External Resources</span>
-                    <Badge variant="destructive">
-                      {stats.external_sources + stats.video_external_sources}
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            </div>
           </div>
-        </TabsContent>
+        )}
+      </CardContent>
+    </Card>
+
+    {/* Video Categories Report (existing) */}
+    <Card className="border-none shadow-lg">
+      <CardHeader className="bg-gradient-to-r from-purple-600 to-purple-800 rounded-t-lg">
+        <CardTitle className="text-white text-2xl">Video Categories Report</CardTitle>
+      </CardHeader>
+      <CardContent className="p-6">
+        <div className="space-y-3">
+          {Object.entries(stats.video_by_category).map(([category, count]) => (
+            <div key={category} className="flex justify-between items-center p-3 hover:bg-accent rounded-lg transition-colors">
+              <span className="font-medium">{category}</span>
+              <Badge variant="secondary">{count} videos</Badge>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</TabsContent>
       </Tabs>
     </div>
   )

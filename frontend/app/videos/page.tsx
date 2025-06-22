@@ -55,6 +55,7 @@ export default function VideosPage() {
   const filteredVideos = videos.filter((video) => {
     const matchesSearch =
       video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      video.instructor.toLowerCase().includes(searchQuery.toLowerCase()) ||
       video.description.toLowerCase().includes(searchQuery.toLowerCase())
 
     const matchesCategory = selectedCategory === "all" || video.category === selectedCategory

@@ -311,13 +311,36 @@ export async function fetchOverdueBooks(): Promise<BorrowedBook[]> {
   return res.json();
 }
 
-export async function markBookReturned(borrowId: number): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/admin/borrows/return/`, {
+export async function markBookReturned(bookUuid: string, borrowId: number): Promise<void> {
+  const token = localStorage.getItem('library-token');
+  if (!token) throw new Error('Authentication required');
+  
+  const res = await fetch(`${API_BASE_URL}/admin/borrows/return/${bookUuid}/${borrowId}/`, {
     method: 'POST',
-    headers: getAuthHeaders(),
-    body: JSON.stringify({ borrow_id: borrowId })
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
   });
-  if (!res.ok) throw new Error('Failed to mark book as returned');
+  
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Failed to mark book as returned');
+  }
+}
+
+export async function fetchBookCategoryReport(): Promise<{
+  category: string;
+  total_books: number;
+  available_books: number;
+  ebooks: number;
+  physical_books: number;
+}[]> {
+  const res = await fetch(`${API_BASE_URL}/admin/reports/categories/`, {
+    headers: getAuthHeaders()
+  });
+  if (!res.ok) throw new Error('Failed to fetch book category report');
+  return res.json();
 }
 
 // Category Management
@@ -342,14 +365,6 @@ export async function fetchInquiries(): Promise<Inquiry[]> {
   });
   if (!res.ok) throw new Error('Failed to fetch inquiries');
   return res.json();
-}
-
-export async function markInquiryResolved(inquiryId: number): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/admin/inquiries/${inquiryId}/resolve/`, {
-    method: 'POST',
-    headers: getAuthHeaders()
-  });
-  if (!res.ok) throw new Error('Failed to mark inquiry as resolved');
 }
 
 export async function fetchAdminUsers(): Promise<User[]> {

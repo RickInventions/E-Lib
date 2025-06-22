@@ -42,6 +42,7 @@ export default function HomePage() {
         setBooks(booksData)
 setCategories(categoriesData.map(cat => ({
   id: cat.id,
+  created_at: cat.created_at,
   name: cat.name,
   description: cat.description,
   bookCount: booksData.filter(b => 
@@ -79,10 +80,6 @@ setFeaturedBooks((data.books || []).slice(0, 4))
   )
 
   const handleSearchAction = () => {
-    // if (!isAuthenticated) {
-    //   setShowAuthModal(true)
-    //   return
-    // }
     if (searchQuery.trim()) {
     router.push(`/books?search=${encodeURIComponent(searchQuery.trim())}`) 
     } else {
@@ -185,7 +182,6 @@ setFeaturedBooks((data.books || []).slice(0, 4))
         </div>
       </section>
 
-      {/* Categories - Updated with real data */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">

@@ -1,6 +1,7 @@
+// books/videos/add/page.tsx
 "use client"
 import { useAuth } from "@/lib/auth-context"
-import { createVideo } from "@/lib/api"
+import { createVideo, updateVideo } from "@/lib/api"
 import { toast } from "@/hooks/use-toast"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Save, Trash, Upload } from "lucide-react"
+import { Video } from "@/lib/types"
 
 const VIDEO_CATEGORIES = [
   { value: "TUTORIAL", label: "Tutorial" },
@@ -21,24 +23,25 @@ const VIDEO_CATEGORIES = [
   { value: "OTHER", label: "Other" },
 ]
 
-export default function AddVideoPage() {
+interface AddVideoPageProps {
+  video?: Video
+}
+
+export default function AddVideoPage({ video }: AddVideoPageProps) {
   const { user, isAuthenticated } = useAuth()
   const router = useRouter()
   const [videoFile, setVideoFile] = useState<File | null>(null)
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [videoData, setVideoData] = useState({
-    title: "",
-    instructor: "",
-    description: "",
-    category: "OTHER",
-    duration: 0,
-    difficulty_level: "Beginner",
-    language: "English",
-    is_featured: false,
-    access_permission: "AUTH",
-    is_external: false,
-    external_source: "",
+    title: video?.title || "",
+    instructor: video?.instructor || "",
+    description: video?.description || "",
+    category: video?.category || "OTHER",
+    duration: video?.duration || 0,
+    is_featured: video?.is_featured || false,
+    is_external: video?.is_external || false,
+    external_source: video?.external_source || "",
   })
 
   useEffect(() => {
@@ -63,10 +66,11 @@ export default function AddVideoPage() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    if (!videoFile) {
+    // Only require video file for new videos
+    if (!video && !videoFile) {
       toast({
         title: "Error",
-        description: "Video file is required",
+        description: "Video file is required for new videos",
         variant: "destructive",
       })
       setIsSubmitting(false)
@@ -81,24 +85,35 @@ export default function AddVideoPage() {
       formData.append('category', videoData.category)
       formData.append('duration', videoData.duration.toString())
       formData.append('is_featured', videoData.is_featured.toString())
-      formData.append('access_permission', videoData.access_permission)
       formData.append('is_external', videoData.is_external.toString())
       
       if (videoData.is_external && videoData.external_source) {
         formData.append('external_source', videoData.external_source)
       }
       
+      // Only append files if they exist (for edit) or are required (for create)
       if (videoFile) formData.append('video_file', videoFile)
       if (thumbnailFile) formData.append('thumbnail', thumbnailFile)
 
-      const newVideo = await createVideo(formData)
-      
-      toast({
-        title: "Success",
-        description: "Video added successfully!",
-        variant: "default",
-      })
-      router.push(`/videos/${newVideo.video_uuid}`)
+      if (video) {
+        // Update existing video
+        await updateVideo(video.video_uuid, formData)
+        toast({
+          title: "Success",
+          description: "Video updated successfully!",
+          variant: "default",
+        })
+      } else {
+        // Create new video
+        const newVideo = await createVideo(formData)
+        toast({
+          title: "Success",
+          description: "Video added successfully!",
+          variant: "default",
+        })
+        router.push(`/videos/${newVideo.video_uuid}`)
+      }
+      router.push("/admin")
     } catch (error: any) {
       toast({
         title: "Error",
@@ -120,8 +135,12 @@ export default function AddVideoPage() {
       </Button>
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Add New Video</h1>
-        <p className="text-gray-600">Upload a new video to the library</p>
+        <h1 className="text-3xl font-bold mb-2">
+          {video ? "Edit Video" : "Add New Video"}
+        </h1>
+        <p className="text-gray-600">
+          {video ? "Update the video details" : "Upload a new video to the library"}
+        </p>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -210,10 +229,22 @@ export default function AddVideoPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Video File *</Label>
+                  <Label>Video File {!video && '*'}</Label>
                   <div className="border-2 border-dashed rounded-lg p-6 text-center">
                     <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600 mb-2">Drag and drop or click to upload video</p>
+                    {video?.video_file && !videoFile && (
+                      <div className="mb-2">
+                        <p className="text-sm text-muted-foreground">Current video:</p>
+                        <video 
+                          src={video.video_file} 
+                          className="h-40 object-contain border rounded"
+                          controls
+                        />
+                      </div>
+                    )}
+                    <p className="text-sm text-gray-600 mb-2">
+                      {video ? "Upload new video to replace current" : "Drag and drop or click to upload video"}
+                    </p>
                     <p className="text-xs text-gray-500">Supported formats: MP4, AVI, MOV (Max: 500MB)</p>
                     <input
                       type="file"
@@ -221,6 +252,7 @@ export default function AddVideoPage() {
                       className="hidden"
                       accept="video/*"
                       onChange={handleVideoFileChange}
+                      required={!video} // Only required for new videos
                     />
                     <Button 
                       type="button" 
@@ -238,10 +270,23 @@ export default function AddVideoPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Thumbnail Image *</Label>
+                  <Label>Thumbnail Image</Label>
                   <div className="border-2 border-dashed rounded-lg p-6 text-center">
                     <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600 mb-2">Upload video thumbnail</p>
+                    {video?.thumbnail && !thumbnailFile && (
+                      <div className="mb-2">
+                        <p className="text-sm text-muted-foreground">Current thumbnail:</p>
+                        <img 
+src={`http://localhost:8000${video.thumbnail}`}
+
+                          alt="Current thumbnail" 
+                          className="h-40 object-contain border rounded"
+                        />
+                      </div>
+                    )}
+                    <p className="text-sm text-gray-600 mb-2">
+                      {video ? "Upload new thumbnail to replace current" : "Upload video thumbnail"}
+                    </p>
                     <p className="text-xs text-gray-500">Recommended size: 1280 x 720 pixels</p>
                     <input
                       type="file"
@@ -311,7 +356,7 @@ export default function AddVideoPage() {
             <div className="flex gap-4">
               <Button type="submit" className="flex-1" disabled={isSubmitting}>
                 <Save className="mr-2 h-4 w-4" />
-                {isSubmitting ? "Saving..." : "Save Video"}
+                {isSubmitting ? "Saving..." : video ? "Update Video" : "Save Video"}
               </Button>
               <Button 
                 type="button" 

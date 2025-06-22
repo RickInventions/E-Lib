@@ -10,6 +10,7 @@ import type { Video } from "@/lib/types"
 import { useAuth } from "@/lib/auth-context"
 import { AuthModal } from "./auth-modal"
 import { Play, Eye, Clock, User } from "lucide-react"
+import { formatDuration } from "@/lib/utils"
 
 interface VideoCardProps {
   video: Video
@@ -78,7 +79,7 @@ export function VideoCard({ video, onWatch }: VideoCardProps) {
           <div className="absolute bottom-2 right-2">
             <Badge variant="outline" className="bg-black/70 text-white border-white/20">
               <Clock className="mr-1 h-3 w-3" />
-              {video.duration}
+              {formatDuration(video.duration)}
             </Badge>
           </div>
         </div>
@@ -105,11 +106,6 @@ export function VideoCard({ video, onWatch }: VideoCardProps) {
               <Eye className="mr-2 h-4 w-4" />
               View Details
             </Link>
-          </Button>
-
-          <Button size="sm" onClick={() => handleAction(handleWatch)} variant="outline">
-            <Play className="mr-2 h-4 w-4" />
-            Watch
           </Button>
         </CardFooter>
       </Card>

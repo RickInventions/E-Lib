@@ -92,3 +92,11 @@ body {
     @apply bg-background text-foreground;
   }
 }
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.highlight-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
