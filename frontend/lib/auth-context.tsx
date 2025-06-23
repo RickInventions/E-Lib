@@ -26,7 +26,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    // Check for stored token and user
     const storedToken = localStorage.getItem("library-token")
     const storedUser = localStorage.getItem("library-user")
     
@@ -52,7 +51,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setToken(data.token)
       localStorage.setItem("library-token", data.token)
 
-      // Fetch user profile
       const profileResponse = await fetch(`${API_BASE_URL}/auth/profile/`, {
         headers: { Authorization: `Bearer ${data.token}` }
       })
@@ -102,7 +100,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error("Registration failed")
       }
 
-      // Automatically login after registration
       return await login(email, password)
     } catch (error) {
       console.error("Registration error:", error)

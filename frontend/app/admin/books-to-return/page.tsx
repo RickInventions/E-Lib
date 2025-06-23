@@ -98,7 +98,10 @@ const handleReturnBook = async (borrowId: number, bookUuid: string) => {
       (statusFilter === "returned" && status === "returned")
 
     return matchesSearch && matchesStatus
-  })
+  }).sort((a, b) => {
+    // Sort by borrowed date (newest first)
+    return new Date(b.borrowed_date).getTime() - new Date(a.borrowed_date).getTime();
+  });
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -189,8 +192,8 @@ const handleReturnBook = async (borrowId: number, bookUuid: string) => {
           ) : (
             <div className="space-y-6">
               {filteredBooks.map((borrowed) => {
-                const daysRemaining = getDaysRemaining(borrowed.due_date)
-                const isOverdue = getBorrowStatus(borrowed) === "overdue" || daysRemaining < 0
+  const daysRemaining = getDaysRemaining(borrowed.due_date);
+  const isOverdue = getBorrowStatus(borrowed) === "overdue" || daysRemaining < 0;
 
                 return (
                   <div key={borrowed.id} className="flex flex-col md:flex-row gap-4 border rounded-lg p-4">

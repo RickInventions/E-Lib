@@ -1,4 +1,3 @@
-// app/admin/page.tsx
 "use client"
 import { useEffect, useState } from "react"
 import { toast } from "@/hooks/use-toast"
@@ -101,7 +100,6 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     }
   }, [isAuthenticated, user])
 
-  // Helper to determine overdue status
   function getBorrowStatus(borrowed: BorrowedBook) {
     if (borrowed.is_returned) return "returned"
     const due = new Date(borrowed.due_date)
@@ -119,7 +117,6 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   return books.filter(book => book.categories.includes(category));
 };
   
-  // Filter data based on search query
   const filteredUsers = users.filter(user =>
   user.first_name.toLowerCase().includes(tabSearch.users.toLowerCase()) ||
   user.last_name.toLowerCase().includes(tabSearch.users.toLowerCase()) ||
@@ -131,7 +128,7 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     book.title.toLowerCase().includes(tabSearch.books.toLowerCase()) ||
     book.author.toLowerCase().includes(tabSearch.books.toLowerCase()) ||
     book.categories.some(cat => cat.toLowerCase().includes(tabSearch.books.toLowerCase())) ||
-    book.book_uuid.toLowerCase().includes(tabSearch.books.toLowerCase()) // Add UUID search
+    book.book_uuid.toLowerCase().includes(tabSearch.books.toLowerCase()) 
   )
 
 const filteredVideos = videos.filter(video =>
@@ -168,7 +165,6 @@ const sortedCategories = [...filteredCategories].sort(
   (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 );
 
-// Update the handleEditBook function in your admin page
 const handleEditBook = (bookUuid: string) => {
   const book = books.find(b => b.book_uuid === bookUuid)
   if (book) {
@@ -385,60 +381,77 @@ const handleEditCategory = (categoryId: number) => {
         </Card>
       </div>
 
-      {/* Admin Tabs */}
+     {/* Admin Tabs */}
       <Tabs
         defaultValue="books"
         className="space-y-4"
         value={currentTab}
-        onValueChange={value => setCurrentTab(value as TabName)}
+        onValueChange={(value) => setCurrentTab(value as TabName)}
       >
-        <TabsList>
-          <TabsTrigger value="books">Books</TabsTrigger>
-          <TabsTrigger value="videos">Videos</TabsTrigger>
-          <TabsTrigger value="categories">Categories</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-6 min-w-[600px] lg:min-w-0">
+            <TabsTrigger value="books" className="text-xs sm:text-sm">
+              Books
+            </TabsTrigger>
+            <TabsTrigger value="videos" className="text-xs sm:text-sm">
+              Videos
+            </TabsTrigger>
+            <TabsTrigger value="categories" className="text-xs sm:text-sm">
+              Categories
+            </TabsTrigger>
+            <TabsTrigger value="users" className="text-xs sm:text-sm">
+              Users
+            </TabsTrigger>
+            <TabsTrigger value="inquiries" className="text-xs sm:text-sm">
+              Inquiries
+            </TabsTrigger>
+            <TabsTrigger value="reports" className="text-xs sm:text-sm">
+              Reports
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
-<TabsContent value="books" className="space-y-4">
-  <Card>
-            <div className="mb-4">
-            </div>
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle>Manage Books</CardTitle>
-                <Button asChild>
+        <TabsContent value="books" className="space-y-4">
+          <Card>
+            <CardHeader className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <CardTitle className="text-lg sm:text-xl">Manage Books</CardTitle>
+                <Button asChild className="w-full sm:w-auto">
                   <Link href="/admin/books/add">
                     <Plus className="mr-2 h-4 w-4" />
-                    Add Book
+                    <span className="hidden sm:inline">Add Book</span>
+                    <span className="sm:hidden">Add</span>
                   </Link>
                 </Button>
               </div>
-  <Input
-    placeholder={`Search ${currentTab} by book uid, title, author, categories...`}
-    value={tabSearch[currentTab] ?? ""}
-    onChange={e => handleTabSearchChange(currentTab, e.target.value)}
-  />
+              <Input
+                placeholder="Search books by ID, title, author, categories..."
+                value={tabSearch[currentTab] ?? ""}
+                onChange={(e) => handleTabSearchChange(currentTab, e.target.value)}
+                className="w-full"
+              />
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {sortedBooks.slice(0, 5).map(book => (
-                  <div key={book.book_uuid} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex-1">
-                      <h3 className="font-semibold">{book.title}</h3>
-                      <p className="text-sm text-gray-600">by {book.author}</p>
-                      <div className="flex gap-2 mt-2">
-                        {book.categories.map(cat => (
-                          <Badge key={cat} variant="outline">
+                {sortedBooks.slice(0, 5).map((book) => (
+                  <div
+                    key={book.book_uuid}
+                    className="flex flex-col lg:flex-row lg:items-center lg:justify-between p-4 border rounded-lg space-y-4 lg:space-y-0"
+                  >
+                    <div className="flex-1 space-y-2">
+                      <h3 className="font-semibold text-sm sm:text-base">{book.title}</h3>
+                      <p className="text-xs sm:text-sm text-gray-600">by {book.author}</p>
+                      <div className="flex flex-wrap gap-1 sm:gap-2">
+                        {book.categories.map((cat) => (
+                          <Badge key={cat} variant="outline" className="text-xs">
                             {cat}
                           </Badge>
                         ))}
-                        <Badge variant={book.book_type === "PHYSICAL" ? "destructive" : "default"}>
+                        <Badge variant={book.book_type === "PHYSICAL" ? "destructive" : "default"} className="text-xs">
                           {book.book_type}
                         </Badge>
                         {book.book_type === "EBOOK" && (
-                          <Badge variant="secondary">
+                          <Badge variant="secondary" className="text-xs">
                             {book.download_permission === "ALL"
                               ? "Public Download"
                               : book.download_permission === "AUTH"
@@ -446,27 +459,35 @@ const handleEditCategory = (categoryId: number) => {
                                 : "No Download"}
                           </Badge>
                         )}
-                        {book.is_featured && <Badge variant="outline">Featured</Badge>}
+                        {book.is_featured && (
+                          <Badge variant="outline" className="text-xs">
+                            Featured
+                          </Badge>
+                        )}
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500">
                         {book.available_copies}/{book.total_copies} available • {book.book_uuid}
                       </p>
                     </div>
-                    <div className="flex gap-2">
-                        <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => handleEditBook(book.book_uuid)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      variant="destructive"
-                      onClick={() => handleDeleteBook(book.book_uuid)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex gap-2 lg:ml-4">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEditBook(book.book_uuid)}
+                        className="flex-1 lg:flex-none"
+                      >
+                        <Edit className="h-4 w-4 lg:mr-0" />
+                        <span className="ml-2 lg:hidden">Edit</span>
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => handleDeleteBook(book.book_uuid)}
+                        className="flex-1 lg:flex-none"
+                      >
+                        <Trash2 className="h-4 w-4 lg:mr-0" />
+                        <span className="ml-2 lg:hidden">Delete</span>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -477,52 +498,67 @@ const handleEditCategory = (categoryId: number) => {
 
         <TabsContent value="videos" className="space-y-4">
           <Card>
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle>Manage Videos</CardTitle>
-                <Button asChild>
+            <CardHeader className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <CardTitle className="text-lg sm:text-xl">Manage Videos</CardTitle>
+                <Button asChild className="w-full sm:w-auto">
                   <Link href="/admin/videos/add">
                     <Plus className="mr-2 h-4 w-4" />
-                    Add Video
+                    <span className="hidden sm:inline">Add Video</span>
+                    <span className="sm:hidden">Add</span>
                   </Link>
                 </Button>
               </div>
-                <Input
-    placeholder={`Search ${currentTab}...`}
-    value={tabSearch[currentTab] ?? ""}
-    onChange={e => handleTabSearchChange(currentTab, e.target.value)}
-  />
+              <Input
+                placeholder="Search videos..."
+                value={tabSearch[currentTab] ?? ""}
+                onChange={(e) => handleTabSearchChange(currentTab, e.target.value)}
+                className="w-full"
+              />
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {sortedVideos.slice(0, 5).map(video => (
-                  <div key={video.video_uuid} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex-1">
-                      <h3 className="font-semibold">{video.title}</h3>
-                      <p className="text-sm text-gray-600">by {video.instructor}</p>
-                      <div className="flex gap-2 mt-2">
-                        <Badge variant="outline">
+                {sortedVideos.slice(0, 5).map((video) => (
+                  <div
+                    key={video.video_uuid}
+                    className="flex flex-col lg:flex-row lg:items-center lg:justify-between p-4 border rounded-lg space-y-4 lg:space-y-0"
+                  >
+                    <div className="flex-1 space-y-2">
+                      <h3 className="font-semibold text-sm sm:text-base">{video.title}</h3>
+                      <p className="text-xs sm:text-sm text-gray-600">by {video.instructor}</p>
+                      <div className="flex flex-wrap gap-1 sm:gap-2">
+                        <Badge variant="outline" className="text-xs">
                           {video.category_display}
                         </Badge>
-                        <Badge variant="outline">{formatDuration(video.duration)}</Badge>
-                        {video.is_featured && <Badge variant="outline">Featured</Badge>}
+                        <Badge variant="outline" className="text-xs">
+                          {formatDuration(video.duration)}
+                        </Badge>
+                        {video.is_featured && (
+                          <Badge variant="outline" className="text-xs">
+                            Featured
+                          </Badge>
+                        )}
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                        <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => handleEditVideo(video.video_uuid)}
+                    <div className="flex gap-2 lg:ml-4">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEditVideo(video.video_uuid)}
+                        className="flex-1 lg:flex-none"
                       >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      variant="destructive"
-                      onClick={() => handleDeleteVideo(video.video_uuid)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                        <Edit className="h-4 w-4 lg:mr-0" />
+                        <span className="ml-2 lg:hidden">Edit</span>
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => handleDeleteVideo(video.video_uuid)}
+                        className="flex-1 lg:flex-none"
+                      >
+                        <Trash2 className="h-4 w-4 lg:mr-0" />
+                        <span className="ml-2 lg:hidden">Delete</span>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -533,16 +569,113 @@ const handleEditCategory = (categoryId: number) => {
 
         <TabsContent value="categories" className="space-y-4">
           <Card>
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle>Manage Categories</CardTitle>
-                <Button asChild>
+            <CardHeader className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <CardTitle className="text-lg sm:text-xl">Manage Categories</CardTitle>
+                <Button asChild className="w-full sm:w-auto">
                   <Link href="/admin/categories/add">
                     <Plus className="mr-2 h-4 w-4" />
-                    Add Category
+                    <span className="hidden sm:inline">Add Category</span>
+                    <span className="sm:hidden">Add</span>
                   </Link>
                 </Button>
               </div>
+              <Input
+                placeholder="Search categories..."
+                value={tabSearch[currentTab] ?? ""}
+                onChange={(e) => handleTabSearchChange(currentTab, e.target.value)}
+                className="w-full"
+              />
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 gap-4">
+                {sortedCategories.map((category) => (
+                  <div key={category.id} className="p-4 border rounded-lg">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm sm:text-base">{category.name}</h3>
+                        <p className="text-xs sm:text-sm text-gray-600 mt-1">{category.description}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEditCategory(category.id)}
+                          className="flex-1 sm:flex-none"
+                        >
+                          <Edit className="h-4 w-4 sm:mr-0" />
+                          <span className="ml-2 sm:hidden">Edit</span>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDeleteCategory(category.id)}
+                          className="flex-1 sm:flex-none"
+                        >
+                          <Trash2 className="h-4 w-4 sm:mr-0" />
+                          <span className="ml-2 sm:hidden">Delete</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="users" className="space-y-4">
+          <Card>
+            <CardHeader className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <CardTitle className="text-lg sm:text-xl">Manage Users</CardTitle>
+              </div>
+              <Input
+                placeholder="Search users..."
+                value={tabSearch[currentTab] ?? ""}
+                onChange={(e) => handleTabSearchChange(currentTab, e.target.value)}
+                className="w-full"
+              />
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {sortedUsers.map((user) => (
+                  <div
+                    key={user.id}
+                    className="flex flex-col lg:flex-row lg:items-center lg:justify-between p-4 border rounded-lg space-y-4 lg:space-y-0"
+                  >
+                    <div className="flex-1 space-y-2">
+                      <h3 className="font-semibold text-sm sm:text-base">
+                        {user.first_name} {user.last_name}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600">{user.email}</p>
+                      <Badge variant={user.role === "admin" ? "default" : "secondary"} className="text-xs w-fit">
+                        {user.role}
+                      </Badge>
+                      <p className="text-xs sm:text-sm text-gray-600">{new Date(user.created_at).toLocaleString()}</p>
+                    </div>
+                    <div className="flex gap-2 lg:ml-4">
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="flex-1 lg:flex-none"
+                      >
+                        <Trash2 className="h-4 w-4 lg:mr-0" />
+                        <span className="ml-2 lg:hidden">Delete</span>
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+                  <TabsContent value="inquiries" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Contact Inquiries</CardTitle>
                 <Input
     placeholder={`Search ${currentTab}...`}
     value={tabSearch[currentTab] ?? ""}
@@ -550,225 +683,182 @@ const handleEditCategory = (categoryId: number) => {
   />
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {sortedCategories.map(category => (
-                  <div key={category.id} className="p-4 border rounded-lg">
+              <div className="space-y-4">
+                {sortedInquiries.map(inquiry => (
+                  <div key={inquiry.id} className="p-4 border rounded-lg">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-semibold">{category.name}</h3>
-                      <div className="flex gap-2">
-                        <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => handleEditCategory(category.id)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      variant="destructive"
-                      onClick={() => handleDeleteCategory(category.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                      <div>
+                        <h3 className="font-semibold">{inquiry.subject}</h3>
+                        <p className="text-sm text-gray-600">
+                          From: {inquiry.name} ({inquiry.email})
+                        </p>
+                        <p className="text-xs text-gray-500">{new Date(inquiry.created_at).toLocaleString()}</p>
                       </div>
+                      <Badge variant={!inquiry.is_resolved ? "destructive" : "default"}>
+                        {!inquiry.is_resolved ? "Pending" : "Resolved"}
+                      </Badge>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">{category.description}</p>
+                    <p className="text-sm mb-3">{inquiry.message}</p>
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outline" onClick={() => handleDeleteInquiry(inquiry.id)}>
+                        Mark as Resolved
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
-        
-<TabsContent value="users" className="space-y-4">
-  <Card>
-    <CardHeader>
-      <div className="flex justify-between items-center">
-        <CardTitle>Manage Users</CardTitle>
-        <Button asChild>
-          <Link href="/admin/users/add">
-            <Plus className="mr-2 h-4 w-4" />
-            Add User
-          </Link>
-        </Button>
-      </div>
-        <Input
-    placeholder={`Search ${currentTab}...`}
-    value={tabSearch[currentTab] ?? ""}
-    onChange={e => handleTabSearchChange(currentTab, e.target.value)}
-  />
-    </CardHeader>
-    <CardContent>
-      <div className="space-y-4">
-        {sortedUsers.map(user => (
-          <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
-            <div className="flex-1">
-              <h3 className="font-semibold">{user.first_name} {user.last_name}</h3>
-              <p className="text-sm text-gray-600">{user.email}</p>
-              <Badge variant={user.role === "admin" ? "default" : "secondary"}>
-                {user.role}
-              </Badge>
-              <br />
-              <br />
-             <p className="text-sm text-gray-600">{new Date(user.created_at).toLocaleString()}</p>
-            </div>
-            <div className="flex gap-2">
-                    <Button 
-                      size="sm" 
-                      variant="destructive"
-                      onClick={() => handleDeleteUser(user.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </CardContent>
-  </Card>
-</TabsContent>
 
-        <TabsContent value="reports" className="space-y-8">
-  <div className="grid grid-cols-1 gap-8">
-    {/* Book Categories Report */}
-    <Card className="border-none shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-t-lg">
-        <CardTitle className="text-white text-2xl">Book Categories Report</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold mb-4">Categories Overview</h3>
-          <div className="flex flex-wrap gap-4">
-            {bookCategories.map((cat) => (
-<Button
-  key={cat.category}
-  variant={selectedCategory === cat.category ? "default" : "outline"}
-  className={`
-    min-w-[178px] h-30 flex flex-col items-center justify-center
-    px-6 py-4 rounded-xl transition-all duration-300
-    border-2 hover:border-primary
-    ${selectedCategory === cat.category 
-      ? "highlight-pulse" 
-      : ""}
-  `}
-  onClick={() => setSelectedCategory(cat.category === selectedCategory ? null : cat.category)}
->
-  <div className="flex flex-col items-center gap-1">
-    <div className="font-bold text-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px]">
-      {cat.category}
-    </div>
-    <div className={`
-      text-sm rounded-full px-3 py-1
-      ${selectedCategory === cat.category 
-        ? "highlight-pulse" 
-        : ""}
-    `}>
-      {cat.total_books} {cat.total_books === 1 ? "book" : "books"}
-    </div>
-  </div>
-</Button>
-            ))}
-          </div>
-        </div>
+        <TabsContent value="reports" className="space-y-4 sm:space-y-8">
+          <div className="grid grid-cols-1 gap-4 sm:gap-8">
+            {/* Book Categories Report */}
+            <Card className="border-none shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-t-lg p-4 sm:p-6">
+                <CardTitle className="text-white text-xl sm:text-2xl">Book Categories Report</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6">
+                <div className="mb-6 sm:mb-8">
+                  <h3 className="text-base sm:text-lg font-semibold mb-4">Categories Overview</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                    {bookCategories.map((cat) => (
+                      <Button
+                        key={cat.category}
+                        variant={selectedCategory === cat.category ? "default" : "outline"}
+                        className={`
+                          h-auto flex flex-col items-center justify-center
+                          px-4 py-4 rounded-xl transition-all duration-300
+                          border-2 hover:border-primary
+                          ${selectedCategory === cat.category ? "highlight-pulse" : ""}
+                        `}
+                        onClick={() => setSelectedCategory(cat.category === selectedCategory ? null : cat.category)}
+                      >
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="font-bold text-sm sm:text-base text-center break-words">{cat.category}</div>
+                          <div
+                            className={`
+                            text-xs sm:text-sm rounded-full px-2 sm:px-3 py-1
+                            ${selectedCategory === cat.category ? "highlight-pulse" : ""}
+                          `}
+                          >
+                            {cat.total_books} {cat.total_books === 1 ? "book" : "books"}
+                          </div>
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
 
-        {selectedCategory && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Total Books</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {bookCategories.find(c => c.category === selectedCategory)?.total_books || 0}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Available</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {bookCategories.find(c => c.category === selectedCategory)?.available_books || 0}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">E-Books</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {bookCategories.find(c => c.category === selectedCategory)?.ebooks || 0}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Physical</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {bookCategories.find(c => c.category === selectedCategory)?.physical_books || 0}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                {selectedCategory && (
+                  <div className="space-y-4 sm:space-y-6 animate-fade-in">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                      <Card>
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-xs sm:text-sm font-medium">Total Books</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-lg sm:text-2xl font-bold">
+                            {bookCategories.find((c) => c.category === selectedCategory)?.total_books || 0}
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-xs sm:text-sm font-medium">Available</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-lg sm:text-2xl font-bold">
+                            {bookCategories.find((c) => c.category === selectedCategory)?.available_books || 0}
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-xs sm:text-sm font-medium">E-Books</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-lg sm:text-2xl font-bold">
+                            {bookCategories.find((c) => c.category === selectedCategory)?.ebooks || 0}
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-xs sm:text-sm font-medium">Physical</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-lg sm:text-2xl font-bold">
+                            {bookCategories.find((c) => c.category === selectedCategory)?.physical_books || 0}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
 
-            <div>
-              <h3 className="text-lg font-semibold mb-4">
-                Books in {selectedCategory}
-              </h3>
-              <div className="space-y-4">
-                {getBooksByCategory(selectedCategory).map(book => (
-                  <div key={book.book_uuid} className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent transition-colors">
-                    <div className="flex-1">
-                      <h3 className="font-semibold">{book.title}</h3>
-                      <p className="text-sm text-gray-600">by {book.author}</p>
-                      <div className="flex gap-2 mt-2">
-                        <Badge variant={book.book_type === "PHYSICAL" ? "destructive" : "default"}>
-                          {book.book_type}
-                        </Badge>
-                        <Badge variant={book.is_available ? "default" : "destructive"}>
-                          {book.is_available ? "Available" : "Checked Out"}
-                        </Badge>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-semibold mb-4">Books in {selectedCategory}</h3>
+                      <div className="space-y-4">
+                        {getBooksByCategory(selectedCategory).map((book) => (
+                          <div
+                            key={book.book_uuid}
+                            className="flex flex-col lg:flex-row lg:items-center lg:justify-between p-4 border rounded-lg hover:bg-accent transition-colors space-y-4 lg:space-y-0"
+                          >
+                            <div className="flex-1 space-y-2">
+                              <h3 className="font-semibold text-sm sm:text-base">{book.title}</h3>
+                              <p className="text-xs sm:text-sm text-gray-600">by {book.author}</p>
+                              <div className="flex flex-wrap gap-1 sm:gap-2">
+                                <Badge
+                                  variant={book.book_type === "PHYSICAL" ? "destructive" : "default"}
+                                  className="text-xs"
+                                >
+                                  {book.book_type}
+                                </Badge>
+                                <Badge variant={book.is_available ? "default" : "destructive"} className="text-xs">
+                                  {book.is_available ? "Available" : "Checked Out"}
+                                </Badge>
+                              </div>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditBook(book.book_uuid)}
+                              className="w-full lg:w-auto"
+                            >
+                              <Edit className="h-4 w-4 lg:mr-0" />
+                              <span className="ml-2 lg:hidden">Edit</span>
+                            </Button>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => handleEditBook(book.book_uuid)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+                )}
+              </CardContent>
+            </Card>
 
-    {/* Video Categories Report (existing) */}
-    <Card className="border-none shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-purple-600 to-purple-800 rounded-t-lg">
-        <CardTitle className="text-white text-2xl">Video Categories Report</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="space-y-3">
-          {Object.entries(stats.video_by_category).map(([category, count]) => (
-            <div key={category} className="flex justify-between items-center p-3 hover:bg-accent rounded-lg transition-colors">
-              <span className="font-medium">{category}</span>
-              <Badge variant="secondary">{count} videos</Badge>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  </div>
-</TabsContent>
+            {/* Video Categories Report */}
+            <Card className="border-none shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-purple-600 to-purple-800 rounded-t-lg p-4 sm:p-6">
+                <CardTitle className="text-white text-xl sm:text-2xl">Video Categories Report</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6">
+                <div className="space-y-3">
+                  {Object.entries(stats.video_by_category).map(([category, count]) => (
+                    <div
+                      key={category}
+                      className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 hover:bg-accent rounded-lg transition-colors gap-2 sm:gap-0"
+                    >
+                      <span className="font-medium text-sm sm:text-base">{category}</span>
+                      <Badge variant="secondary" className="text-xs w-fit">
+                        {count} videos
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
       </Tabs>
     </div>
   )

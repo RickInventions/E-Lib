@@ -25,13 +25,12 @@ export default function BooksPage() {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory)
   const [selectedType, setSelectedType] = useState("all")
   const [books, setBooks] = useState<Book[]>([])
-  const [allBooks, setAllBooks] = useState<Book[]>([]) // Store all books separately
+  const [allBooks, setAllBooks] = useState<Book[]>([])  
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [searchSuggestions, setSearchSuggestions] = useState<Suggestion[]>([])
   const debouncedSearch = useDebounce(searchQuery, 300)
 
-  // Fetch initial data
   useEffect(() => {
     async function loadData() {
       try {
@@ -45,7 +44,7 @@ export default function BooksPage() {
         : booksData.filter(book => book.categories.includes(initialCategory))
 
         setBooks(filteredBooks)
-        setAllBooks(booksData) // Store the complete collection
+        setAllBooks(booksData) 
         setCategories(categoriesData)
 
         if (initialCategory !== "all") {
@@ -64,7 +63,6 @@ export default function BooksPage() {
     loadData()
   }, [toast, initialCategory])
 
-  // Handle search and suggestions
   useEffect(() => {
     if (debouncedSearch.trim() === "") {
     setBooks(allBooks)
@@ -73,7 +71,6 @@ export default function BooksPage() {
   }
 
   if (debouncedSearch.length > 1) {
-    // Get search suggestions
     getSearchSuggestions(debouncedSearch)
       .then(suggestions => {
         const formatted = suggestions.map(s => 
@@ -87,7 +84,7 @@ export default function BooksPage() {
     searchBooks(debouncedSearch)
       .then(results => {
         setBooks(results)
-        console.log("Search results:", results) // <--- See search results here
+        console.log("Search results:", results) 
       })
       .catch(() => toast({
         title: "Search error",
@@ -128,7 +125,6 @@ const handleClearFilters = async () => {
   setSelectedType("all")
   setLoading(true)
   
-  // Clear category from URL
   const params = new URLSearchParams(searchParams)
   params.delete('category')
   window.history.pushState({}, '', `${window.location.pathname}?${params}`)

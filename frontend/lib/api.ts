@@ -2,7 +2,6 @@ import { Book, BorrowedBook, Category, Inquiry, LibraryStats, User, Video } from
 
 export const API_BASE_URL = "http://localhost:8000/api";
 
-// Helper function for auth headers
 function getAuthHeaders() {
   const token = localStorage.getItem('library-token');
   if (!token) throw new Error('Authentication required');
@@ -82,7 +81,7 @@ export async function searchBooks(query: string): Promise<Book[]> {
       throw new Error(`Search failed with status ${res.status}`);
     }
     const data = await res.json();
-    return data.results || data; // Handle both {results: [...]} and direct array responses
+    return data.results || data; 
   } catch (error) {
     console.error("Search error:", error);
     throw error;
@@ -96,10 +95,10 @@ export async function getSearchSuggestions(query: string): Promise<string[]> {
       throw new Error(`Suggestions failed with status ${res.status}`);
     }
     const data = await res.json();
-    return data.suggestions || data; // Handle both {suggestions: [...]} and direct array responses
+    return data.suggestions || data; 
   } catch (error) {
     console.error("Suggestions error:", error);
-    return []; // Return empty array on error
+    return [];
   }
 }
 
@@ -203,7 +202,6 @@ export async function submitInquiry(data: {
   }
 }
 
-// Admin Book Endpoints
 export async function createBook(bookData: FormData): Promise<Book> {
   const token = localStorage.getItem('library-token');
   const res = await fetch(`${API_BASE_URL}/admin/books/`, {
@@ -221,7 +219,6 @@ export async function createBook(bookData: FormData): Promise<Book> {
 }
 
 
-// Admin Video Endpoints
 export async function createVideo(videoData: FormData): Promise<Video> {
   const token = localStorage.getItem('library-token');
   const res = await fetch(`${API_BASE_URL}/admin/videos/`, {
@@ -254,7 +251,6 @@ export async function updateVideo(video_uuid: string, videoData: FormData): Prom
   return res.json();
 }
 
-// Admin Reports
 export async function fetchAdminLibraryStats(): Promise<LibraryStats> {
 const token = localStorage.getItem("library-token");
 const res = await fetch(`${API_BASE_URL}/admin/reports/`, {
@@ -286,7 +282,6 @@ export async function fetchExternalSourcesReport(): Promise<{
   return res.json();
 }
 
-// Borrow Management
 export async function fetchBorrowedBooks(status?: 'overdue' | 'active'): Promise<BorrowedBook[]> {
   const url = status 
     ? `${API_BASE_URL}/admin/borrows/active/?status=${status}`
@@ -343,7 +338,6 @@ export async function fetchBookCategoryReport(): Promise<{
   return res.json();
 }
 
-// Category Management
 export async function createCategory(name: string, description: string): Promise<Category> {
   const res = await fetch(`${API_BASE_URL}/admin/categories/`, {
     method: 'POST',
@@ -354,7 +348,6 @@ export async function createCategory(name: string, description: string): Promise
   return res.json();
 }
 
-// Inquiry Management
 export async function fetchInquiries(): Promise<Inquiry[]> {
   const token = localStorage.getItem("library-token");
   const res = await fetch(`${API_BASE_URL}/admin/inquiries/`, {
@@ -373,17 +366,15 @@ export async function fetchAdminUsers(): Promise<User[]> {
   });
   if (!res.ok) throw new Error('Failed to fetch users');
   const data = await res.json();
-  return Array.isArray(data) ? data : data.results; // <-- fix for paginated response
+  return Array.isArray(data) ? data : data.results; 
 }
 
-// Add UUID search
 export async function searchByUUID(uuid: string): Promise<Book | Video | null> {
   const res = await fetch(`${API_BASE_URL}/search/uuid/?q=${uuid}`);
   if (!res.ok) return null;
   return res.json();
 }
 
-// Delete Book
 export async function deleteBook(bookUuid: string): Promise<void> {
   const token = localStorage.getItem('library-token');
   const res = await fetch(`${API_BASE_URL}/admin/books/${bookUuid}/`, {
@@ -398,7 +389,6 @@ export async function deleteBook(bookUuid: string): Promise<void> {
   }
 }
 
-// Delete Video
 export async function deleteVideo(videoUuid: string): Promise<void> {
   const token = localStorage.getItem('library-token');
   const res = await fetch(`${API_BASE_URL}/admin/videos/${videoUuid}/`, {
@@ -413,7 +403,6 @@ export async function deleteVideo(videoUuid: string): Promise<void> {
   }
 }
 
-// Delete Category
 export async function deleteCategory(categoryId: number): Promise<void> {
   const token = localStorage.getItem('library-token');
   const res = await fetch(`${API_BASE_URL}/admin/categories/${categoryId}/`, {
@@ -428,7 +417,6 @@ export async function deleteCategory(categoryId: number): Promise<void> {
   }
 }
 
-// Delete User
 export async function deleteUser(userId: number): Promise<void> {
   const token = localStorage.getItem('library-token');
   const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/`, {
@@ -443,7 +431,6 @@ export async function deleteUser(userId: number): Promise<void> {
   }
 }
 
-// Delete Inquiry
 export async function deleteInquiry(inquiryId: number): Promise<void> {
   const token = localStorage.getItem('library-token');
   const res = await fetch(`${API_BASE_URL}/admin/inquiries/${inquiryId}/`, {

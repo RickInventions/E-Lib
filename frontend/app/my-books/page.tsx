@@ -32,14 +32,20 @@ export default function MyBooksPage() {
   const fetchData = async () => {
     setLoading(true)
     try {
-      // Fetch both active borrows and history in parallel
       const [borrowed, history] = await Promise.all([
         fetchUserBorrowedBooks(),
         fetchUserBorrowHistory()
       ])
-      
-      setActiveBorrows(borrowed)
-      setBorrowHistory(history)
+
+    const sortedActiveBorrows = [...borrowed].sort((a, b) => 
+      new Date(b.borrowed_date).getTime() - new Date(a.borrowed_date).getTime()
+    )
+    const sortedHistory = [...history].sort((a, b) => 
+      new Date(b.borrowed_date).getTime() - new Date(a.borrowed_date).getTime()
+    )
+    
+    setActiveBorrows(sortedActiveBorrows)
+    setBorrowHistory(sortedHistory)
     } catch (error: any) {
       toast({
         title: "Failed to load data",

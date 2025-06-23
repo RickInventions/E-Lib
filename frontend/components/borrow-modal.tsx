@@ -11,6 +11,7 @@ import { Slider } from "@/components/ui/slider"
 import { borrowBook } from "@/lib/api"
 import type { Book, BorrowResponse } from "@/lib/types"
 import { toast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
 interface BorrowModalProps {
   book: Book
@@ -19,6 +20,7 @@ interface BorrowModalProps {
 }
 
 export function BorrowModal({ book, onBorrowSuccess, children }: BorrowModalProps) {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [days, setDays] = useState(7)
   const [isLoading, setIsLoading] = useState(false)
@@ -43,6 +45,11 @@ toast({
 });
       onBorrowSuccess(response)
       setOpen(false)
+
+            setTimeout(() => {
+        router.push("/my-books")
+      }, 1000)
+
     } catch (error: any) {
   let message = error.message || "Failed to borrow book";
   

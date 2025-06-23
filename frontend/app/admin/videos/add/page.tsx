@@ -1,4 +1,3 @@
-// books/videos/add/page.tsx
 "use client"
 import { useAuth } from "@/lib/auth-context"
 import { createVideo, updateVideo } from "@/lib/api"
@@ -91,12 +90,10 @@ export default function AddVideoPage({ video }: AddVideoPageProps) {
         formData.append('external_source', videoData.external_source)
       }
       
-      // Only append files if they exist (for edit) or are required (for create)
       if (videoFile) formData.append('video_file', videoFile)
       if (thumbnailFile) formData.append('thumbnail', thumbnailFile)
 
       if (video) {
-        // Update existing video
         await updateVideo(video.video_uuid, formData)
         toast({
           title: "Success",
@@ -104,7 +101,6 @@ export default function AddVideoPage({ video }: AddVideoPageProps) {
           variant: "default",
         })
       } else {
-        // Create new video
         const newVideo = await createVideo(formData)
         toast({
           title: "Success",
@@ -252,7 +248,7 @@ export default function AddVideoPage({ video }: AddVideoPageProps) {
                       className="hidden"
                       accept="video/*"
                       onChange={handleVideoFileChange}
-                      required={!video} // Only required for new videos
+                      required={!video}
                     />
                     <Button 
                       type="button" 

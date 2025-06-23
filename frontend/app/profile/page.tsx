@@ -56,7 +56,7 @@ export default function ProfilePage() {
 
     try {
       const response = await fetch(`${API_BASE_URL}/auth/profile/`, {
-        method: "PATCH", // Changed to PATCH for partial updates
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
@@ -81,7 +81,6 @@ export default function ProfilePage() {
       }
 
       const updatedUser = await response.json()
-      // Update auth context with new user data without requiring logout
       updateUser(updatedUser)
       setSuccess("Profile updated successfully!")
     } catch (error) {

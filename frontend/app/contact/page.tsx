@@ -48,7 +48,6 @@ export default function ContactPage() {
       })
       
       setSubmitted(true)
-      // Reset form but keep user info
       setFormData({
         ...formData,
         subject: "",

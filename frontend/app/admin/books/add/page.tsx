@@ -264,7 +264,6 @@ useEffect(() => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="cover-image">Cover Image  {!book && '*'}</Label>
-                   {/* Show current cover image if editing */}
       {book?.cover_image && (
         <div className="mb-2">
           <p className="text-sm text-muted-foreground mb-1">Current cover:</p>
@@ -289,11 +288,9 @@ src={`http://localhost:8000${book.cover_image}`}
       </p>
     </div>
 
- {/* Only show PDF upload for ebooks */}
     {bookData.book_type === "EBOOK" && (
       <div className="space-y-2">
         <Label htmlFor="pdf-file">PDF File</Label>
-        {/* Show current PDF info if editing */}
         {book?.pdf_file && (
           <div className="mb-2">
             <p className="text-sm text-muted-foreground">Current PDF: {book.pdf_file.split('/').pop()}</p>
@@ -346,7 +343,6 @@ src={`http://localhost:8000${book.cover_image}`}
                   </RadioGroup>
                 </div>
 
-                {/* Only show download permission for ebooks */}
                 {bookData.book_type === "EBOOK" && (
                   <div className="space-y-2">
                     <Label>Download Permission *</Label>

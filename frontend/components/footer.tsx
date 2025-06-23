@@ -56,28 +56,28 @@ export function Footer() {
             <h3 className="font-semibold text-lg">Categories</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/books?category=Fiction" className="text-gray-300 hover:text-white transition-colors">
-                  Fiction
+                <Link href="/books?category=Adventure" className="text-gray-300 hover:text-white transition-colors">
+                  Adventure
                 </Link>
               </li>
               <li>
-                <Link href="/books?category=science" className="text-gray-300 hover:text-white transition-colors">
-                  Science
+                <Link href="/books?category=Thriller" className="text-gray-300 hover:text-white transition-colors">
+                  Thriller
                 </Link>
               </li>
               <li>
-                <Link href="/books?category=technology" className="text-gray-300 hover:text-white transition-colors">
-                  Technology
+                <Link href="/books?category=Romance" className="text-gray-300 hover:text-white transition-colors">
+                  Romance
                 </Link>
               </li>
               <li>
-                <Link href="/books?category=history" className="text-gray-300 hover:text-white transition-colors">
-                  History
+                <Link href="/books?category=Historical" className="text-gray-300 hover:text-white transition-colors">
+                  Historical
                 </Link>
               </li>
               <li>
-                <Link href="/books?category=biography" className="text-gray-300 hover:text-white transition-colors">
-                  Biography
+                <Link href="/books?category=Fantasy" className="text-gray-300 hover:text-white transition-colors">
+                  Fantasy
                 </Link>
               </li>
             </ul>

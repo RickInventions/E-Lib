@@ -1,4 +1,3 @@
-// components/book-card.tsx
 "use client"
 
 import { useState } from "react"

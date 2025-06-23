@@ -8,7 +8,7 @@ import { AuthModal } from "./auth-modal"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { BookOpen, User, LogOut, Menu, BookMarked, Settings } from "lucide-react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 export function Navbar() {
   const { user, logout, isAuthenticated } = useAuth()
@@ -170,9 +170,13 @@ export function Navbar() {
               <SheetTrigger asChild className="md:hidden">
                 <Button variant="ghost" size="icon" className="hover:scale-105 transition-transform">
                   <Menu className="h-5 w-5" />
+                  <span className="sr-only">Open navigation menu</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetHeader>
+                <SheetTitle className="text-left">Menu</SheetTitle>
+              </SheetHeader>
                 <div className="flex flex-col space-y-4 mt-4">
                   <NavLinks mobile setShowAuthModal={setShowAuthModal} />
                   {isAuthenticated ? (

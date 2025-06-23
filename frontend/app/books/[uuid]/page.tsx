@@ -28,7 +28,6 @@ export default function BookDetailPage() {
   const router = useRouter()
   const params = useParams()
 
-  // Move loadBook to component scope so it can be called elsewhere
   async function loadBook() {
     try {
       const bookData = await fetchBookDetails(params.uuid as string)
@@ -121,7 +120,6 @@ const handleReadOnline = async () => {
   }
 
   try { 
-    // Open in new tab with PDF viewer
     const response = await fetch(
       `${API_BASE_URL}/books/${book.book_uuid}/read/`,
       {
@@ -190,7 +188,7 @@ const handleReadOnline = async () => {
   }
             alt={book.title}
             fill
-            className="object-cover"
+            className="object-fill"
             priority
           />
           <div className="absolute top-4 right-4 flex gap-2">
@@ -334,13 +332,20 @@ const handleReadOnline = async () => {
           </div>
                   <div className="space-y-4">
                   {/* Summary Section */}
-                  <div>
-                    <h3 className="font-semibold">Summary</h3>
-                    <p className="text-muted-foreground whitespace-pre-line">
-                      {book.summary}
-                    </p>
-                  </div>
-                    </div>
+ <div className="border rounded-lg overflow-hidden">
+      <div className="p-4 bg-accent">
+        <h3 className="font-semibold">Summary</h3>
+      </div>
+      <div 
+        className="p-4 whitespace-pre-line overflow-y-auto"
+        style={{ 
+          maxHeight: '270px' // Fixed height matching the image
+        }}
+      >
+        {book.summary}
+      </div>
+    </div>
+    </div>
 
         </div>
       </div>
@@ -372,7 +377,7 @@ const handleReadOnline = async () => {
                       }
                       alt={book.title}
                       fill
-                      className="object-cover rounded-t-lg"
+                      className="object-fill rounded-t-lg"
                     />
                   </div>
                   <div className="p-4">

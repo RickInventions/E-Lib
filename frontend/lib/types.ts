@@ -1,4 +1,3 @@
-// lib/types.ts
 export interface Book {
   id: number
   book_uuid: string
@@ -107,7 +106,7 @@ export interface ReadingProgress {
   id: string
   book_uuid: string
   user_id: string
-  progress: number // 0-100 percentage
+  progress: number 
   last_read: string
   book: Book
 }
@@ -116,7 +115,7 @@ export interface VideoProgress {
   id: string
   video_uuid: string
   user_id: string
-  progress: number // 0-100 percentage
+  progress: number 
   last_watched: string
   video: Video
 }

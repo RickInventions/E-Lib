@@ -170,7 +170,7 @@ export default function VideoDetailsPage() {
   }
                           alt={video.title} 
                           fill 
-                          className="object-cover"
+                          className="object-fill"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                         />
                       ) : (
