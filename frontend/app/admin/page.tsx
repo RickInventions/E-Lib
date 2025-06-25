@@ -262,13 +262,64 @@ const handleEditCategory = (categoryId: number) => {
     }
   }
 
-  if (loading || !stats) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <span className="text-lg">Loading admin dashboard...</span>
+if (loading || !stats) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="text-center max-w-md">
+        <div className="flex justify-center mb-6">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
+        </div>
+        
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Loading Admin Dashboard</h2>
+        <div className="relative pt-1 mb-8">
+          <div className="flex mb-2 items-center justify-between">
+            <div>
+              <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
+                Loading
+              </span>
+            </div>
+            <div className="text-right">
+              <span className="text-xs font-semibold inline-block text-blue-600">
+                75%
+              </span>
+            </div>
+          </div>
+          <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
+            <div 
+              className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600 animate-pulse"
+              style={{ width: '75%' }}
+            ></div>
+          </div>
+        </div>
+        
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mb-6 text-left">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-yellow-700">
+                Taking longer than usual? Our servers might be busy. You can try reloading the page.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <button
+          onClick={() => window.location.reload()}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 hover:scale-105"
+        >
+          <svg className="animate-pulse -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Reload Page
+        </button>
       </div>
-    )
-  }
+    </div>
+  )
+}
   
   return (
     <div className="container mx-auto px-4 py-8">
