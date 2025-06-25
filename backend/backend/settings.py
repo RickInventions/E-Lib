@@ -35,7 +35,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:5173",
-    "https://sensational-faun-52c8a9.netlify.app",
+    "https://digitalbook-lib.netlify.app",
     "http://192.168.233.1:3000"
 ]
 CORS_ALLOW_HEADERS = [
