@@ -1,0 +1,18 @@
+[build]
+  base = "frontend"
+  publish = "frontend/.next"
+  command = "npm run build"
+
+[functions]
+  directory = "frontend/.netlify/functions"
+
+[dev]
+  framework = "next"
+  targetPort = 3000
+  command = "npm run dev"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NEXT_PRIVATE_CACHE = "1"
