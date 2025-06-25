@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-p18b*iqwxu_fp)pec7x)ay5gvn_7(^o&!5+jd1op$bmc=gy_c&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["e-lib-rrx7.onrender.com", "127.0.0.1", "localhost"]
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  
 }
