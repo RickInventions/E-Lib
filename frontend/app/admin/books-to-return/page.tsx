@@ -203,7 +203,7 @@ src={
     borrowed.book.cover_image
       ? borrowed.book.cover_image.startsWith("http")
       ? borrowed.book.cover_image
-      : `http://localhost:8000${borrowed.book.cover_image}`
+      : `https://e-lib-rrx7.onrender.com${borrowed.book.cover_image}`
         : "/placeholder.svg"
   }
   alt={borrowed.book.title}

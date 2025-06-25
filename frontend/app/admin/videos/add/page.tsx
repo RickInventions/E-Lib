@@ -273,7 +273,7 @@ export default function AddVideoPage({ video }: AddVideoPageProps) {
                       <div className="mb-2">
                         <p className="text-sm text-muted-foreground">Current thumbnail:</p>
                         <img 
-src={`http://localhost:8000${video.thumbnail}`}
+src={`https://e-lib-rrx7.onrender.com${video.thumbnail}`}
 
                           alt="Current thumbnail" 
                           className="h-40 object-contain border rounded"

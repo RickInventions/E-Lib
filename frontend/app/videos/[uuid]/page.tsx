@@ -150,7 +150,7 @@ export default function VideoDetailsPage() {
   src={
     video.video_file.startsWith("http")
       ? video.video_file
-      : `http://localhost:8000${video.video_file}`
+      : `https://e-lib-rrx7.onrender.com${video.video_file}`
   }
                         controls
                         autoPlay
@@ -165,7 +165,7 @@ export default function VideoDetailsPage() {
     video.thumbnail
       ? video.thumbnail.startsWith("http")
         ? video.thumbnail
-        : `http://localhost:8000${video.thumbnail}`
+        : `https://e-lib-rrx7.onrender.com${video.thumbnail}`
       : "/placeholder.svg"
   }
                           alt={video.title} 

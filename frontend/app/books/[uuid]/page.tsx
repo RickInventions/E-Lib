@@ -15,7 +15,7 @@ import { BorrowModal } from "@/components/borrow-modal"
 import { Card, CardContent } from "@/components/ui/card"
 import { AuthModal } from "@/components/auth-modal"
 import { useToast } from "@/hooks/use-toast"
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://e-lib-rrx7.onrender.com/api"
 
 
 export default function BookDetailPage() {
@@ -183,7 +183,7 @@ const handleReadOnline = async () => {
     book.cover_image
       ? book.cover_image.startsWith("http")
         ? book.cover_image
-        : `http://localhost:8000${book.cover_image}`
+        : `https://e-lib-rrx7.onrender.com${book.cover_image}`
       : "/placeholder.svg"
   }
             alt={book.title}
@@ -372,7 +372,7 @@ const handleReadOnline = async () => {
                         book.cover_image
                           ? book.cover_image.startsWith("http")
                             ? book.cover_image
-                            : `http://localhost:8000${book.cover_image}`
+                            : `https://e-lib-rrx7.onrender.com${book.cover_image}`
                           : "/placeholder.svg"
                       }
                       alt={book.title}

@@ -268,7 +268,7 @@ useEffect(() => {
         <div className="mb-2">
           <p className="text-sm text-muted-foreground mb-1">Current cover:</p>
           <img 
-src={`http://localhost:8000${book.cover_image}`}
+src={`https://e-lib-rrx7.onrender.com${book.cover_image}`}
     onError={() => setCoverImageError(true)}
             alt={book.cover_image} 
             className="h-40 object-contain border rounded"

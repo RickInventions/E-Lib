@@ -135,7 +135,7 @@ export default function MyBooksPage() {
                               borrowed.book.cover_image 
                                 ? borrowed.book.cover_image.startsWith("http")
                                   ? borrowed.book.cover_image
-                                  : `${process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"}${borrowed.book.cover_image}`
+                                  : `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://e-lib-rrx7.onrender.com"}${borrowed.book.cover_image}`
                                 : "/placeholder.svg"
                             }
                             alt={borrowed.book.title}
@@ -237,7 +237,7 @@ export default function MyBooksPage() {
                             borrowed.book.cover_image 
                               ? borrowed.book.cover_image.startsWith("http")
                                 ? borrowed.book.cover_image
-                                : `${process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"}${borrowed.book.cover_image}`
+                                : `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://e-lib-rrx7.onrender.com"}${borrowed.book.cover_image}`
                               : "/placeholder.svg"
                           }
                           alt={borrowed.book.title}

@@ -57,7 +57,7 @@ export function VideoCard({ video, onWatch }: VideoCardProps) {
     video.thumbnail
       ? video.thumbnail.startsWith("http")
         ? video.thumbnail
-        : `http://localhost:8000${video.thumbnail}`
+        : `https://e-lib-rrx7.onrender.com${video.thumbnail}`
       : "/placeholder.svg"
   }
             alt={video.title} 

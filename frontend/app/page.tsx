@@ -48,7 +48,7 @@ setCategories(categoriesData.map(cat => ({
     b.categories.includes(cat.name)
   ).length
 })));
-        const res = await fetch("http://127.0.0.1:8000/api/featured/")
+        const res = await fetch("https://e-lib-rrx7.onrender.com/api/featured/")
 const data = await res.json()
 setFeaturedBooks((data.books || []).slice(0, 4))
 

@@ -10,7 +10,7 @@ export function VideoPlayer({ video }: VideoPlayerProps) {
   return (
     <div className="aspect-video">
       <ReactPlayer
-        url={`http://localhost:8000${video.video_file}`}
+        url={`https://e-lib-rrx7.onrender.com${video.video_file}`}
         width="100%"
         height="100%"
         controls

@@ -12,7 +12,7 @@ import { AuthModal } from "./auth-modal"
 import { Download, BookOpen, Eye } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://e-lib-rrx7.onrender.com/api"
 
 interface BookCardProps {
   book: Book
@@ -123,7 +123,7 @@ const handleReadOnline = async () => {
     book.cover_image
       ? book.cover_image.startsWith("http")
         ? book.cover_image
-        : `http://localhost:8000${book.cover_image}`
+        : `https://e-lib-rrx7.onrender.com${book.cover_image}`
       : "/placeholder.svg"
   }
             alt={book.title} 

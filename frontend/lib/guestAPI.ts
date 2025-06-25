@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://e-lib-rrx7.onrender.com/api';
 
 const guestApi = axios.create({
   baseURL: API_BASE_URL,

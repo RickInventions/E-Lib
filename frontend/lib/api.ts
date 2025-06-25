@@ -1,6 +1,6 @@
 import { Book, BorrowedBook, Category, Inquiry, LibraryStats, User, Video } from "./types";
 
-export const API_BASE_URL = "http://localhost:8000/api";
+export const API_BASE_URL = "https://e-lib-rrx7.onrender.com/api";
 
 function getAuthHeaders() {
   const token = localStorage.getItem('library-token');
