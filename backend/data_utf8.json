@@ -1,0 +1,1486 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "4ku50u5dbjspdx5gjc4eut48lg2a24hq",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJoy:Gf1GVfrvKK6b4oS7JTeZCxs7KhUjLTPl9X4CwrXyVwc",
+    "expire_date": "2025-07-03T18:17:08.854Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "5x4188pxcywkmoauafradxm8137wqb8i",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJ5d:Kw2iOjNrlpOM0GNcqFoYU_CyE331l57UBuvAjtWFLtc",
+    "expire_date": "2025-07-03T17:30:17.482Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "5z9qa8afb7m03zm8x1k04yw9mior6rla",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uSPMD:mD2Tjo5N9tTbxHtLHka2Y6ZOqULOdlYKJwEG14MQ6Dw",
+    "expire_date": "2025-07-04T00:11:49.280Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6e0wkud8bs0ghyci63jf3brc3cphk3zf",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uTSb6:iyYfHdiljt6J9dQiOcbRV9ASOB1I5A2-8cDlfhOoGcU",
+    "expire_date": "2025-07-06T21:51:32.437Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6h13lakml283plrws90feqy81oa77z7x",
+  "fields": {
+    "session_data": ".eJxVjDkOwjAUBe_iGln-XoKhpOcM0V9sHEC2FCcV4u4QKQW0b2beS424LmVce5rHSdRZgVGH35GQH6luRO5Yb01zq8s8kd4UvdOur03S87K7fwcFe_nWwRkjloP3p2Bz8mhJHBIDZQ44BIpiIjuGBJAMO7BHB044D54yRFDvDws3ODU:1uTT21:K7P9oAuBc7U1YLlkkVqv89OVQ0uB1iUhEmR0HKp7SzM",
+    "expire_date": "2025-07-06T22:19:21.326Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "77cpjrlp8m10fpqqhhpflesvuiu7q0t1",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-4Q8lfc5geXdtHEC2FCcV4u4QKQW0b2bei8W0rTVuIy9xJnZhgZ1-N0j4yG0HdE_t1jn2ti4z8F3hBx186pSf18P9O6hp1G_tyFoZhPUFwCpIGZ0K0hBK5YsXTiLKEqAU0OEcDHjSaLTQJlmDZAR7fwDoTzfc:1uSFoJ:W0-Nvlk-DJLd_eY6fHFbAHjnAhLN0aXigNcvk34pVfc",
+    "expire_date": "2025-07-03T14:00:11.588Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8kuito85auvs8kzgunihojarcn6ln13q",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJUS:RY8aSLx3Tsgpz_bCCzRTnIygQVXhhhwiA1PzOTqyhJk",
+    "expire_date": "2025-07-03T17:55:56.126Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "afrmrcau8t331jt2vdgafwjxmcbrbe4h",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uTRBu:lsn5MYjh-Jqhni8yo-Mx3nqfluZqDdvZKNSw2aZbYKU",
+    "expire_date": "2025-07-06T20:21:26.955Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "aivb7wftefll9rdsbt6x6dfdzddbjbcr",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uTRDp:A7D-8oPjDu1nmJ3UHbE0uBEa-tR_O4Vn1DFIpjdpd8c",
+    "expire_date": "2025-07-06T20:23:25.706Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "b5i10ue7dsy80d86uddul3g6j0j3to5r",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJQ7:NAZcoKmA05M3NIttQPUj96uPUnIf_5PKbigH2GnRlI4",
+    "expire_date": "2025-07-03T17:51:27.072Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "bcjdzysbrqit26e4x45gl49pchkxp445",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAEJgMu3XsGMjAgVQNJaVeNd9cmXej2v_f-JgKtSw3ryHOYWFwEiNPvFik9c9sBP6jdu0y9LfMU5a7Igw5565xf18P9O6g06rfWEA0Voui0txwJ9dmWhMgmKWANgNaRSgWN8xmVT1yK08WhMaCdseL9AfMgN7U:1uQnNQ:S4qMybsLM34ThMzgZrrBekc8y1Yo113oD1LyMSd45BI",
+    "expire_date": "2025-06-29T13:26:24.766Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "bzk6cqyw31c9qb8b3nfhhctj31v5nyfr",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJJR:YlZgzrWlGgDuICeVg18ENBJBOeXZd3uVBn3DAJw1Aao",
+    "expire_date": "2025-07-03T17:44:33.999Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "cb46go6647ust2n7q12w53lk6dqa3hmf",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFMZXi4dN9vIDAMUjU0Ke3K-O_apAvd3nPOfYkQt7WGrfMSpiwuwovT75YiPbjtIN9ju82S5rYuU5K7Ig_a5Thnfl4P9--gxl6_NSbOlg2y0kWhBmJD3rEdihpcKUo7AkIFcIZUQFuOCAl91gBsDRvx_gDqDDem:1uSG1h:doxsqioDdSD56EiJpElTNeIx1X-3QtvNQRE9-QbbKSk",
+    "expire_date": "2025-07-03T14:14:01.339Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "cticasikxxvmvg9ogsy9v56kxa52am9s",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDoxRcuu83kBkYpWogKe3K-O_apAvd3nPOfYmI21ri1nmJcxZnYcXpdyNMD647yHestyZTq-syk9wVedAup5b5eTncv4OCvXzr4LXO5IEAAfSgzJDMyOQdZWPBjKgRGYPyDnJyFNh4YxU7TpiUoqt4fwDO7Tfj:1uRN65:gfMbXd8dy2v9pjF2d41rdDcfrlHfbBMerO7wGVvuC_0",
+    "expire_date": "2025-07-01T03:34:53.297Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "d5i9ebb85f3d2gv177zk0hex5qzylgss",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSPqE:g6j86cUmfI7QF8iX8VfxGGUuF5MG7QoZGRDDUSubVMw",
+    "expire_date": "2025-07-04T00:42:50.245Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "en1pvr87yugbzza2qell6p338w4kzyle",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uSFW5:JvnLuYXT7WAzfPnpqr34a18FGZUKlT-hQqJ0kRzPvEk",
+    "expire_date": "2025-07-03T13:41:21.364Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "f13mpb7k2skqu0y7krtqsousrjx8ngcz",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uT2Ii:Fcd01SWtf4ZQmzQlF5g5p8JLv_2PCKprGNWMt8jTpek",
+    "expire_date": "2025-07-05T17:46:48.539Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fj9ceif4kssu2p9zyb2izn3t2uufqnzl",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSLiH:Kz7dX-YDydTF6Cp84gxV0X7X5lAPoju4OpjexwR3r2s",
+    "expire_date": "2025-07-03T20:18:21.148Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fm8vjq7o2shecw9b5tu12yf3bnxzzvat",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSHj5WNSpvcZELBscBKBZOwqyt2DJRdJOzPvvZnz-5bd3tLqFmRXJtjllwUfn6kcAh--3CuPtWzrEviR8NM2PldMr9vZ_h1k33JfA4UIySgQMnqTAkUJJEjoZCbTTdAEnowki5PqeNQ2qMEOgCNK1JZ9vgMhOEg:1uQXZe:Zf5kY-GKKxCKDEAN9JBhtFaibpsGkzAWb3GjQrW65nw",
+    "expire_date": "2025-06-28T20:33:58.100Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "g9svqjcwwhc77wc9hbk6lrskjo8suzqr",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDoxRcuu83kBkYpWogKe3K-O_apAvd3nPOfYmI21ri1nmJcxZnYcXpdyNMD647yHestyZTq-syk9wVedAup5b5eTncv4OCvXzr4LXO5IEAAfSgzJDMyOQdZWPBjKgRGYPyDnJyFNh4YxU7TpiUoqt4fwDO7Tfj:1uRWJW:YQu-PVD7rvjCkIxJb1GJaI8SsvZB4YQAua6KJ2C9jPI",
+    "expire_date": "2025-07-01T13:25:22.061Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ij997wtq0xde4eleb23l0eeqmb26y5b3",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDoxRcuu83kBkYpWogKe3K-O_apAvd3nPOfYmI21ri1nmJcxZnYcXpdyNMD647yHestyZTq-syk9wVedAup5b5eTncv4OCvXzr4LXO5IEAAfSgzJDMyOQdZWPBjKgRGYPyDnJyFNh4YxU7TpiUoqt4fwDO7Tfj:1uSFUz:lWddvds_IyY8dnD1ifGR1cmq8JU8kudhnah_UZohHGQ",
+    "expire_date": "2025-07-03T13:40:13.459Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "iuxtf972mxb4vqopsn1lnk29z1bbis7h",
+  "fields": {
+    "session_data": ".eJxVjDkOwjAUBe_iGln-XoKhpOcM0V9sHEC2FCcV4u4QKQW0b2beS424LmVce5rHSdRZgVGH35GQH6luRO5Yb01zq8s8kd4UvdOur03S87K7fwcFe_nWwRkjloP3p2Bz8mhJHBIDZQ44BIpiIjuGBJAMO7BHB044D54yRFDvDws3ODU:1uTRBG:3MM6uyMWeIoQuOsDYBR92KZf-OoTvh3Pk0mUSbiIIFQ",
+    "expire_date": "2025-07-06T20:20:46.515Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "j2njppsg6if6cp62nti5nomzyqdf0g2t",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uTTBr:Bk2qCkSNlbixUOdq64kjRXIIgt2iWzr6ntuWi8PRhZI",
+    "expire_date": "2025-07-06T22:29:31.185Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "j6dw2fhz4oaei5ae831zbzv0k317rm5d",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSP4c:iGE-Go6zYEnmPEWimh0OE3NeoNTSeMO8ooH7VKg3KhM",
+    "expire_date": "2025-07-03T23:53:38.010Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jz76n9cyg8li4b41w9sivgfv046vetfd",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uTWcA:nwMYOBMsjUd4Jn74CM02ezfJzHwOLxb82zC3XI_8KyM",
+    "expire_date": "2025-07-07T02:08:54.252Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "kie1zvonug3j61eofw8yz2rqeejesvfg",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDoxRcuu83kBkYpWogKe3K-O_apAvd3nPOfYmI21ri1nmJcxZnYcXpdyNMD647yHestyZTq-syk9wVedAup5b5eTncv4OCvXzr4LXO5IEAAfSgzJDMyOQdZWPBjKgRGYPyDnJyFNh4YxU7TpiUoqt4fwDO7Tfj:1uRWTi:B_cJ6tgJ65PeUPhx6s8k9uoVcpXnUWfukwbVqWyesxk",
+    "expire_date": "2025-07-01T13:35:54.981Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ky5pmgk4g98qylsowjv8myb5u8p23oem",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSIwv:HFUoq2z0G0q_rdVlzCyCiocG8EK5fi9SizYrb-Kdv88",
+    "expire_date": "2025-07-03T17:21:17.345Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "kyje1pv5pl55azkvmfb6var4furcnjkn",
+  "fields": {
+    "session_data": ".eJxVjEEOgkAMRe8yazOhMJTRpXvOMGmnraAGEgZWxrsrCQvd_vfef7lE2zqkreiSRnEXh-70uzHlh047kDtNt9nneVqXkf2u-IMW38-iz-vh_h0MVIZvzQyhVcpR7BwBEYNBK6xmIC0jVqEzrZrY1YaMHAIZ1I0SKEXkKO79AQB9OJw:1uQr3j:-xRVrUvP3vAqnkGZPEA0t0fwZj82ZTBxecaerh_OdP4",
+    "expire_date": "2025-06-29T17:22:19.330Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "m1v544zfk2nr62flzdem9zfou94tl5ub",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDoxRcuu83kBkYpWogKe3K-O_apAvd3nPOfYmI21ri1nmJcxZnYcXpdyNMD647yHestyZTq-syk9wVedAup5b5eTncv4OCvXzr4LXO5IEAAfSgzJDMyOQdZWPBjKgRGYPyDnJyFNh4YxU7TpiUoqt4fwDO7Tfj:1uSLpN:R3-wkN98OB75xj4Uy0TqTZQ0LDzOd7duQp7T1QgtA64",
+    "expire_date": "2025-07-03T20:25:41.518Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "mjmkyv4gcbf89mmeiqkb3cu40iui915v",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSOcS:M2jo6DTXqKhTCkGE8kZPQtV5iGcAhjHLumDX6URzr_Y",
+    "expire_date": "2025-07-03T23:24:32.663Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "mtnwaex9fs6lpp2srasg6cay9sa24vuc",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDoxRcuu83kBkYpWogKe3K-O_apAvd3nPOfYmI21ri1nmJcxZnYcXpdyNMD647yHestyZTq-syk9wVedAup5b5eTncv4OCvXzr4LXO5IEAAfSgzJDMyOQdZWPBjKgRGYPyDnJyFNh4YxU7TpiUoqt4fwDO7Tfj:1uRW3n:4_KRcFOHPjlgtxPpLNKtmf3ykE7YtFkEAuLbzoSgp9g",
+    "expire_date": "2025-07-01T13:09:07.283Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "o25hov5mi66bbffly5ck1rscm6q4xues",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uT3re:0fY-zbnplLPwTGeYt-Azs5u774YS1R8SAchsZajmM2c",
+    "expire_date": "2025-07-05T19:26:58.795Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ppv8uppy3z08zu61oa7vo9d1irmekekh",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uTQKx:BHy9xZi-rzHRwfTDFmeRBU7j9Ct2qeK2hZDDZxu3YmI",
+    "expire_date": "2025-07-06T19:26:43.423Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "qqfynksd3dygazu3i7yfij2r3hus7qk4",
+  "fields": {
+    "session_data": ".eJxVjDkOwjAUBe_iGln-XoKhpOcM0V9sHEC2FCcV4u4QKQW0b2beS424LmVce5rHSdRZgVGH35GQH6luRO5Yb01zq8s8kd4UvdOur03S87K7fwcFe_nWwRkjloP3p2Bz8mhJHBIDZQ44BIpiIjuGBJAMO7BHB044D54yRFDvDws3ODU:1uTRCg:BMwydB_gTScOdRrBo8YnJ2q3I8hr3c-xYh8rdcYl2Es",
+    "expire_date": "2025-07-06T20:22:14.543Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "rtlwhh2dcktuqa1s0bzsixqegi0lkhzu",
+  "fields": {
+    "session_data": ".eJxVjDkOwjAUBe_iGln-XoKhpOcM0V9sHEC2FCcV4u4QKQW0b2beS424LmVce5rHSdRZgVGH35GQH6luRO5Yb01zq8s8kd4UvdOur03S87K7fwcFe_nWwRkjloP3p2Bz8mhJHBIDZQ44BIpiIjuGBJAMO7BHB044D54yRFDvDws3ODU:1uTQFs:5bsqKcICa630ih5S5LtugWPDitpSHre878H9_x0kDYg",
+    "expire_date": "2025-07-06T19:21:28.495Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ss2h67sz8xanpoiz9plkv9v5vylxnxdb",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJ5x:vEQHNtyr5hdgALR4OnAl6HgB8pSBxk9BwsNmgCsMkXc",
+    "expire_date": "2025-07-03T17:30:37.186Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ssuyyvngh7ur5ko5eq8q5xzbzh54acxr",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDoxRcuu83kBkYpWogKe3K-O_apAvd3nPOfYmI21ri1nmJcxZnYcXpdyNMD647yHestyZTq-syk9wVedAup5b5eTncv4OCvXzr4LXO5IEAAfSgzJDMyOQdZWPBjKgRGYPyDnJyFNh4YxU7TpiUoqt4fwDO7Tfj:1uRW9u:4WNxyMOvRMqYDIHSStLnldvibMUwwRjrMioXHHiiMUY",
+    "expire_date": "2025-07-01T13:15:26.828Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vaj5cknctj06rycjfy5qixeqrwgqgj8w",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJ4r:P6TJqYf3UCgcdoI6TBrlxcp8VqvbR_zEiS8L0ZkHVp0",
+    "expire_date": "2025-07-03T17:29:29.632Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "w3l6t9zhzt7q9shvvaax3u3b4tjgzrpa",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uUXvo:lsvYRm-C-pQtqZ54H3F82IJVGrhgvful1_kcHS6Zreo",
+    "expire_date": "2025-07-09T21:45:24.744Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "x34dds1l3lky5xlhc2p6prhp1zhuoxko",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSPEx:Qi0yUaxvXF2yNT0xZONRPHV5j2hKvMCaqP1i0HpW9Qs",
+    "expire_date": "2025-07-04T00:04:19.144Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "x4dd11qrd4rwoxig4noq95ibjntydeeq",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJP2:fQEOQut81M1vVS9JsHeoEi7yznG5H0QMtCxUDeklxig",
+    "expire_date": "2025-07-03T17:50:20.722Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "xyh1or8y4cojjefgohig8arkt15cpfda",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlmsjbFFSc8ZrP14cQA5UpxUEXeHSCmgfTPzVpNxmWteepnyIOZikjn8boT8LG0D8sB2Hy2PbZ4Gsptid9rtbZTyuu7u30HFXr-1A5IE58SB9eSBAyYuWkg1oAdVZtDkYyCJ_hiTU5aIXkE8FCRy5v0BEtI5TQ:1uSFWW:Nq-0hIhe2fsrLl8CPqxTsREKGr0ccMYY-decqm-brk0",
+    "expire_date": "2025-07-03T13:41:48.721Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "xys9wfjma0uy17ibatb2m32nxxvbich9",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSPyD:2k84fu-ZMhL9WUxgtPN4r9Cu1nLLKw4ibiibsMBJZDs",
+    "expire_date": "2025-07-04T00:51:05.286Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "yzt2qm2tbktyad5iv6wbputesfootdrq",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uT45k:wPUuanZKFNnqLlrJQfO6O8cvr2I6j_b251uBfQ7VFzc",
+    "expire_date": "2025-07-05T19:41:32.036Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "z3miwrl54rb887g1ozmbwvbycvygl2kc",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSIg0:TCQeBKqFxJWMUzq8L1wpsKqcfGc5j7387ZlUbO0rYSY",
+    "expire_date": "2025-07-03T17:03:48.233Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "z7byqy3h1llbobgvrvgupw7lg5a66ti2",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uRN8m:dLoojxdjGaUQi_VAmB1aAquSWcnnCxOKoCxjg6-jRPw",
+    "expire_date": "2025-07-01T03:37:40.157Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zj39c3taj9o557fngof8krvu8jtx2hsr",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uTQHt:xqeP0-CpfYdk7s40kGJox-y2ZrATB7ObtRgmfUxn2iA",
+    "expire_date": "2025-07-06T19:23:33.717Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zlzy21dw91gyrxolepdc54c3qoo1mdcu",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uSzo2:kZUp1YQQm4kHGG5AA_LUjYio19QtxFh9mg3nEXxOY-4",
+    "expire_date": "2025-07-05T15:06:58.788Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "znq9l5dlxv5s2ad24shvp2o9p2g182at",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDoxRcuu83kBkYpWogKe3K-O_apAvd3nPOfYmI21ri1nmJcxZnYcXpdyNMD647yHestyZTq-syk9wVedAup5b5eTncv4OCvXzr4LXO5IEAAfSgzJDMyOQdZWPBjKgRGYPyDnJyFNh4YxU7TpiUoqt4fwDO7Tfj:1uSPAt:mHe5S9lZArCg6ENp4YCw15-OtD61NGs3VE3fOtS5NlA",
+    "expire_date": "2025-07-04T00:00:07.144Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zp3asimoryuozn2kp9klrgrsovga49ds",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQysC4dO83kBkYpGrapI-V8d-1SRe6veec-1KJtrWlbZE5DUWdFarT78aUHzLuoNxpvE06T-M6D6x3RR900depyPNyuH8HjZb2rTOBsFSy2YPvGCRQ7oyPDqOr1iIWrlwBHQWSgmB6cBH7jqsJBhyq9wcGETfs:1uSJOp:iEdNXqu3eX4AytkTtalylAmtqub27srMPIphgEi_BlU",
+    "expire_date": "2025-07-03T17:50:07.708Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zxcbztl63rxqppvb7amy2b4bs2ionwbh",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEDTHm4dO83NMNApWogKe3K-O_apAvd3nPOfYmRtrWMW8_LOCdxFkqcfrdI_Mh1B-lO9dYkt7ouc5S7Ig_a5bWl_Lwc7t9BoV6-dQyDcTAAYg6oIlrLBDRZF1hrP2kw4KLDwJgoeG0iDJq9Q_RgGFQW7w-yNTZ6:1uSwdD:Y5e8BpVbsgMqL0bv2nmrodTUu3igIZz2_zsQsiKfVMM",
+    "expire_date": "2025-07-05T11:43:35.587Z"
+  }
+},
+{
+  "model": "library.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$cBDoQU4xxXRTlSiwBgicrJ$sobcOJZgdncTCra95J1kqntAZGKgQby4PD4vjnaR8wM=",
+    "last_login": "2025-06-25T21:45:24.730Z",
+    "is_superuser": true,
+    "username": "admin@library.com",
+    "email": "admin@library.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-06-12T13:48:58Z",
+    "role": "admin",
+    "first_name": "Admin",
+    "last_name": "D",
+    "created_at": "2025-06-21T20:43:16.806Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "library.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Ubpe9GcaLJLk2u3ieV3gic$JDvPdYI1QW3hWMbZ6sSBPjxJvjN31Ve/ohPazBuCDNQ=",
+    "last_login": "2025-06-20T00:00:07.139Z",
+    "is_superuser": false,
+    "username": "richardabimbola@gmail.com",
+    "email": "richardabimbola@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-14T21:50:34Z",
+    "role": "user",
+    "first_name": "Richard",
+    "last_name": "Abimbola",
+    "created_at": "2025-06-21T20:43:16.806Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "library.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$2lM1gTz5R16oth7nIfgIRt$eCHWtGpxcZ57khTK8QMgwpsGXk9yRZouErv32obPQec=",
+    "last_login": "2025-06-22T22:19:21.307Z",
+    "is_superuser": false,
+    "username": "john@example.com",
+    "email": "john@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-22T19:21:27.410Z",
+    "role": "user",
+    "first_name": "John",
+    "last_name": "Doe",
+    "created_at": "2025-06-22T19:21:27.901Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "library.category",
+  "pk": 4,
+  "fields": {
+    "name": "Classic",
+    "description": "Classic books are timeless stories that speak across generationsùrich in wisdom, emotion, and truth. They stay with us, reminding us what it means to live, love, and grow.",
+    "created_at": "2025-06-21T20:43:32.827Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 5,
+  "fields": {
+    "name": "Dystopian",
+    "description": "Stories set in bleak, controlled futures where freedom is scarce, society is broken, and individuals struggle against oppressive systems, often revealing deep truths about humanity and power.",
+    "created_at": "2025-06-21T20:43:32.827Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 7,
+  "fields": {
+    "name": "Historical",
+    "description": "Books that bring the past to lifeùrich with stories of courage, change, and discovery. They remind us where weÆve been, shaping how we see the world today.",
+    "created_at": "2025-06-21T20:43:32.827Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 9,
+  "fields": {
+    "name": "Coming-Of-Age",
+    "description": "They capture the quiet magic of growing upùmoments of wonder, heartbreak, and self-discoveryùwhen the world shifts and you begin to see yourself, and life, more clearly.",
+    "created_at": "2025-06-21T20:43:32.827Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 10,
+  "fields": {
+    "name": "Romance",
+    "description": "Heartfelt stories where deep emotions, passion, and meaningful connections unfold between characters, often exploring loveÆs challenges, joys, and transformative power in both everyday life and extraordinary situations.",
+    "created_at": "2025-06-21T20:43:32.827Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 11,
+  "fields": {
+    "name": "Contemporary Fiction",
+    "description": "Stories set in modern times, exploring everyday life, relationships, and societal themes with realistic characters and relatable conflicts, often reflecting current culture, emotions, and personal growth..",
+    "created_at": "2025-06-21T20:43:32.827Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 12,
+  "fields": {
+    "name": "Adventure",
+    "description": "Thrilling tales of daring quests, uncharted lands, and bold heroes facing danger, discovery, and the unknown ù perfect for those who crave excitement, suspense, and journeys beyond the ordinary.",
+    "created_at": "2025-06-21T20:43:32.827Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 14,
+  "fields": {
+    "name": "Psychological Fiction",
+    "description": "Stories that delve into the complexities of the human mind, exploring inner conflicts, perceptions, and emotional struggles, often blurring the line between reality and imagination.",
+    "created_at": "2025-06-23T00:16:41.485Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 15,
+  "fields": {
+    "name": "Legal Drama",
+    "description": "Books centered on courtroom battles, justice, and high-stakes moral dilemmas, often featuring sharp-witted attorneys, complex cases, and intense conflicts between right and wrong in a legal setting.",
+    "created_at": "2025-06-23T00:18:30.649Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 16,
+  "fields": {
+    "name": "Literary Fiction",
+    "description": "Books that explore the human condition with deep character development, rich prose, and introspective themes, often prioritizing emotional depth and meaning over fast-paced plots or genre conventions.",
+    "created_at": "2025-06-23T00:20:58.912Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 17,
+  "fields": {
+    "name": "Fantasy",
+    "description": "Stories set in magical worlds with mythical creatures, epic quests, and powerful forces beyond natureùwhere heroes rise, kingdoms fall, and the impossible becomes reality.",
+    "created_at": "2025-06-23T00:30:43.042Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 18,
+  "fields": {
+    "name": "Science Fiction",
+    "description": "Stories set in futuristic or alternate worlds, often featuring advanced technology, space travel, or strange lifeforms, exploring possibilities beyond current reality and questioning humanityÆs place in the universe.",
+    "created_at": "2025-06-23T00:37:10.185Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 19,
+  "fields": {
+    "name": "Self-Help",
+    "description": "Guides that offer strategies for personal growth, motivation, and overcoming challengesùempowering readers to improve mindset, habits, and life skills through reflection and practical advice.",
+    "created_at": "2025-06-23T01:00:45.143Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 20,
+  "fields": {
+    "name": "Productivity",
+    "description": "Books that teach strategies to manage time better, focus deeply, set clear goals, and build effective habits for achieving more with less stress and greater satisfaction.",
+    "created_at": "2025-06-23T01:01:19.522Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 21,
+  "fields": {
+    "name": "Philosophical Fiction",
+    "description": "Stories that explore deep questions about existence, morality, and the human condition, often blending narrative with abstract ideas to challenge readersÆ thoughts on life, truth, and meaning.",
+    "created_at": "2025-06-23T01:07:57.141Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 22,
+  "fields": {
+    "name": "Classic Literature",
+    "description": "Timeless stories that explore human nature, society, and morality through rich language and unforgettable charactersùworks that continue to inspire thought and conversation across generations.",
+    "created_at": "2025-06-23T01:12:33.526Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 23,
+  "fields": {
+    "name": "Thriller",
+    "description": "Gripping tales filled with suspense, unexpected twists, and high-stakes danger that keep readers on edge, racing through pages to uncover secrets and confront looming threats.",
+    "created_at": "2025-06-23T01:20:06.341Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 24,
+  "fields": {
+    "name": "Philosophy",
+    "description": "Books that explore ideas about existence, knowledge, ethics, and realityùchallenging readers to think deeply, question assumptions, and seek understanding about life, truth, and the human condition.",
+    "created_at": "2025-06-23T01:20:41.880Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 25,
+  "fields": {
+    "name": "Non-Fiction",
+    "description": "Works rooted in real events, facts, or peopleùdesigned to inform, explain, or explore reality through biography, history, science, or personal experience. Truth is their foundation, insight their goal.",
+    "created_at": "2025-06-23T01:21:39.242Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 26,
+  "fields": {
+    "name": "Stoicism",
+    "description": "Timeless guides on mastering emotions, embracing hardship, and finding peace through reason, discipline, and virtueùoffering practical wisdom for a resilient, purpose-driven life.",
+    "created_at": "2025-06-23T02:01:30.694Z"
+  }
+},
+{
+  "model": "library.category",
+  "pk": 27,
+  "fields": {
+    "name": "Memoir",
+    "description": "Personal stories capturing real-life experiences, emotions, and reflectionsùoffering insight into the author's journey through significant events, challenges, or transformations.",
+    "created_at": "2025-06-23T02:06:40.183Z"
+  }
+},
+{
+  "model": "library.borrowrecord",
+  "pk": 13,
+  "fields": {
+    "user": 4,
+    "book": 6,
+    "borrowed_date": "2025-06-19T21:23:12.623Z",
+    "due_date": "2025-07-02T21:23:12.623Z",
+    "return_date": "2025-06-22T20:20:03.774Z",
+    "is_returned": true
+  }
+},
+{
+  "model": "library.borrowrecord",
+  "pk": 14,
+  "fields": {
+    "user": 10,
+    "book": 8,
+    "borrowed_date": "2025-06-22T19:22:01.008Z",
+    "due_date": "2025-06-29T19:22:01.007Z",
+    "return_date": "2025-06-22T19:25:38.427Z",
+    "is_returned": true
+  }
+},
+{
+  "model": "library.borrowrecord",
+  "pk": 15,
+  "fields": {
+    "user": 10,
+    "book": 8,
+    "borrowed_date": "2025-06-22T20:20:55.530Z",
+    "due_date": "2025-06-29T20:20:55.530Z",
+    "return_date": "2025-06-22T20:21:41.176Z",
+    "is_returned": true
+  }
+},
+{
+  "model": "library.borrowrecord",
+  "pk": 16,
+  "fields": {
+    "user": 10,
+    "book": 6,
+    "borrowed_date": "2025-06-22T22:21:51.048Z",
+    "due_date": "2025-06-29T22:21:51.046Z",
+    "return_date": "2025-06-22T23:13:26.070Z",
+    "is_returned": true
+  }
+},
+{
+  "model": "library.borrowrecord",
+  "pk": 17,
+  "fields": {
+    "user": 10,
+    "book": 9,
+    "borrowed_date": "2025-06-22T22:22:53.443Z",
+    "due_date": "2025-06-29T22:22:53.442Z",
+    "return_date": "2025-06-23T00:32:34.280Z",
+    "is_returned": true
+  }
+},
+{
+  "model": "library.book",
+  "pk": 6,
+  "fields": {
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/tokillamockingbird.jpg",
+    "description": "Dimensions: 17.8 x 10.8 x 1.93 cm, 320 pages",
+    "publication_date": "1960-07-11",
+    "summary": "*To Kill a Mockingbird* is Harper LeeÆs Pulitzer Prize-winning novel set in the racially charged American South during the 1930s. Told from the perspective of Scout Finch, a young girl growing up in the town of Maycomb, Alabama, the story delves into themes of racial injustice, moral growth, and social inequality. Scout and her brother Jem are raised by their widowed father, Atticus Finch, a principled lawyer appointed to defend Tom Robinson, a Black man falsely accused of raping a white woman. Despite overwhelming evidence of TomÆs innocence, he faces a prejudiced jury. AtticusÆs unwavering dedication to justice becomes a moral compass for his children. Parallel to this storyline is the mysterious presence of Boo Radley, a reclusive neighbor who turns out to be an unexpected hero. Through ScoutÆs innocent yet observant eyes, Lee critiques deeply rooted societal norms while also highlighting the importance of empathy and courage. This novel remains a poignant examination of human behavior and conscience.",
+    "publisher": "J.B. Lippincott & Co.",
+    "total_copies": 200,
+    "available_copies": 1,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": true,
+    "created_at": "2025-06-21T20:21:07.443Z",
+    "external_source": "https://en.wikipedia.org/wiki/To_Kill_a_Mockingbird",
+    "book_uuid": "BOOK-134783",
+    "download_permission": "NONE",
+    "categories": [
+      7,
+      15
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 7,
+  "fields": {
+    "title": "Little Women",
+    "author": "Louisa May Alcott",
+    "is_available": true,
+    "pdf_file": "books/pdfs/Little_Women_Author_Louisa_May_Alcott.pdf",
+    "cover_image": "books/covers/littlewomen.jpg",
+    "description": "Dimensions: 7.7 x 5.24 x 1.02 inches, 504 pages",
+    "publication_date": "1868-09-30",
+    "summary": "*Little Women* by Louisa May Alcott is a beloved American classic that chronicles the lives of the four March sistersùMeg, Jo, Beth, and Amyùas they navigate the challenges of adolescence and womanhood during the American Civil War. Living with their mother in New England while their father serves in the war, the girls each have distinct personalities and aspirations: Meg is the responsible eldest, Jo the spirited and literary tomboy, Beth the gentle peacemaker, and Amy the artistic and ambitious youngest. The novel explores themes of family, love, sacrifice, and personal growth as the sisters face joys and hardships in their journey from childhood to maturity. JoÆs resistance to traditional female roles and her pursuit of a writing career were groundbreaking for the time and continue to resonate with readers. Through richly drawn characters and timeless life lessons, *Little Women* offers a warm, inspiring portrayal of sisterhood and self-discovery that has captivated generations.",
+    "publisher": "Penguin Classics",
+    "total_copies": 1,
+    "available_copies": 1,
+    "allow_download": false,
+    "book_type": "EBOOK",
+    "is_featured": true,
+    "created_at": "2025-06-21T20:21:07.443Z",
+    "external_source": "https://en.wikipedia.org/wiki/Little_Women",
+    "book_uuid": "BOOK-532AEA",
+    "download_permission": "ALL",
+    "categories": [
+      9,
+      16
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 8,
+  "fields": {
+    "title": "Normal People",
+    "author": "Sally Rooney",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/normalpeople.jpeg",
+    "description": "Dimensions: 12.9 x 1.7 x 19.8 cm, 288 pages",
+    "publication_date": "2018-08-28",
+    "summary": "Connell and Marianne grow up in the same small town in the west of Ireland, but the similarities end there. In school, Connell is popular and well-liked, while Marianne is a loner. But when the two strike up a conversation - awkward but electrifying - something life-changing begins.\r\n\r\nNormal People is a story of mutual fascination, friendship and love. It takes us from that first conversation to the years beyond, in the company of two people who try to stay apart but find they can't.",
+    "publisher": "Faber & Faber",
+    "total_copies": 20,
+    "available_copies": 20,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": true,
+    "created_at": "2025-06-21T20:21:07.443Z",
+    "external_source": "https://en.wikipedia.org/wiki/Normal_People",
+    "book_uuid": "BOOK-E02484",
+    "download_permission": "NONE",
+    "categories": [
+      10,
+      11
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 9,
+  "fields": {
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/thehobbit.jpg",
+    "description": "Dimensions: 12.9 x 2.4 x 18.3 cm, 368 pages",
+    "publication_date": "1937-09-21",
+    "summary": "The Hobbit is the unforgettable story of Bilbo, a peace-loving hobbit, who embarks on a strange and magical adventure.\r\n\r\nA timeless classic.\r\n\r\nBilbo Baggins enjoys a quiet and contented life, with no desire to travel far from the comforts of home; then one day the wizard Gandalf and a band of dwarves arrive unexpectedly and enlist his services û as a burglar û on a dangerous expedition to raid the treasure-hoard of Smaug the dragon. BilboÆs life is never to be the same again.\r\n\r\nSeldom has any book been so widely read and loved as J. R.R. TolkienÆs classic tale, æThe HobbitÆ. Since its first publication in 1937 it has remained in print to delight each new generation of readers all over the world, and its hero, Bilbo Baggins, has taken his place among the ranks of the immortals of fiction.\r\n\r\nJ.R.R. Tolkien's book 'The Fall of N·menor' was a Sunday Times bestseller w/c 2022-11-07.",
+    "publisher": "George Allen & Unwin",
+    "total_copies": 30,
+    "available_copies": 30,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": true,
+    "created_at": "2025-06-21T20:21:07.443Z",
+    "external_source": "",
+    "book_uuid": "BOOK-A2A73B",
+    "download_permission": "NONE",
+    "categories": [
+      12,
+      17
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 10,
+  "fields": {
+    "title": "Dune",
+    "author": "Frank Herbert",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/dune.jpg",
+    "description": "Dimensions: 16 x 6.4 x 23.8 cm, 1008 pages",
+    "publication_date": "1965-08-01",
+    "summary": "Herbert's evocative, epic tales are set on the desert planet Arrakis, the focus for a complex political and military struggle with galaxy-wide repercussions.\r\n\r\nArrakis is the source of spice, a mind-enhancing drug which makes interstellar travel possible; it is the most valuable substance in the galaxy. When Duke Atreides and his family take up court there, they fall into a trap set by the Duke's bitter rival, Baron Harkonnen. The Duke is poisoned, but his wife and her son Paul escape to the vast and arid deserts of Arrakis, which have given the planet its nickname of Dune.\r\n\r\nPaul and his mother join the Fremen, the Arrakis natives, who have learnt to live in this harsh and complex ecosystem. But learning to survive is not enough - Paul's destiny was mapped out long ago and his mother is committed to seeing it fulfilled.",
+    "publisher": "Chilton Books",
+    "total_copies": 1176,
+    "available_copies": 1176,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": true,
+    "created_at": "2025-06-21T20:21:07.443Z",
+    "external_source": "",
+    "book_uuid": "BOOK-7B6B05",
+    "download_permission": "NONE",
+    "categories": [
+      12,
+      18
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 11,
+  "fields": {
+    "title": "Crime and Punishment",
+    "author": "Fyodor Dostoevsky",
+    "is_available": true,
+    "pdf_file": "books/pdfs/crime-and-punishment-fedor-mikhailovitch-distoievski_1.pdf",
+    "cover_image": "books/covers/crimeandpunishment.png",
+    "description": "Dimensions: 17.8 x 10.8 x 1.93 cm, 720 pages",
+    "publication_date": "1866-01-01",
+    "summary": "Dostoyevsky's great novel of damnation and redemption evokes a world where the lines between innocence and corruption, good and evil, blur. It tells the story of Raskolnikov, a destitute and desperate former student, who wanders through the slums of St Petersburg and commits a random murder without remorse or regret. He imagines himself to be beyond conventional moral laws. But as he embarks on a dangerous game of cat and mouse with a police investigator, Raskolnikov is pursued by the growing voice of his conscience and finds the noose of his own guilt tightening around his neck.",
+    "publisher": "The Russian Messenger",
+    "total_copies": 1,
+    "available_copies": 1,
+    "allow_download": false,
+    "book_type": "EBOOK",
+    "is_featured": true,
+    "created_at": "2025-06-21T20:33:48.175Z",
+    "external_source": "",
+    "book_uuid": "BOOK-B2BAF3",
+    "download_permission": "AUTH",
+    "categories": [
+      4,
+      14
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 12,
+  "fields": {
+    "title": "1984",
+    "author": "George Orwell",
+    "is_available": true,
+    "pdf_file": "books/pdfs/9.-Nineteen-Eighty-Four-Author-George-Orwell.pdf",
+    "cover_image": "books/covers/1984.jpg",
+    "description": "Dimensions: 12.9 x 2.2 x 19.8 cm, 432 pages",
+    "publication_date": "1949-06-08",
+    "summary": "The Thought Police, Doublethink, Newspeak, Big Brother û 1984 itself: these terms and concepts have moved from the world of fiction into our everyday lives. They are central to our thinking about freedom and its suppression; yet they were newly created by George Orwell in 1949 as he conjured his dystopian vision of a world where totalitarian power is absolute. In this novel, continuously popular since its first publication, readers can explore the dark and extraordinary world he brought so fully to life. \r\nThe principal characters who lead us through that world are ordinary human beings like ourselves: Winston Smith and Julia, whose falling in love is also an act of rebellion against the Party. Opposing them are the massed powers of the state, which watches its citizens on all sides through technology now only too familiar to us. No-one is free from surveillance; the past is constantly altered, so that there is no truth except the most recent version; and Big Brother, both loved and feared, controls all. Even the simple act of keeping a diary û as Winston does û is punishable by death. In WinstonÆs battle to keep his freedom of thought, he has a powerful adversary in OÆBrien, who uses fear and pain to enter his very thought processes. Does 2+2 = 4? Or is it 5? We find out in Room 101.\r\nNineteen Eighty-Four was OrwellÆs last novel.",
+    "publisher": "Secker & Warburg",
+    "total_copies": 1,
+    "available_copies": 1,
+    "allow_download": false,
+    "book_type": "EBOOK",
+    "is_featured": true,
+    "created_at": "2025-06-23T00:42:40.140Z",
+    "external_source": "",
+    "book_uuid": "BOOK-92CE5F",
+    "download_permission": "ALL",
+    "categories": [
+      18
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 13,
+  "fields": {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/atomichabits.jpg",
+    "description": "Dimensions: 14.1 x 2.5 x 21.5 cm, 320 pages",
+    "publication_date": "2018-10-16",
+    "summary": "No matter what your goals are, this book gives you a proven way to excel every day. If you find it difficult to change your habits, it's not up to you. The problem is the system you use. You keep repeating bad habits not because you don't want to change them, but because you're using the wrong method. Elementary Habits offers a proven method that ensures that you can finally change your habits. After three years of research, James Clear has used theories from biology, psychology and neuroscience and wrote the definitive guide, making unwanted habits disappear and making it much easier for you to acquire your good habits the battle continues.",
+    "publisher": "Avery",
+    "total_copies": 12,
+    "available_copies": 12,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": true,
+    "created_at": "2025-06-23T00:59:33.643Z",
+    "external_source": "https://en.wikipedia.org/wiki/Atomic_Habits",
+    "book_uuid": "BOOK-A47CBE",
+    "download_permission": "NONE",
+    "categories": [
+      19,
+      20
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 14,
+  "fields": {
+    "title": "The Alchemist",
+    "author": "Paul Cohello",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/thealchemist.jpg",
+    "description": "Dimensions: 19.8 x 1.4 x 12.9 cm, 192 pages",
+    "publication_date": "1988-04-15",
+    "summary": "A global phenomenon, The Alchemist has been read and loved by over 62 million readers, topping bestseller lists in 74 countries worldwide. Now this magical fable is beautifully repackaged in an edition that lovers of Paulo Coelho will want to treasure forever.\r\n\r\nEvery few decades a book is published that changes the lives of its readers forever. This is such a book û a beautiful parable about learning to listen to your heart, read the omens strewn along lifeÆs path and, above all, follow your dreams.\r\n\r\nSantiago, a young shepherd living in the hills of Andalucia, feels that there is more to life than his humble home and his flock. One day he finds the courage to follow his dreams into distant lands, each step galvanised by the knowledge that he is following the right path: his own. The people he meets along the way, the things he sees and the wisdom he learns are life-changing.\r\n\r\nWith Paulo CoelhoÆs visionary blend of spirituality, magical realism and folklore, The Alchemist is a story with the power to inspire nations and change peopleÆs lives.",
+    "publisher": "HarperOne",
+    "total_copies": 14,
+    "available_copies": 14,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": true,
+    "created_at": "2025-06-23T01:06:52.834Z",
+    "external_source": "",
+    "book_uuid": "BOOK-E62557",
+    "download_permission": "NONE",
+    "categories": [
+      17,
+      21
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 15,
+  "fields": {
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/prideandprejudice.jpg",
+    "description": "Dimensions: 12.7 x 2.03 x 19.56 cm, 329 pages",
+    "publication_date": "1813-01-28",
+    "summary": "*Pride and Prejudice* by Jane Austen is a classic novel that delves into themes of class, marriage, and societal expectations in early 19th-century England. The story follows Elizabeth Bennet, a sharp-witted and independent young woman, as she navigates love, family dynamics, and social constraints. ElizabethÆs initial impressions of the reserved and wealthy Mr. Darcy lead to misunderstandings and conflict, yet as the narrative unfolds, both characters undergo personal growth that reshapes their views and their relationship. Through richly drawn characters and satirical commentary, Austen critiques the rigid class structures and gender roles of her time. The witty dialogue, memorable castùincluding the eccentric Mr. Collins and the meddling Mrs. Bennetùand timeless romantic tension between Elizabeth and Darcy make the novel a beloved staple of English literature. *Pride and Prejudice* continues to resonate with readers for its clever prose, relatable characters, and exploration of pride, prejudice, and the possibility of change and redemption in matters of the heart.",
+    "publisher": "T. Egerton, Whitehall",
+    "total_copies": 38,
+    "available_copies": 38,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": false,
+    "created_at": "2025-06-23T01:16:27.805Z",
+    "external_source": "",
+    "book_uuid": "BOOK-04094F",
+    "download_permission": "NONE",
+    "categories": [
+      10,
+      22
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 16,
+  "fields": {
+    "title": "Gone Girl",
+    "author": "Gillian Flynn",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/gonegirl.jpg",
+    "description": "Pages\t432",
+    "publication_date": "2012-06-05",
+    "summary": "What are you thinking, Amy? The question I've asked most often during our marriage, if not out loud, if not to the person who could answer. I suppose these questions storm cloud over every marriage: What are you thinking? How are you feeling? Who are you? What have we done to each other? What will we do? Just how well can you ever know the person you love?\r\n\r\nThese are the questions that Nick Dunne must ask himself on the morning of his fifth wedding anniversary, when his wife Amy suddenly disappears. The police immediately suspect Nick. Amy's friends reveal that she was afraid of him, that she kept secrets from him. He swears it isn't true. A police examination of his computer shows strange searches. He says they aren't his. And then there are the persistent calls on his mobile phone.\r\n\r\nSo what really did happen to Nick's beautiful wife? And what was in that half-wrapped box left so casually on their marital bed? In this novel, marriage truly is the art of war.",
+    "publisher": "Crown Publishing Group",
+    "total_copies": 59,
+    "available_copies": 59,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": true,
+    "created_at": "2025-06-23T01:29:14.024Z",
+    "external_source": "https://en.wikipedia.org/wiki/Gone_Girl_(novel)",
+    "book_uuid": "BOOK-EBBEA8",
+    "download_permission": "NONE",
+    "categories": [
+      14,
+      23
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 17,
+  "fields": {
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "is_available": true,
+    "pdf_file": "books/pdfs/Brave_New_World_Author_Aldous_Huxley.pdf",
+    "cover_image": "books/covers/bravenewworld.jpg",
+    "description": "Dimensions: 12.7 x 2.2 x 18.9 cm, 176 pages",
+    "publication_date": "1932-08-30",
+    "summary": "*Brave New World* by Aldous Huxley is a prophetic dystopian novel that imagines a future society driven by technological control, consumerism, and genetic engineering. In this world, people are bred in hatcheries, conditioned from birth, and kept docile through a drug called Soma and constant sensory stimulation. Individuality, family, and emotional depth have been sacrificed for stability and efficiency. The story follows Bernard Marx, who feels alienated in this seemingly perfect world, and his encounter with John ôthe Savage,ö a man raised outside the World State who challenges its values. As John struggles to make sense of this society, his presence exposes the dehumanizing cost of utopian control. HuxleyÆs vision is both satirical and chilling, raising questions about freedom, happiness, and what it means to be truly human. Written in 1932, *Brave New World* has proven eerily relevant in its critiques of technology, mass culture, and the loss of individuality. It remains one of the most important dystopian works of the 20th century.",
+    "publisher": "Chatto & Windus",
+    "total_copies": 1,
+    "available_copies": 1,
+    "allow_download": false,
+    "book_type": "EBOOK",
+    "is_featured": true,
+    "created_at": "2025-06-23T01:38:43.144Z",
+    "external_source": "",
+    "book_uuid": "BOOK-A8ED83",
+    "download_permission": "AUTH",
+    "categories": [
+      5,
+      18
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 18,
+  "fields": {
+    "title": "The Silent Patient",
+    "author": "Alex Michaelides",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/thesilentpatient.jpg",
+    "description": "340 pages",
+    "publication_date": "2019-02-05",
+    "summary": "*The Silent Patient* by Alex Michaelides is a gripping psychological thriller centered around Alicia Berenson, a successful painter who seemingly has a perfect lifeùuntil she inexplicably shoots her husband five times in the face and then stops speaking entirely. Institutionalized in a secure psychiatric facility, Alicia refuses to utter a single word, sparking public fascination and media attention. Enter Theo Faber, a criminal psychotherapist obsessed with uncovering the truth behind AliciaÆs silence. Determined to get her to talk, Theo embarks on a deep psychological investigation that reveals disturbing layers of trauma, deception, and obsession. As he delves deeper into AliciaÆs past and motives, Theo finds himself unraveling not only her secrets but also his own. With a masterfully crafted twist ending that reframes the entire story, *The Silent Patient* is both chilling and emotionally intense. MichaelidesÆ debut novel explores themes of trust, grief, mental illness, and the destructive power of silence, making it a standout in modern psychological fiction.",
+    "publisher": "Celadon Books",
+    "total_copies": 20,
+    "available_copies": 20,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": false,
+    "created_at": "2025-06-23T01:47:48.153Z",
+    "external_source": "https://en.wikipedia.org/wiki/The_Silent_Patient",
+    "book_uuid": "BOOK-F583BE",
+    "download_permission": "NONE",
+    "categories": [
+      14,
+      23
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 19,
+  "fields": {
+    "title": "Life Of Pi",
+    "author": "Yann Martel",
+    "is_available": true,
+    "pdf_file": "",
+    "cover_image": "books/covers/lifeofpi.jpg",
+    "description": "Dimensions: 21.59 x 0.43 x 27.94 cm, 75 pages",
+    "publication_date": "2001-09-11",
+    "summary": "*Life of Pi* by Yann Martel is an extraordinary tale of survival, spirituality, and the power of storytelling. The novel follows Piscine Molitor ôPiö Patel, a young Indian boy who survives a shipwreck and finds himself stranded on a lifeboat in the Pacific Ocean with an unlikely companionùa Bengal tiger named Richard Parker. As Pi battles the elements, hunger, and fear, he relies on his knowledge of animal behavior, faith in God, and sheer will to survive. The novel oscillates between realism and magical realism, questioning the boundaries between fact and fiction. PiÆs spiritual journey intertwines Hinduism, Christianity, and Islam, reflecting his deep longing for meaning. The story challenges readers to reflect on belief, truth, and the narratives we choose to embrace. *Life of Pi* is a compelling philosophical adventure that explores human resilience and imagination, ultimately asking: which version of the story do you believe?",
+    "publisher": "Knopf Canada",
+    "total_copies": 30,
+    "available_copies": 30,
+    "allow_download": false,
+    "book_type": "PHYSICAL",
+    "is_featured": false,
+    "created_at": "2025-06-23T01:57:14.839Z",
+    "external_source": "https://en.wikipedia.org/wiki/Life_of_Pi",
+    "book_uuid": "BOOK-A1F661",
+    "download_permission": "NONE",
+    "categories": [
+      12,
+      21
+    ]
+  }
+},
+{
+  "model": "library.book",
+  "pk": 20,
+  "fields": {
+    "title": "Meditations",
+    "author": "Marcus Aurelius",
+    "is_available": true,
+    "pdf_file": "books/pdfs/Meditations_Author_Marcus_Aurelius.pdf",
+    "cover_image": "books/covers/meditations.jpg",
+    "description": "Dimensions: 19.56 x 12.95 x 1.84 cm, 304 pages",
+    "publication_date": "2006-04-27",
+    "summary": "Written in Greek by the only Roman emperor who was also a philosopher, without any intention of publication, the Meditations of Marcus Aurelius offer a remarkable series of challenging spiritual reflections and exercises developed as the emperor struggled to understand himself and make sense of the universe. While the Meditations were composed to provide personal consolation and encouragement, Marcus Aurelius also created one of the greatest of all works of philosophy: a timeless collection that has been consulted and admired by statesmen, thinkers and readers throughout the centuries.",
+    "publisher": "Penguin Classics",
+    "total_copies": 1,
+    "available_copies": 1,
+    "allow_download": false,
+    "book_type": "EBOOK",
+    "is_featured": true,
+    "created_at": "2025-06-23T02:05:45.140Z",
+    "external_source": "https://en.wikipedia.org/wiki/Meditations",
+    "book_uuid": "BOOK-8AE4D4",
+    "download_permission": "AUTH",
+    "categories": [
+      24,
+      26
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-06-16T18:12:25.815Z",
+    "expires_at": "2025-06-17T06:12:25Z",
+    "books": [
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-06-17T12:56:49.936Z",
+    "expires_at": "2025-06-18T00:56:49Z",
+    "books": [
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-06-18T13:44:34.498Z",
+    "expires_at": "2025-06-19T01:44:34Z",
+    "books": [
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-06-18T13:59:18.313Z",
+    "expires_at": "2025-06-19T01:59:18.312Z",
+    "books": [
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 7,
+  "fields": {
+    "created_at": "2025-06-18T14:01:03.367Z",
+    "expires_at": "2025-06-19T02:01:03Z",
+    "books": [
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 8,
+  "fields": {
+    "created_at": "2025-06-19T12:55:28.109Z",
+    "expires_at": "2025-06-20T00:55:28Z",
+    "books": [
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 9,
+  "fields": {
+    "created_at": "2025-06-20T00:56:34.564Z",
+    "expires_at": "2025-06-20T12:56:34.562Z",
+    "books": [
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 10,
+  "fields": {
+    "created_at": "2025-06-21T11:43:12.783Z",
+    "expires_at": "2025-06-21T23:43:12.782Z",
+    "books": [
+      6
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 11,
+  "fields": {
+    "created_at": "2025-06-22T00:12:02.304Z",
+    "expires_at": "2025-06-22T12:12:02.296Z",
+    "books": [
+      9,
+      10,
+      11
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-06-22T13:08:56.799Z",
+    "expires_at": "2025-06-23T01:08:56.799Z",
+    "books": [
+      6,
+      8,
+      9,
+      10
+    ]
+  }
+},
+{
+  "model": "library.featuredbook",
+  "pk": 13,
+  "fields": {
+    "created_at": "2025-06-23T01:16:27.817Z",
+    "expires_at": "2025-06-23T13:16:27.814Z",
+    "books": [
+      8,
+      10,
+      12,
+      13
+    ]
+  }
+},
+{
+  "model": "library.readingsession",
+  "pk": 3,
+  "fields": {
+    "user": 4,
+    "book": 7,
+    "last_page": 1,
+    "last_accessed": "2025-06-19T21:20:39.210Z"
+  }
+},
+{
+  "model": "library.readingsession",
+  "pk": 4,
+  "fields": {
+    "user": 1,
+    "book": 12,
+    "last_page": 1,
+    "last_accessed": "2025-06-23T01:17:20.170Z"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 2,
+  "fields": {
+    "title": "How to make it as a writer, according to George RR Martin",
+    "instructor": "The Indepedent",
+    "description": "George RR Martin has shared his advice for aspiring writers, drawing on his own extensive career experience.\r\n\r\nôIf you need security, this is not the profession for youö he told The Independent in an interview at his Santa Fe bookstore, Beastly Books, before revealing tips on how to make it in the industry.\r\n\r\nMr Martin was speaking to The Independent ahead of the Santa Fe Literary Festival.",
+    "category": "TUTORIAL",
+    "video_file": "videos/videoplayback.mp4",
+    "video_uuid": "VIDEO-AD6CFB",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_165243.png",
+    "upload_date": "2025-06-22T15:55:44.568Z",
+    "is_featured": false,
+    "duration": 262,
+    "created_at": "2025-06-22T15:55:44.568Z",
+    "external_source": "https://youtu.be/yhDRRIbrtac?si=lS0XZ_krdWQ7N8HI"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 3,
+  "fields": {
+    "title": "3 Books That Will Change Your Life",
+    "instructor": "Robert Greene",
+    "description": "Robert Greene is the author of the New York Times bestsellers The 48 Laws of Power, The Art of Seduction, The 33 Strategies of War, The 50th Law, Mastery, The Laws of Human Nature, and most recently, The Daily Laws.",
+    "category": "LECTURE",
+    "video_file": "videos/videoplayback_1.mp4",
+    "video_uuid": "VIDEO-B1A16C",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_170602.png",
+    "upload_date": "2025-06-22T16:09:27.287Z",
+    "is_featured": false,
+    "duration": 374,
+    "created_at": "2025-06-22T16:09:27.287Z",
+    "external_source": "https://youtu.be/OTvm5LfhDzg?si=hYHJnGS7j_8cIs94"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 4,
+  "fields": {
+    "title": "David Foster Wallace: On Being Entirely Yourself",
+    "instructor": "Iconoclast Writing",
+    "description": "\"What the really great artists do is they're entirely themselves. They've got their own vision, their own way of fracturing reality, and then if it's authentic and true, you will feel it in your nerve endings.\" - David Foster Wallace\r\n+++\r\nIconoclast Writing serves to educate and support writers who wish to progress in their art, expand their creative consciousness, and engage with community.",
+    "category": "LECTURE",
+    "video_file": "videos/videoplayback_2.mp4",
+    "video_uuid": "VIDEO-360A44",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_171224.png",
+    "upload_date": "2025-06-22T16:14:04.871Z",
+    "is_featured": false,
+    "duration": 145,
+    "created_at": "2025-06-22T16:14:04.871Z",
+    "external_source": "https://youtu.be/YRVNTtyqmQA?si=H7NZ6aY8PM3TZCbv"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 5,
+  "fields": {
+    "title": "How To Get The Most Out of A Book - Analytical Reading 101",
+    "instructor": "Robin Waldun",
+    "description": "A quick video on how to mark up a book and get the most out of your reading.",
+    "category": "TUTORIAL",
+    "video_file": "videos/videoplayback_3.mp4",
+    "video_uuid": "VIDEO-5F64C2",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_171619.png",
+    "upload_date": "2025-06-22T16:19:04.183Z",
+    "is_featured": false,
+    "duration": 398,
+    "created_at": "2025-06-22T16:19:04.184Z",
+    "external_source": "https://youtu.be/Ls2ynrMv10A?si=uT92MPCtMc8bqt6Q"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 6,
+  "fields": {
+    "title": "Tri-City author talks about how her family's history influenced her new book",
+    "instructor": "Tri-City Herald",
+    "description": "Maureen McQuerry talks to the Herald about how her family's story helped create her new book  ôBetween Before & After.\"",
+    "category": "DOCUMENTARY",
+    "video_file": "videos/videoplayback_4.mp4",
+    "video_uuid": "VIDEO-FDC426",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_172150.png",
+    "upload_date": "2025-06-22T16:26:37.082Z",
+    "is_featured": false,
+    "duration": 48,
+    "created_at": "2025-06-22T16:26:37.082Z",
+    "external_source": "https://youtu.be/CsyOfHeYzS8?si=XSrpqz98ddDIXHG_"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 7,
+  "fields": {
+    "title": "Ancient Greek Authors and Literature",
+    "instructor": "MakeTheBrainHappy - Classical Studies",
+    "description": "Summary: This is a project that I've worked on for longer than usual and it covers six authors based on their genre. These are: Plato (philosophy), Aeschylus (Tragedy), Sophocles (Tragedy), Euripides (Tragedy), Herodotus (History) and Thucydides (History). Each one is described along with his most famous writings. This video covers all the content related to Authors and Literature necessary for the National Greek Exam.",
+    "category": "DOCUMENTARY",
+    "video_file": "videos/videoplayback_5.mp4",
+    "video_uuid": "VIDEO-E21519",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_174018.png",
+    "upload_date": "2025-06-22T16:43:05.682Z",
+    "is_featured": false,
+    "duration": 303,
+    "created_at": "2025-06-22T16:43:05.682Z",
+    "external_source": "https://youtu.be/154vPcTtoqE?si=7YMujVRjCSQfCAwI"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 8,
+  "fields": {
+    "title": "The Iliad - Prelude to War - Greek - Extra Mythology - Part 1",
+    "instructor": "Extra History",
+    "description": "Ah, the myth that launched a thousand ships. The apple thrown into the middle of a greek banquet would ruin lives and lay waste to entire kingdoms. We set the stage for Helen and Paris, two lovers who were not meant to be, and why so many kingdoms would unite to keep the two of them apart. Agamemnon, Achilles, Paris, Odysseus, and fair Helen are all here, and a war is about to begin.",
+    "category": "OTHER",
+    "video_file": "videos/videoplayback_6.mp4",
+    "video_uuid": "VIDEO-460B77",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_175009.png",
+    "upload_date": "2025-06-22T16:52:19.132Z",
+    "is_featured": false,
+    "duration": 466,
+    "created_at": "2025-06-22T16:52:19.132Z",
+    "external_source": "https://youtu.be/5CnzGXZjwNs?si=_mGDJYisCuos0cvR"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 9,
+  "fields": {
+    "title": "How To Get The Most Out of A Book Pt. 2 - Note-taking Basics",
+    "instructor": "Robin Waldun",
+    "description": "Part 2 of the series: How To Get The Most Out of A Book, where I share my personal note-taking method for effective analytical reading. \r\n\r\nCheck out part 1 if you haven't already.",
+    "category": "TUTORIAL",
+    "video_file": "videos/videoplayback_7.mp4",
+    "video_uuid": "VIDEO-F4C5A9",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_175914.png",
+    "upload_date": "2025-06-22T16:59:41.429Z",
+    "is_featured": false,
+    "duration": 350,
+    "created_at": "2025-06-22T16:59:41.429Z",
+    "external_source": "https://youtu.be/G8GhS6YFmIQ?si=rpCwaJguKmopqCEg"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 10,
+  "fields": {
+    "title": "Can you outsmart this logical fallacy? - Alex Gendler",
+    "instructor": "TED-Ed",
+    "description": "Explore the psychology of the cognitive bias known as the conjunction fallacy, where we assume specific conditions are more probable than general ones. \r\n\r\n--\r\nMeet Lucy. She was a math major in college, and aced all her courses in probability and statistics. Which do you think is more likely: that Lucy is a portrait artist, or that Lucy is a portrait artist who also plays poker? How do we know which statement is more likely to be true? Alex Gendler explores our tendency to look for shortcuts and the phenomenon known as the conjunction fallacy.",
+    "category": "LECTURE",
+    "video_file": "videos/videoplayback_9.mp4",
+    "video_uuid": "VIDEO-DE9F07",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_193716.png",
+    "upload_date": "2025-06-22T18:37:38.209Z",
+    "is_featured": true,
+    "duration": 224,
+    "created_at": "2025-06-22T18:37:38.209Z",
+    "external_source": "https://youtu.be/Ghbkv0MKV-w?si=UO696ahvpufEWA6I"
+  }
+},
+{
+  "model": "library.video",
+  "pk": 11,
+  "fields": {
+    "title": "How dirty debaters win against better opponents | Bo Seo",
+    "instructor": "Big Think",
+    "description": "How to defeat debaters who deal in distractions, according to two-time world debate champion Bo Seo.\r\nBo Seo, a two-time world debate champion, watched the 2016 presidential debates between Donald Trump and Hillary Clinton and was disappointed by the unedifying spectacle that the debates had become.\r\n\r\nSeo saw the potential for the format of debate to be exploited and degraded, and he believes that the capacity to disagree well or poorly is within all of us.\r\n\r\nSeo identified four common types of bad arguers: the dodger, who changes the topic; the twister, who misrepresents the point being made; the wrangler, who is never satisfied and never offers an alternative; and the liar, who makes false or misleading statements. To Seo, these negative impulses must be managed in order to guide arguments towards being more productive and positive..",
+    "category": "LECTURE",
+    "video_file": "videos/videoplayback_8.mp4",
+    "video_uuid": "VIDEO-B1AEA2",
+    "thumbnail": "video_thumbnails/Screenshot_2025-06-22_194009.png",
+    "upload_date": "2025-06-22T18:40:37.483Z",
+    "is_featured": true,
+    "duration": 317,
+    "created_at": "2025-06-22T18:40:37.483Z",
+    "external_source": null
+  }
+},
+{
+  "model": "inquiries.inquiry",
+  "pk": 4,
+  "fields": {
+    "name": "Richard Abimbola",
+    "email": "richardabimbola121@gmail.com",
+    "subject": "Ona",
+    "message": "vwhduhlviw",
+    "created_at": "2025-06-17T14:58:06.349Z",
+    "is_resolved": false
+  }
+}
+]
