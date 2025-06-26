@@ -72,7 +72,7 @@ const handleDownload = async () => {
     }
 
     const response = await fetch(
-      `${API_BASE_URL}/books/${book.book_uuid}/download/`,
+      `${API_BASE_URL}/api/books/${book.book_uuid}/download/`,
       { 
         headers,
         credentials: 'include' // Important for cross-origin cookies
@@ -135,7 +135,7 @@ const handleReadOnline = async () => {
     }
 
     const response = await fetch(
-      `${API_BASE_URL}/books/${book.book_uuid}/read/`,
+      `${API_BASE_URL}/api/books/${book.book_uuid}/read/`,
       {
         headers,
         credentials: 'include'
