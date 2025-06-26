@@ -31,23 +31,31 @@ export function BookCard({ book, onRead }: BookCardProps) {
     action()
   }
 
+// Update your handleDownload function in page.tsx
 const handleDownload = async () => {
   if (!book) return;
 
-  const token = localStorage.getItem('library-token');
-  const headers: Record<string, string> = {};
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
   try {
+    const token = localStorage.getItem('library-token');
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const response = await fetch(
       `${API_BASE_URL}/books/${book.book_uuid}/download/`,
-      { headers }
+      { 
+        headers,
+        credentials: 'include' // Important for cross-origin cookies
+      }
     );
 
     if (!response.ok) {
-      throw new Error(response.status === 401 ? 'Unauthorized' : 'Download failed');
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'Download failed');
     }
 
     const blob = await response.blob();
@@ -57,8 +65,8 @@ const handleDownload = async () => {
     a.download = `${book.title}.pdf`;
     document.body.appendChild(a);
     a.click();
-    a.remove();
     window.URL.revokeObjectURL(url);
+    a.remove();
 
     toast({
       title: "Download started",
@@ -68,9 +76,7 @@ const handleDownload = async () => {
     console.error('Download error:', error);
     toast({
       title: "Download failed",
-      description: (error instanceof Error && error.message === 'Unauthorized') 
-        ? 'Please login to download' 
-        : 'Failed to download book',
+      description: error instanceof Error ? error.message : 'Failed to download book',
       variant: "destructive",
     });
   }
@@ -89,13 +95,20 @@ const handleReadOnline = async () => {
   }
 
   try {
-    // Open in new tab with PDF viewer
+    const token = localStorage.getItem('library-token');
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const response = await fetch(
       `${API_BASE_URL}/books/${book.book_uuid}/read/`,
       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('library-token')}`,
-        },
+        headers,
+        credentials: 'include'
       }
     );
 
@@ -104,12 +117,14 @@ const handleReadOnline = async () => {
       const pdfUrl = URL.createObjectURL(blob);
       window.open(pdfUrl, '_blank');
     } else {
-      throw new Error('Failed to open PDF');
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'Failed to open PDF');
     }
   } catch (error) {
+    console.error('Read online error:', error);
     toast({
       title: "Failed to open",
-      description: "Could not open the book for reading",
+      description: error instanceof Error ? error.message : "Could not open the book for reading",
       variant: "destructive",
     });
   }
