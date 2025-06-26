@@ -16,6 +16,10 @@ A modern digital library platform with React/Next.js frontend and Django backend
 Admin Dashboard:
 ![Screenshot 2025-06-26 063227](https://github.com/user-attachments/assets/5720b635-bd95-4804-96e8-55eab22a1fa6)
 
+###Test User Logs
+Pass - testdummy123
+email - testuser@library.com
+
 ## 🚀 Features
 
 ### User Features
