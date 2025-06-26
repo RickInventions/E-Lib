@@ -2,11 +2,11 @@
 
 A modern digital library platform with React/Next.js frontend and Django backend, featuring book/video management, user roles, and borrowing system.
 
-> **🌐 Live Application**: [https://digitalbook-lib.netlify.app] (https://digitalbook-lib.netlify.app)
+> **🌐 Live Application**: [https://digitalbook-lib.netlify.app]
 
 ## 🏆 Quick Access
 <div align="center">
-  <a href="https://your-app-url.vercel.app">
+  <a href="https://digitalbook-lib.netlify.app">
     <img src="https://img.shields.io/badge/Launch_Application-FF6B6B?style=for-the-badge&logo=vercel&logoColor=white" alt="Launch App">
   </a>
 </div>
