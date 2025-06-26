@@ -2,7 +2,19 @@
 
 A modern digital library platform with React/Next.js frontend and Django backend, featuring book/video management, user roles, and borrowing system.
 
-![Project Screenshot 2025-06-26 054612](https://github.com/user-attachments/assets/de50f400-b44d-4fb4-a336-e94780494f96)
+> **🌐 Live Application**: [https://digitalbook-lib.netlify.app] (https://digitalbook-lib.netlify.app)
+
+## 🏆 Quick Access
+<div align="center">
+  <a href="https://your-app-url.vercel.app">
+    <img src="https://img.shields.io/badge/Launch_Application-FF6B6B?style=for-the-badge&logo=vercel&logoColor=white" alt="Launch App">
+  </a>
+</div>
+
+![Screenshot 2025-06-26 054612](https://github.com/user-attachments/assets/eacaace9-646f-40f5-a9f6-9c3a68ed847b)
+
+Admin Dashboard:
+![Screenshot 2025-06-26 063227](https://github.com/user-attachments/assets/5720b635-bd95-4804-96e8-55eab22a1fa6)
 
 ## 🚀 Features
 
