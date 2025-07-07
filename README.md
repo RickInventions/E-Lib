@@ -79,8 +79,8 @@ python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
 ```
-```bash
 2. **Frontend Setup**:
+```bash
 cd frontend
 npm install --legacy-peer-deps
 npm run dev
