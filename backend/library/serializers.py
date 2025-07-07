@@ -27,6 +27,11 @@ class BookSerializer(serializers.ModelSerializer):
     available_status = serializers.SerializerMethodField()
     def get_available_status(self, obj):
         return "Available" if obj.available_copies > 0 else "Checked Out"
+    """
+    This serializer represents a book.
+    """
+    
+    # Define the fields to include in the serializer
 
     class Meta:
         model = Book

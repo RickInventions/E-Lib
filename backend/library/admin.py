@@ -22,10 +22,14 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(User, CustomUserAdmin)
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
+        # Define the fields to display in the admin interface
     list_display = ('title', 'author', 'book_type', 'is_external', 'is_available', 'is_featured')
+        # Define the fields to filter by in the admin interface
     list_filter = ('book_type', 'categories', 'is_available', 'is_featured')
+        # Define the fields to search by in the admin interface
     search_fields = ('title', 'author', 'book_uuid')
     filter_horizontal = ('categories',)
+        # Define the fields to display in the admin interface for each book
     fieldsets = (
         (None, {
             'fields': ('title', 'author', 'summary', 'description', 'publication_date', 'publisher')

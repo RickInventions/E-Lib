@@ -47,6 +47,9 @@ def generate_book_uuid():
     return f"BOOK-{uuid.uuid4().hex[:6].upper()}"
 
 class Book(models.Model):
+    """
+    This model represents a book.
+    """
     BOOK_TYPES = [
         ('PHYSICAL', 'Physical'),
         ('EBOOK', 'Ebook')

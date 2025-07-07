@@ -5,7 +5,10 @@ from .models import Inquiry
 from .serializers import InquirySerializer
 from rest_framework.permissions import IsAdminUser
 
+# Define the SubmitInquiryView
 class SubmitInquiryView(APIView):
+
+    # Define the post method for submitting an inquiry
     def post(self, request):
         serializer = InquirySerializer(data=request.data)
         if serializer.is_valid():
@@ -14,13 +17,21 @@ class SubmitInquiryView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InquiryListView(APIView):
+
+    """
+    This view handles listing and retrieving inquiries.
+    """
+    
+    # Define the permission class for this view
     permission_classes = [IsAdminUser]
     
+     # Define the get method for listing inquiries
     def get(self, request):
         inquiries = Inquiry.objects.all().order_by('-created_at')
         serializer = InquirySerializer(inquiries, many=True)
         return Response(serializer.data)
     
+    # Define the patch method for updating an inquiry
     def patch(self, request, pk=None):
         try:
             inquiry = Inquiry.objects.get(pk=pk)
@@ -33,6 +44,7 @@ class InquiryListView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # Define the delete method for deleting an inquiry
     def delete(self, request, pk=None):
         try:
             inquiry = Inquiry.objects.get(pk=pk)

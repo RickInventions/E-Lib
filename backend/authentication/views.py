@@ -18,6 +18,12 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class SignupView(APIView):
+    """
+    Handles user registration.
+    - Accepts user data, validates, and creates a new user.
+    - Returns created user data or validation errors.
+    - Edge case: Handles invalid data with appropriate error response.
+    """
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -26,10 +32,16 @@ class SignupView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(APIView):
+    """
+    Handles user login.
+    - Authenticates user with email and password.
+    - Returns JWT token and user role on success.
+    - Edge case: Returns error for invalid credentials.
+    """
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(request, username=email, password=password)  # Key fix: use `username=email`
+        user = authenticate(request, username=email, password=password)  
         if user:
             login(request, user)
             refresh = RefreshToken.for_user(user)
@@ -38,6 +50,11 @@ class LoginView(APIView):
     
 
 class UserProfileView(RetrieveUpdateAPIView):
+    """
+    Allows authenticated users to retrieve and update their profile.
+    - Uses UserSerializer for serialization.
+    - Only allows access to the logged-in user's own data.
+    """
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
 
@@ -45,6 +62,11 @@ class UserProfileView(RetrieveUpdateAPIView):
         return self.request.user
 
 class ChangePasswordView(APIView):
+    """
+    Allows authenticated users to change their password.
+    - Checks if old password matches before updating.
+    - Edge case: Returns error if old password is incorrect.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -60,6 +82,12 @@ class ChangePasswordView(APIView):
         return Response({"message": "Password updated"})
     
 class AdminProfileView(APIView):
+    """
+    Allows admin users to view and update their profile.
+    - GET: Returns admin's profile data.
+    - PUT: Updates admin's profile with provided data.
+    - Edge case: Only accessible by admin users.
+    """
     permission_classes = [IsAdminUser]
     
     def get(self, request):
@@ -76,6 +104,11 @@ class AdminProfileView(APIView):
     
 
 class PasswordResetRequestView(APIView):
+    """
+    Handles password reset requests.
+    - Generates a reset token and sends a reset link to the user's email.
+    - Edge case: Returns error if user with given email does not exist.
+    """
     def post(self, request):
         email = request.data.get('email')
         try:
@@ -97,6 +130,11 @@ class PasswordResetRequestView(APIView):
             return Response({'error': 'User not found'}, status=404)
 
 class PasswordResetConfirmView(APIView):
+    """
+    Handles password reset confirmation.
+    - Validates token and uid, sets new password.
+    - Edge cases: Handles invalid token, invalid uid, and user not found.
+    """
     def post(self, request, uidb64, token):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
