@@ -12,6 +12,7 @@ django-cors-headers==4.7.0
 django-crispy-forms==2.4
 djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
+dotenv==0.9.9
 drf-spectacular==0.28.0
 filelock==3.17.0
 idna==3.10
@@ -27,6 +28,7 @@ psycopg2-binary==2.9.10
 pycparser==2.22
 PyJWT==2.9.0
 pypiwin32==223
+python-dotenv==1.1.1
 pyttsx3==2.98
 pywin32==308
 PyYAML==6.0.2
